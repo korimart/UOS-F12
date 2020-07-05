@@ -145,8 +145,8 @@ public class GradesFragment extends Fragment {
             return;
         }
 
-        List<DisclosedGrade> grades = getGrades(doc);
-        if (grades == null){
+        DisclosedInfo info = getInfo(doc);
+        if (info == null){
             systemMessage.post(() -> {
                 systemMessage.setText("성적이 하나도 안 떠서 볼 수가 없음");
                 systemMessage.setTextColor(0xFFFF0000);
@@ -156,7 +156,7 @@ public class GradesFragment extends Fragment {
 
         float disclosedMarksFloat = 0;
         float disclosedPntsWithoutPnp = 0;
-        for (DisclosedGrade dg : grades){
+        for (DisclosedGrade dg : info.gradesForDisplay){
             disclosedMarksFloat += dg.getMarks();
             disclosedPntsWithoutPnp += dg.points;
         }
@@ -180,7 +180,8 @@ public class GradesFragment extends Fragment {
         float totPntFloat = Float.parseFloat(totPntString);
         float totalMarksFloat = Float.parseFloat(totalMarksString);
         float totalAvgFloat = Float.parseFloat(totalAvgString);
-        String hiddenPntString = String.valueOf((int) (totPntFloat - disclosedPntsWithoutPnp));
+        float disclosedPntsFloat = Float.parseFloat(disclosedPntsString);
+        String hiddenPntString = String.valueOf((int) (totPntFloat - disclosedPntsFloat + info.nameOnlyCoursePnts));
         float hiddenAvgFloat = calculateHiddenAvg(totPntFloat, totalMarksFloat,
                 totalAvgFloat, disclosedMarksFloat, disclosedPntsWithoutPnp);
         String hiddenAvgString = String.format("%.2f", hiddenAvgFloat);
@@ -199,7 +200,7 @@ public class GradesFragment extends Fragment {
                             dt.getMinute(), dt.getSecond())
             );
 
-            for (DisclosedGrade dg : grades){
+            for (DisclosedGrade dg : info.gradesForDisplay){
                 TextView courseName = new TextView(getContext());
                 courseName.setText(dg.course);
                 courseName.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
@@ -239,8 +240,9 @@ public class GradesFragment extends Fragment {
         return nc.getNodeValue();
     }
 
-    private List<DisclosedGrade> getGrades(Document doc){
-        List<DisclosedGrade> ret = new ArrayList<>();
+    private DisclosedInfo getInfo(Document doc){
+        DisclosedInfo ret = new DisclosedInfo();
+        ret.gradesForDisplay = new ArrayList<>();
         NodeList points = doc.getElementsByTagName("pnt");
         NodeList grades = doc.getElementsByTagName("mrks");
         NodeList courses = doc.getElementsByTagName("curi_nm");
@@ -253,8 +255,10 @@ public class GradesFragment extends Fragment {
             dg.course = courses.item(i).getFirstChild().getNodeValue().trim();
             Node letterGradeNode = letterGrades.item(i).getFirstChild();
             // 과목명만 보이게 해놓고 성적 입력 안 해놓은 경우 ㅋㅋ
-            if (letterGradeNode == null)
+            if (letterGradeNode == null){
+                ret.nameOnlyCoursePnts += Float.parseFloat(points.item(i).getFirstChild().getNodeValue());
                 continue;
+            }
 
             dg.letterGrade = letterGradeNode.getNodeValue().trim();
             if (dg.letterGrade.equals("S") || dg.letterGrade.equals("NS")){
@@ -266,7 +270,7 @@ public class GradesFragment extends Fragment {
                 dg.points = Float.parseFloat(points.item(i).getFirstChild().getNodeValue());
             }
 
-            ret.add(dg);
+            ret.gradesForDisplay.add(dg);
         }
 
         return ret;
@@ -300,4 +304,9 @@ class DisclosedGrade {
     public float getMarks(){
         return points * grade;
     }
+}
+
+class DisclosedInfo {
+    public List<DisclosedGrade> gradesForDisplay;
+    public float nameOnlyCoursePnts;
 }
