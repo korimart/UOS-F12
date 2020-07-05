@@ -180,15 +180,9 @@ public class GradesFragment extends Fragment {
         float totPntFloat = Float.parseFloat(totPntString);
         float totalMarksFloat = Float.parseFloat(totalMarksString);
         float totalAvgFloat = Float.parseFloat(totalAvgString);
-        float disclosedPntsFloat = Float.parseFloat(disclosedPntsString);
-        String hiddenPntString = String.valueOf((int) (totPntFloat - disclosedPntsFloat));
-
-
-        // pass non-pass
-        int pnpPntInt = (int) (totPntFloat - totalMarksFloat / totalAvgFloat);
-        float hiddenPntFloat = totPntFloat - disclosedPntsWithoutPnp - pnpPntInt;
-        float hiddenAvgFloat = hiddenPntFloat == 0.0f ? 0.0f :
-                (totalMarksFloat - disclosedMarksFloat) / hiddenPntFloat;
+        String hiddenPntString = String.valueOf((int) (totPntFloat - disclosedPntsWithoutPnp));
+        float hiddenAvgFloat = calculateHiddenAvg(totPntFloat, totalMarksFloat,
+                totalAvgFloat, disclosedMarksFloat, disclosedPntsWithoutPnp);
         String hiddenAvgString = String.format("%.2f", hiddenAvgFloat);
 
         systemMessage.post(() -> {
@@ -218,6 +212,15 @@ public class GradesFragment extends Fragment {
             }
             refreshButton.setEnabled(true);
         });
+    }
+
+    public float calculateHiddenAvg(float totalPntsWithPnp, float totalMarksFloat, float totalAvgFloat,
+                                     float disclosedMarksFloat, float disclosedPntsWithoutPnp) {
+        // pass non-pass
+        int pnpPntInt = (int) (totalPntsWithPnp - totalMarksFloat / totalAvgFloat);
+        float hiddenPntFloat = totalPntsWithPnp - disclosedPntsWithoutPnp - pnpPntInt;
+        return hiddenPntFloat == 0.0f ? 0.0f :
+                (totalMarksFloat - disclosedMarksFloat) / hiddenPntFloat;
     }
 
     private int getSchoolYear(LocalDateTime dt) {
