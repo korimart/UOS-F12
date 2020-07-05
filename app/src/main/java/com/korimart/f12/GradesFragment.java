@@ -185,7 +185,7 @@ public class GradesFragment extends Fragment {
         float totalMarksFloat = Float.parseFloat(totalMarksString);
         float totalAvgFloat = Float.parseFloat(totalAvgString);
         float disclosedPntsFloat = Float.parseFloat(disclosedPntsString);
-        String hiddenPntString = String.valueOf((int) (totPntFloat - disclosedPntsFloat + info.nameOnlyCoursePnts));
+        String hiddenPntString = String.valueOf(calculateHiddenPnts(totPntFloat, disclosedPntsFloat, info.nameOnlyCoursePnts));
         float hiddenAvgFloat = calculateHiddenAvg(totPntFloat, totalMarksFloat,
                 totalAvgFloat, disclosedMarksFloat, disclosedPntsWithoutPnp);
         String hiddenAvgString = String.format("%.2f", hiddenAvgFloat);
@@ -217,6 +217,10 @@ public class GradesFragment extends Fragment {
             }
             refreshButton.setEnabled(true);
         });
+    }
+
+    public static int calculateHiddenPnts(float totPntFloat, float disclosedPntsFloat, float nameOnlyCoursePnts){
+        return (int) (totPntFloat - disclosedPntsFloat + nameOnlyCoursePnts);
     }
 
     public static float calculateHiddenAvg(float totalPntsWithPnp, float totalMarksFloat, float totalAvgFloat,
