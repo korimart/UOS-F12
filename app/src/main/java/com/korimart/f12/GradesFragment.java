@@ -67,12 +67,16 @@ public class GradesFragment extends Fragment {
             (new Thread(this::fetchGrades)).start();
         });
 
+        init();
+
+        (new Thread(this::fetchGrades)).start();
+    }
+
+    public void init() {
         try {
             builder = factory.newDocumentBuilder();
         } catch (ParserConfigurationException ignore) {
         }
-
-        (new Thread(this::fetchGrades)).start();
     }
 
     @Override
@@ -215,11 +219,11 @@ public class GradesFragment extends Fragment {
         });
     }
 
-    public float calculateHiddenAvg(float totalPntsWithPnp, float totalMarksFloat, float totalAvgFloat,
+    public static float calculateHiddenAvg(float totalPntsWithPnp, float totalMarksFloat, float totalAvgFloat,
                                      float disclosedMarksFloat, float disclosedPntsWithoutPnp) {
         // pass non-pass
-        int pnpPntInt = (int) (totalPntsWithPnp - totalMarksFloat / totalAvgFloat);
-        float hiddenPntFloat = totalPntsWithPnp - disclosedPntsWithoutPnp - pnpPntInt;
+        float pnpPntFloat = totalPntsWithPnp - totalMarksFloat / totalAvgFloat;
+        float hiddenPntFloat = totalPntsWithPnp - disclosedPntsWithoutPnp - pnpPntFloat;
         return hiddenPntFloat == 0.0f ? 0.0f :
                 (totalMarksFloat - disclosedMarksFloat) / hiddenPntFloat;
     }
@@ -230,7 +234,7 @@ public class GradesFragment extends Fragment {
         return dt.getYear();
     }
 
-    private String getContentByName(Document doc, String name){
+    public static String getContentByName(Document doc, String name){
         NodeList nl = doc.getElementsByTagName(name);
         Node n = nl.item(0);
 
@@ -240,7 +244,7 @@ public class GradesFragment extends Fragment {
         return nc.getNodeValue();
     }
 
-    private DisclosedInfo getInfo(Document doc){
+    public static DisclosedInfo getInfo(Document doc){
         DisclosedInfo ret = new DisclosedInfo();
         ret.gradesForDisplay = new ArrayList<>();
         NodeList points = doc.getElementsByTagName("pnt");
@@ -283,12 +287,15 @@ public class GradesFragment extends Fragment {
 
         try {
             input = new ByteArrayInputStream(xmlStringBuilder.toString().getBytes("euc-kr"));
-        } catch (UnsupportedEncodingException ignore) {}
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         Document doc = null;
         try {
             doc = builder.parse(input);
-        } catch (Exception ignore) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return doc;
