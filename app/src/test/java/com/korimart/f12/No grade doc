@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<root xmlns="">
+<mainList>
+<list>
+<sch_year><![CDATA[2020]]></sch_year>
+<smt_cd><![CDATA[10]]></smt_cd>
+<class_no><![CDATA[01]]></class_no>
+<curi_no><![CDATA[71065]]></curi_no>
+<curi_nm><![CDATA[클라우드컴퓨팅      ]]></curi_nm>
+<curi_eng_nm><![CDATA[Cloud Computing]]></curi_eng_nm>
+<stud_id><![CDATA[2017920072]]></stud_id>
+<sust_cd><![CDATA[20020]]></sust_cd>
+<stud_nm><![CDATA[허윤]]></stud_nm>
+<sust_cd_nm><![CDATA[컴퓨터과학부]]></sust_cd_nm>
+<colg_cd><![CDATA[20011]]></colg_cd>
+<colg_nm><![CDATA[공과대학]]></colg_nm>
+<cmp_div_nm><![CDATA[전공선택]]></cmp_div_nm>
+<prof_no_nm><![CDATA[현철승]]></prof_no_nm>
+<prof_eng_nm><![CDATA[Chul-seung, Hyun]]></prof_eng_nm>
+<pnt>3</pnt>
+<conv_grade></conv_grade>
+<mrks></mrks>
+<sum_pnt>3</sum_pnt>
+<tot_pnt>6</tot_pnt>
+<tot_mrks>25.5</tot_mrks>
+<avg_mrks>4.25</avg_mrks>
+<per_mrks>97.3</per_mrks>
+<otcm_corr_contents><![CDATA[]]></otcm_corr_contents>
+</list>
+<list>
+<sch_year><![CDATA[2020]]></sch_year>
+<smt_cd><![CDATA[10]]></smt_cd>
+<class_no><![CDATA[01]]></class_no>
+<curi_no><![CDATA[71015]]></curi_no>
+<curi_nm><![CDATA[운영체제]]></curi_nm>
+<curi_eng_nm><![CDATA[Operating System]]></curi_eng_nm>
+<stud_id><![CDATA[2017920072]]></stud_id>
+<sust_cd><![CDATA[20020]]></sust_cd>
+<stud_nm><![CDATA[허윤]]></stud_nm>
+<sust_cd_nm><![CDATA[컴퓨터과학부]]></sust_cd_nm>
+<colg_cd><![CDATA[20011]]></colg_cd>
+<colg_nm><![CDATA[공과대학]]></colg_nm>
+<cmp_div_nm><![CDATA[전공필수]]></cmp_div_nm>
+<prof_no_nm><![CDATA[이동희]]></prof_no_nm>
+<prof_eng_nm><![CDATA[Lee, Dong-Hee]]></prof_eng_nm>
+<pnt>3</pnt>
+<conv_grade><![CDATA[A+]]></conv_grade>
+<mrks>4.5</mrks>
+<sum_pnt>3</sum_pnt>
+<tot_pnt>6</tot_pnt>
+<tot_mrks>25.5</tot_mrks>
+<avg_mrks>4.25</avg_mrks>
+<per_mrks>97.3</per_mrks>
+<otcm_corr_contents><![CDATA[]]></otcm_corr_contents>
+</list>
+</mainList>
+<strFlag>Y</strFlag>
+<strMyEngShreg>Her Yun (2017920072) College of Engineering  School of Computer Science  </strMyEngShreg>
+<strDiv>2</strDiv>
+<strMyShreg>허윤 (2017920072) 공과대학  컴퓨터과학부  </strMyShreg>
+<_COLUMNS_OF_TABLE_TO_TEXT_>{}</_COLUMNS_OF_TABLE_TO_TEXT_>
+</root>
