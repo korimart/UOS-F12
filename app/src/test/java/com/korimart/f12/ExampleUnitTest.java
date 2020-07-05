@@ -1,15 +1,14 @@
 package com.korimart.f12;
 
-import org.junit.Before;
+import android.os.Environment;
+
 import org.junit.Test;
 import org.w3c.dom.Document;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 import static org.junit.Assert.*;
 
@@ -118,7 +117,9 @@ public class ExampleUnitTest {
 
     private Document loadDocument(String doc){
         try {
-            File file = new File("C:\\Users\\korim\\Desktop\\repos\\F12\\app\\src\\test\\java\\com\\korimart\\f12\\" + doc);
+            File file = new File(
+                    Paths.get(System.getProperty("user.dir"), "src/test/java/com/korimart/f12", doc)
+                            .toString());
             FileInputStream fis = new FileInputStream(file);
             byte[] data = new byte[(int) file.length()];
             fis.read(data);
