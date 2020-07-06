@@ -154,6 +154,7 @@ public class GradesFragment extends Fragment {
             systemMessage.post(() -> {
                 systemMessage.setText("성적이 하나도 안 떠서 볼 수가 없음");
                 systemMessage.setTextColor(0xFFFF0000);
+                refreshButton.setEnabled(true);
             });
             return;
         }
