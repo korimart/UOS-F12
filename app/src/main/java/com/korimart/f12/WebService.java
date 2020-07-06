@@ -25,7 +25,7 @@ public class WebService {
 
     private static int responseCode;
 
-    public static String sendPost(String requestURL, String urlParameters) {
+    public static String sendPost(String requestURL, String urlParameters, String responseEncoding) {
 
         URL url;
         String response = "";
@@ -73,7 +73,7 @@ public class WebService {
             if (getResponseCode() == HttpsURLConnection.HTTP_OK) {
 
                 String line;
-                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "euc-kr"));
+                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), responseEncoding));
                 while ((line = br.readLine()) != null) {
                     response += line;
                 }
@@ -89,7 +89,7 @@ public class WebService {
 
 
     // HTTP GET request
-    public static String sendGet(String url) throws Exception {
+    public static String sendGet(String url, String responseEncoding) throws Exception {
 
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -125,7 +125,7 @@ public class WebService {
         int responseCode = con.getResponseCode();
 
         BufferedReader in = new BufferedReader(
-                new InputStreamReader(con.getInputStream(), "euc-kr"));
+                new InputStreamReader(con.getInputStream(), responseEncoding));
         String inputLine;
         StringBuffer response = new StringBuffer();
 

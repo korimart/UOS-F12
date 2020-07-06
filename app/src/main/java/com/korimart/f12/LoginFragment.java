@@ -89,7 +89,7 @@ public class LoginFragment extends Fragment {
     private void tryLogin(boolean fromFile) {
         okButton.post(() -> okButton.setEnabled(false));
         try {
-            String response = WebService.sendPost(loginURL, String.format(loginParams, id, password));
+            String response = WebService.sendPost(loginURL, String.format(loginParams, id, password), "euc-kr");
             if (response.contains("전산실 요청에 의해 제거함"))
                 throw new Exception();
         } catch (Exception e) {
