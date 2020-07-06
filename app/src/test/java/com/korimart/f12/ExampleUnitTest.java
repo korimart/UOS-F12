@@ -1,7 +1,5 @@
 package com.korimart.f12;
 
-import android.os.Environment;
-
 import org.junit.Test;
 import org.w3c.dom.Document;
 
@@ -36,19 +34,19 @@ public class ExampleUnitTest {
 
     @Test
     public void mineDoc() {
-        setUpMembers("mine doc");
+        setUpMembers("mine doc", true);
         assertTrue(Math.abs(9f - totPntFloat) < 0.01);
         assertEquals(3, hiddenPntsInt);
-        assertTrue(Math.abs(hiddenAvgFloat - 4) < 0.01);
+        assertTrue(Math.abs(hiddenAvgFloat - 4) < 0.00001);
         assertTrue(Math.abs(4.33 - totalAvgFloat) < 0.01);
     }
 
     @Test
     public void nameOnlyDoc(){
-        setUpMembers("Name only doc");
+        setUpMembers("Name only doc", true);
         assertTrue(Math.abs(6f - totPntFloat) < 0.01);
         assertEquals(3, hiddenPntsInt);
-        assertTrue(Math.abs(hiddenAvgFloat - 4) < 0.01);
+        assertTrue(Math.abs(hiddenAvgFloat - 4) < 0.00001);
         assertTrue(Math.abs(4.25 - totalAvgFloat) < 0.01);
     }
 
@@ -57,7 +55,7 @@ public class ExampleUnitTest {
         // 과목명만 공개된 것이 한 과목
         // 0학점 패논패가 한 과목
         // 2학점짜리 과목 하나가 숨겨져 있는 상황
-        setUpMembers("park doc");
+        setUpMembers("park doc", false);
         assertTrue(Math.abs(7f - totPntFloat) < 0.01);
         assertEquals(2, hiddenPntsInt);
         assertTrue(Math.abs(hiddenAvgFloat - 4) < 0.01);
@@ -69,7 +67,7 @@ public class ExampleUnitTest {
         // 3학점짜리 패논패가 한 과목과
         // 3학점짜리 B+가 공개되어 있고
         // 2학점짜리 B+, 3학점짜리 A+가 숨어있는 상황
-        setUpMembers("dot doc");
+        setUpMembers("dot doc", false);
         assertTrue(Math.abs(11f - totPntFloat) < 0.01);
         assertEquals(5, hiddenPntsInt);
         assertTrue(Math.abs(hiddenAvgFloat - 4.1) < 0.01);
@@ -78,7 +76,7 @@ public class ExampleUnitTest {
 
     @Test
     public void S0pntsDoc(){
-        setUpMembers("S 0 pnts doc");
+        setUpMembers("S 0 pnts doc", false);
         assertTrue(Math.abs(6f - totPntFloat) < 0.01);
         assertEquals(3, hiddenPntsInt);
         assertTrue(Math.abs(hiddenAvgFloat - 4) < 0.01);
@@ -87,7 +85,7 @@ public class ExampleUnitTest {
 
     @Test
     public void S0pntsHiddenDoc(){
-        setUpMembers("S 0 pnts hidden doc");
+        setUpMembers("S 0 pnts hidden doc", false);
         assertTrue(Math.abs(9f - totPntFloat) < 0.01);
         assertEquals(3, hiddenPntsInt);
         assertTrue(Math.abs(hiddenAvgFloat - 4) < 0.01);
@@ -96,7 +94,7 @@ public class ExampleUnitTest {
 
     @Test
     public void S3pntsDoc(){
-        setUpMembers("S 3 pnts doc");
+        setUpMembers("S 3 pnts doc", false);
         assertTrue(Math.abs(9f - totPntFloat) < 0.01);
         assertEquals(3, hiddenPntsInt);
         assertTrue(Math.abs(hiddenAvgFloat - 4) < 0.01);
@@ -105,15 +103,15 @@ public class ExampleUnitTest {
 
     @Test
     public void S3pntsHiddenDoc(){
-        setUpMembers("S 3 pnts hidden doc");
+        setUpMembers("S 3 pnts hidden doc", false);
         assertTrue(Math.abs(12f - totPntFloat) < 0.01);
         assertEquals(6, hiddenPntsInt);
         assertTrue(Math.abs(hiddenAvgFloat - 4) < 0.01);
         assertTrue(Math.abs(4.33 - totalAvgFloat) < 0.01);
     }
 
-    private void setUpMembers(String doc){
-        frag.init();
+    private void setUpMembers(String doc, boolean noPnp){
+        frag.makeBuilder();
         this.doc = loadDocument(doc);
         totPntString = GradesFragment.getContentByName(this.doc, "tot_pnt");
         totalMarksString = GradesFragment.getContentByName(this.doc, "tot_mrks");
@@ -135,8 +133,12 @@ public class ExampleUnitTest {
         disclosedPntsFloat = Float.parseFloat(disclosedPntsString);
 
         hiddenPntsInt = GradesFragment.calculateHiddenPnts(totPntFloat, disclosedPntsFloat, info.nameOnlyCoursePnts);
-        hiddenAvgFloat = GradesFragment.calculateHiddenAvg(totPntFloat, totalMarksFloat,
-                totalAvgFloat, disclosedMarksFloat, disclosedPntsWithoutPnp);
+
+        if (noPnp)
+            hiddenAvgFloat = GradesFragment.calculateHiddenAvgNoPnp(totalMarksFloat, disclosedMarksFloat, hiddenPntsInt);
+        else
+            hiddenAvgFloat = GradesFragment.calculateHiddenAvg(totPntFloat, totalMarksFloat,
+                    totalAvgFloat, disclosedMarksFloat, disclosedPntsWithoutPnp);
     }
 
     private Document loadDocument(String doc){

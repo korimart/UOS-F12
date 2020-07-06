@@ -1,11 +1,13 @@
 package com.korimart.f12;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,7 +19,13 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +50,7 @@ public class GradesFragment extends Fragment {
     private Button refreshButton;
     private LinearLayout courseNames;
     private LinearLayout letterGrades;
+    private Switch pnpSwitch;
 
     @Nullable
     @Override
@@ -62,17 +71,50 @@ public class GradesFragment extends Fragment {
         refreshButton = view.findViewById(R.id.grades_refreshButton);
         courseNames = view.findViewById(R.id.grades_courseNames);
         letterGrades = view.findViewById(R.id.grades_letterGrades);
+        pnpSwitch = view.findViewById(R.id.grades_pnpSwitch);
 
-        refreshButton.setOnClickListener((v) -> {
+        // pnpSwitch callback 등록 전에 먼저 기본값을 세팅해놔야 fetchGrades를 호출 안 함
+        loadSettings();
+
+        refreshButton.setOnClickListener((v) -> (new Thread(this::fetchGrades)).start());
+        pnpSwitch.setOnCheckedChangeListener((v, b) -> {
+            writePnpSetting(b);
             (new Thread(this::fetchGrades)).start();
         });
 
-        init();
+        makeBuilder();
 
         (new Thread(this::fetchGrades)).start();
     }
 
-    public void init() {
+    private void loadSettings() {
+        File internalPath = getActivity().getFilesDir();
+        Path settingsPath = Paths.get(internalPath.getPath(), "settings.txt");
+        if (settingsPath.toFile().isFile()){
+            try {
+                List<String> settings = Files.readAllLines(settingsPath);
+                pnpSwitch.setChecked(settings.get(0).equals("noPnp"));
+            } catch (IOException ignore) {
+            }
+        }
+        else {
+            writePnpSetting(false);
+        }
+    }
+
+    private void writePnpSetting(boolean noPnp){
+        try {
+            OutputStreamWriter osw = new OutputStreamWriter(
+                    getActivity().openFileOutput("settings.txt", Context.MODE_PRIVATE));
+            String setting = noPnp ? "noPnp\n" : "pnp\n";
+            osw.write(setting);
+            osw.flush();
+            osw.close();
+        } catch (IOException ignore) {
+        }
+    }
+
+    public void makeBuilder() {
         try {
             builder = factory.newDocumentBuilder();
         } catch (ParserConfigurationException ignore) {
@@ -192,14 +234,26 @@ public class GradesFragment extends Fragment {
         float totalMarksFloat = Float.parseFloat(totalMarksString);
         float totalAvgFloat = Float.parseFloat(totalAvgString);
         float disclosedPntsFloat = Float.parseFloat(disclosedPntsString);
-        String hiddenPntString = String.valueOf(calculateHiddenPnts(totPntFloat, disclosedPntsFloat, info.nameOnlyCoursePnts));
-        float hiddenAvgFloat = calculateHiddenAvg(totPntFloat, totalMarksFloat,
-                totalAvgFloat, disclosedMarksFloat, disclosedPntsWithoutPnp);
-        String hiddenAvgString = String.format("%.1f", hiddenAvgFloat);
 
+        int hiddenPntsInt = calculateHiddenPnts(totPntFloat, disclosedPntsFloat, info.nameOnlyCoursePnts);
+        String hiddenPntString = String.valueOf(hiddenPntsInt);
+
+        float hiddenAvgFloat;
+        String hiddenAvgString;
+        if (pnpSwitch.isChecked()){
+            hiddenAvgFloat = calculateHiddenAvgNoPnp(totalMarksFloat, disclosedMarksFloat, hiddenPntsInt);
+            hiddenAvgString = String.format("%.2f", hiddenAvgFloat);
+        }
+        else {
+            hiddenAvgFloat = calculateHiddenAvg(totPntFloat, totalMarksFloat, totalAvgFloat,
+                    disclosedMarksFloat, disclosedPntsWithoutPnp);
+            hiddenAvgString = String.format("%.1f", hiddenAvgFloat);
+        }
+
+        String finalHiddenAvgString = hiddenAvgString;
         systemMessage.post(() -> {
             hiddenPnts.setText(hiddenPntString);
-            hiddenAvg.setText(hiddenAvgString);
+            hiddenAvg.setText(finalHiddenAvgString);
             totPnt.setText(totPntString);
             totalAvg.setText(totalAvgString);
 
@@ -238,6 +292,10 @@ public class GradesFragment extends Fragment {
         float ret = hiddenPntFloat == 0.0f ? 0.0f :
                 (totalMarksFloat - disclosedMarksFloat) / hiddenPntFloat;
         return Math.round(ret * 10f) / 10f;
+    }
+
+    public static float calculateHiddenAvgNoPnp(float totalMarksFloat, float disclosedMarksFloat, int hiddenPntsInt){
+        return (totalMarksFloat - disclosedMarksFloat) / hiddenPntsInt;
     }
 
     private int getSchoolYear(LocalDateTime dt) {
