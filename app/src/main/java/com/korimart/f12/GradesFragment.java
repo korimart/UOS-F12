@@ -114,9 +114,15 @@ public class GradesFragment extends Fragment {
 
         String response = null;
         String smtResponse = null;
+
         try {
             smtResponse = WebService.sendPost(f12URL, smtParams);
         } catch (Exception ignore) {
+        }
+
+        if (smtResponse.contains("세션타임")){
+            ((MainActivity) getActivity()).goToLoginFrag();
+            return;
         }
 
         Document smtDoc = getDocument(smtResponse);
@@ -149,6 +155,17 @@ public class GradesFragment extends Fragment {
             return;
         }
 
+        String loginInfoString = getContentByName(doc, "strMyShreg");
+        if (loginInfoString == null){
+            systemMessage.post(() -> {
+                systemMessage.setText("와이즈 시스템 방식이 변경된 듯 (F12가 막혔을 수 있음)");
+                systemMessage.setTextColor(0xFFFF0000);
+                refreshButton.setEnabled(true);
+            });
+            return;
+        }
+        loginInfo.post(() -> loginInfo.setText(loginInfoString));
+
         DisclosedInfo info = getInfo(doc);
         if (info == null){
             systemMessage.post(() -> {
@@ -166,21 +183,10 @@ public class GradesFragment extends Fragment {
             disclosedPntsWithoutPnp += dg.points;
         }
 
-        String loginInfoString = getContentByName(doc, "strMyShreg");
         String totPntString = getContentByName(doc, "tot_pnt");
         String totalMarksString = getContentByName(doc, "tot_mrks");
         String disclosedPntsString = getContentByName(doc, "sum_pnt");
         String totalAvgString = getContentByName(doc, "avg_mrks");
-
-        if (loginInfoString == null || totPntString == null
-                || totalMarksString == null || disclosedPntsString == null){
-            systemMessage.post(() -> {
-                systemMessage.setText("와이즈 시스템 방식이 변경된 듯 (F12가 막혔을 수 있음)");
-                systemMessage.setTextColor(0xFFFF0000);
-                refreshButton.setEnabled(true);
-            });
-            return;
-        }
 
         float totPntFloat = Float.parseFloat(totPntString);
         float totalMarksFloat = Float.parseFloat(totalMarksString);
@@ -193,7 +199,6 @@ public class GradesFragment extends Fragment {
 
         systemMessage.post(() -> {
             hiddenPnts.setText(hiddenPntString);
-            loginInfo.setText(loginInfoString);
             hiddenAvg.setText(hiddenAvgString);
             totPnt.setText(totPntString);
             totalAvg.setText(totalAvgString);

@@ -39,13 +39,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         getSupportActionBar().hide();
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.frag, new LoginFragment())
-                .commit();
+        goToLoginFrag();
     }
 
     public void setId(String id) {
@@ -76,5 +71,12 @@ public class MainActivity extends AppCompatActivity {
 
     public String getErrorText() {
         return errorText;
+    }
+
+    public void goToLoginFrag() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frag, new LoginFragment())
+                .commit();
     }
 }
