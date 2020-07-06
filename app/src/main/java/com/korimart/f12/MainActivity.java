@@ -31,9 +31,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 public class MainActivity extends AppCompatActivity {
-    private String id;
-    private String password;
     private String errorText;
+    private GradesFragment gf;
+    private boolean isAddedFrag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,18 +43,25 @@ public class MainActivity extends AppCompatActivity {
         goToLoginFrag();
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    @Override
+    public void onBackPressed() {
+        if (isAddedFrag){
+            isAddedFrag = false;
+            goToGradesFrag();
+            return;
+        }
 
-    public void setPassword(String password) {
-        this.password = password;
+        super.onBackPressed();
     }
 
     public void goToGradesFrag() {
+        if (gf == null){
+            gf = new GradesFragment();
+        }
+
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frag, new GradesFragment())
+                .replace(R.id.frag, gf)
                 .commit();
     }
 
@@ -77,6 +84,14 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frag, new LoginFragment())
+                .commit();
+    }
+
+    public void goToOriginalXMLFrag(String originalXML) {
+        isAddedFrag = true;
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.frag, new OriginalFragment(originalXML))
                 .commit();
     }
 }

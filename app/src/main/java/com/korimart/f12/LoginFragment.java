@@ -111,8 +111,6 @@ public class LoginFragment extends Fragment {
         }
 
         MainActivity mainActivity = ((MainActivity) getActivity());
-        mainActivity.runOnUiThread(() -> mainActivity.setId(id));
-        mainActivity.runOnUiThread(() -> mainActivity.setPassword(password));
         mainActivity.runOnUiThread(() -> mainActivity.goToGradesFrag());
     }
 }

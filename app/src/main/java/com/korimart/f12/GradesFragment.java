@@ -40,6 +40,7 @@ public class GradesFragment extends Fragment {
     private String f12Params = "strSchYear=%d&strSmtCd=%s&strStudId=123123&strDiv=2&&_COMMAND_=list&&_XML_=XML&_strMenuId=stud00320&";
     private DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     private DocumentBuilder builder;
+    private String f12XML;
 
     private TextView loginInfo;
     private TextView totPnt;
@@ -48,6 +49,7 @@ public class GradesFragment extends Fragment {
     private TextView totalAvg;
     private TextView systemMessage;
     private Button refreshButton;
+    private Button originalButton;
     private LinearLayout courseNames;
     private LinearLayout letterGrades;
     private Switch pnpSwitch;
@@ -69,6 +71,7 @@ public class GradesFragment extends Fragment {
         totalAvg = view.findViewById(R.id.grades_avg_mrks);
         systemMessage = view.findViewById(R.id.grades_systemMessage);
         refreshButton = view.findViewById(R.id.grades_refreshButton);
+        originalButton = view.findViewById(R.id.grades_showOriginal);
         courseNames = view.findViewById(R.id.grades_courseNames);
         letterGrades = view.findViewById(R.id.grades_letterGrades);
         pnpSwitch = view.findViewById(R.id.grades_pnpSwitch);
@@ -81,6 +84,8 @@ public class GradesFragment extends Fragment {
             writePnpSetting(b);
             (new Thread(this::fetchGrades)).start();
         });
+
+        originalButton.setOnClickListener((v) -> ((MainActivity) getActivity()).goToOriginalXMLFrag(f12XML));
 
         makeBuilder();
 
@@ -196,6 +201,8 @@ public class GradesFragment extends Fragment {
             });
             return;
         }
+
+        f12XML = response;
 
         String loginInfoString = getContentByName(doc, "strMyShreg");
         if (loginInfoString == null){
