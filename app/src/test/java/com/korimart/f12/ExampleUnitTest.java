@@ -39,7 +39,7 @@ public class ExampleUnitTest {
         setUpMembers("mine doc");
         assertTrue(Math.abs(9f - totPntFloat) < 0.01);
         assertEquals(3, hiddenPntsInt);
-        assertTrue(Math.abs(hiddenAvgFloat - 4) < 0.02);
+        assertTrue(Math.abs(hiddenAvgFloat - 4) < 0.01);
         assertTrue(Math.abs(4.33 - totalAvgFloat) < 0.01);
     }
 
@@ -48,7 +48,7 @@ public class ExampleUnitTest {
         setUpMembers("Name only doc");
         assertTrue(Math.abs(6f - totPntFloat) < 0.01);
         assertEquals(3, hiddenPntsInt);
-        assertTrue(Math.abs(hiddenAvgFloat - 4) < 0.02);
+        assertTrue(Math.abs(hiddenAvgFloat - 4) < 0.01);
         assertTrue(Math.abs(4.25 - totalAvgFloat) < 0.01);
     }
 
@@ -60,7 +60,7 @@ public class ExampleUnitTest {
         setUpMembers("park doc");
         assertTrue(Math.abs(7f - totPntFloat) < 0.01);
         assertEquals(2, hiddenPntsInt);
-        assertTrue(Math.abs(hiddenAvgFloat - 4) < 0.02);
+        assertTrue(Math.abs(hiddenAvgFloat - 4) < 0.01);
         assertTrue(Math.abs(4.21 - totalAvgFloat) < 0.01);
     }
 
@@ -72,7 +72,7 @@ public class ExampleUnitTest {
         setUpMembers("dot doc");
         assertTrue(Math.abs(11f - totPntFloat) < 0.01);
         assertEquals(5, hiddenPntsInt);
-        assertTrue(Math.abs(hiddenAvgFloat - 4.1) < 0.02);
+        assertTrue(Math.abs(hiddenAvgFloat - 4.1) < 0.01);
         assertTrue(Math.abs(3.88 - totalAvgFloat) < 0.01);
     }
 
@@ -81,7 +81,7 @@ public class ExampleUnitTest {
         setUpMembers("S 0 pnts doc");
         assertTrue(Math.abs(6f - totPntFloat) < 0.01);
         assertEquals(3, hiddenPntsInt);
-        assertTrue(Math.abs(hiddenAvgFloat - 4) < 0.02);
+        assertTrue(Math.abs(hiddenAvgFloat - 4) < 0.01);
         assertTrue(Math.abs(4.25 - totalAvgFloat) < 0.01);
     }
 
@@ -90,7 +90,7 @@ public class ExampleUnitTest {
         setUpMembers("S 0 pnts hidden doc");
         assertTrue(Math.abs(9f - totPntFloat) < 0.01);
         assertEquals(3, hiddenPntsInt);
-        assertTrue(Math.abs(hiddenAvgFloat - 4) < 0.02);
+        assertTrue(Math.abs(hiddenAvgFloat - 4) < 0.01);
         assertTrue(Math.abs(4.33 - totalAvgFloat) < 0.01);
     }
 
@@ -99,7 +99,7 @@ public class ExampleUnitTest {
         setUpMembers("S 3 pnts doc");
         assertTrue(Math.abs(9f - totPntFloat) < 0.01);
         assertEquals(3, hiddenPntsInt);
-        assertTrue(Math.abs(hiddenAvgFloat - 4) < 0.02);
+        assertTrue(Math.abs(hiddenAvgFloat - 4) < 0.01);
         assertTrue(Math.abs(4.25 - totalAvgFloat) < 0.01);
     }
 
@@ -108,7 +108,7 @@ public class ExampleUnitTest {
         setUpMembers("S 3 pnts hidden doc");
         assertTrue(Math.abs(12f - totPntFloat) < 0.01);
         assertEquals(6, hiddenPntsInt);
-        assertTrue(Math.abs(hiddenAvgFloat - 4) < 0.02);
+        assertTrue(Math.abs(hiddenAvgFloat - 4) < 0.01);
         assertTrue(Math.abs(4.33 - totalAvgFloat) < 0.01);
     }
 

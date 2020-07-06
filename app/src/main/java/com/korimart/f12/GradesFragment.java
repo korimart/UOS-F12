@@ -188,7 +188,7 @@ public class GradesFragment extends Fragment {
         String hiddenPntString = String.valueOf(calculateHiddenPnts(totPntFloat, disclosedPntsFloat, info.nameOnlyCoursePnts));
         float hiddenAvgFloat = calculateHiddenAvg(totPntFloat, totalMarksFloat,
                 totalAvgFloat, disclosedMarksFloat, disclosedPntsWithoutPnp);
-        String hiddenAvgString = String.format("%.2f", hiddenAvgFloat);
+        String hiddenAvgString = String.format("%.1f", hiddenAvgFloat);
 
         systemMessage.post(() -> {
             hiddenPnts.setText(hiddenPntString);
@@ -223,13 +223,15 @@ public class GradesFragment extends Fragment {
         return (int) (totPntFloat - disclosedPntsFloat + nameOnlyCoursePnts);
     }
 
+    // returns to 1 decimal place
     public static float calculateHiddenAvg(float totalPntsWithPnp, float totalMarksFloat, float totalAvgFloat,
                                      float disclosedMarksFloat, float disclosedPntsWithoutPnp) {
         // pass non-pass
         float pnpPntFloat = totalPntsWithPnp - totalMarksFloat / totalAvgFloat;
         float hiddenPntFloat = totalPntsWithPnp - disclosedPntsWithoutPnp - pnpPntFloat;
-        return hiddenPntFloat == 0.0f ? 0.0f :
+        float ret = hiddenPntFloat == 0.0f ? 0.0f :
                 (totalMarksFloat - disclosedMarksFloat) / hiddenPntFloat;
+        return Math.round(ret * 10f) / 10f;
     }
 
     private int getSchoolYear(LocalDateTime dt) {
