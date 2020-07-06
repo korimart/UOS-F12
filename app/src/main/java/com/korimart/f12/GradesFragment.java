@@ -139,13 +139,12 @@ public class GradesFragment extends Fragment {
                 StackTraceElement[] stes = e.getStackTrace();
                 StringBuilder sb = new StringBuilder();
                 sb.append(e.toString());
-                for (StackTraceElement ste : stes){
+                for (StackTraceElement ste : stes) {
                     sb.append(ste.toString());
                     sb.append('\n');
                 }
 
-                ((MainActivity) getActivity()).setErrorText(sb.toString());
-                ((MainActivity) getActivity()).goToErrorFrag();
+                ((MainActivity) getActivity()).goToErrorFrag(sb.toString());
             });
         }
     }

@@ -12,6 +12,11 @@ import androidx.fragment.app.Fragment;
 
 public class ErrorFragment extends Fragment {
     private TextView text;
+    private String errorString;
+
+    public ErrorFragment(String errorString) {
+        this.errorString = errorString;
+    }
 
     @Nullable
     @Override
@@ -23,6 +28,6 @@ public class ErrorFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         text = view.findViewById(R.id.error_text);
-        text.setText(((MainActivity) getActivity()).getErrorText());
+        text.setText(errorString);
     }
 }

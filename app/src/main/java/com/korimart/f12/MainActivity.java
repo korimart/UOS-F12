@@ -31,7 +31,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 public class MainActivity extends AppCompatActivity {
-    private String errorText;
     private GradesFragment gf;
     private boolean isAddedFrag;
 
@@ -65,19 +64,11 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    public void goToErrorFrag() {
+    public void goToErrorFrag(String errorString) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frag, new ErrorFragment())
+                .replace(R.id.frag, new ErrorFragment(errorString))
                 .commit();
-    }
-
-    public void setErrorText(String text){
-        errorText = text;
-    }
-
-    public String getErrorText() {
-        return errorText;
     }
 
     public void goToLoginFrag() {
