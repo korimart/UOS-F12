@@ -213,6 +213,7 @@
         android:id="@+id/grades_pnpSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:showText="false"
         android:text="이번학기 패논패 없어요 (숨학평 정밀도 향상)    "
         app:layout_constraintBottom_toBottomOf="parent"
@@ -220,7 +221,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/grades_showOriginal"
-        app:layout_constraintVertical_bias="0.118" />
+        app:layout_constraintVertical_bias="0.423" />
 
     <Button
         android:id="@+id/grades_showOriginal"
@@ -229,37 +230,9 @@
         android:text="원본보기"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.91"
+        app:layout_constraintHorizontal_bias="0.922"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/grades_systemMessage"
-        app:layout_constraintVertical_bias="0.502" />
-
-    <TextView
-        android:id="@+id/grades_updateMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="최신버전입니다."
-        app:layout_constraintBottom_toTopOf="@+id/grades_updateLink"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/grades_updateLink"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:autoLink="web"
-        android:linksClickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.673" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

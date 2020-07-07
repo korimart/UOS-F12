@@ -33,11 +33,18 @@ import javax.xml.parsers.ParserConfigurationException;
 public class MainActivity extends AppCompatActivity {
     private GradesFragment gf;
     private boolean isAddedFrag;
+    private TextView updateMessage;
+    private TextView updateLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        updateMessage = findViewById(R.id.main_updateMessage);
+        updateLink = findViewById(R.id.main_updateLink);
+        (new Thread(this::checkUpdate)).start();
+
         getSupportActionBar().hide();
         goToLoginFrag();
     }
@@ -84,5 +91,17 @@ public class MainActivity extends AppCompatActivity {
                 .beginTransaction()
                 .add(R.id.frag, new OriginalFragment(originalXML))
                 .commit();
+    }
+
+    private void checkUpdate(){
+        UpdateChecker.checkUpdate(this, s -> {
+            if (s != null){
+                this.runOnUiThread(() -> {
+                    updateMessage.setText("최신버전이 아닙니다. 본 버전에 오류가 있을 수 있습니다. 다운로드 :");
+                    updateMessage.setTextColor(0xFFFF0000);
+                    updateLink.setText(s);
+                });
+            }
+        });
     }
 }

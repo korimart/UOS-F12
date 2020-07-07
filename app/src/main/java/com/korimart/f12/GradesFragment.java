@@ -53,8 +53,6 @@ public class GradesFragment extends Fragment {
     private LinearLayout courseNames;
     private LinearLayout letterGrades;
     private Switch pnpSwitch;
-    private TextView updateMessage;
-    private TextView updateLink;
 
     @Nullable
     @Override
@@ -77,8 +75,6 @@ public class GradesFragment extends Fragment {
         courseNames = view.findViewById(R.id.grades_courseNames);
         letterGrades = view.findViewById(R.id.grades_letterGrades);
         pnpSwitch = view.findViewById(R.id.grades_pnpSwitch);
-        updateMessage = view.findViewById(R.id.grades_updateMessage);
-        updateLink = view.findViewById(R.id.grades_updateLink);
 
         // pnpSwitch callback 등록 전에 먼저 기본값을 세팅해놔야 fetchGrades를 호출 안 함
         loadSettings();
@@ -94,19 +90,6 @@ public class GradesFragment extends Fragment {
         makeBuilder();
 
         (new Thread(this::fetchGrades)).start();
-        (new Thread(this::checkUpdate)).start();
-    }
-
-    private void checkUpdate(){
-        UpdateChecker.checkUpdate(getContext(), s -> {
-            if (s != null){
-                getActivity().runOnUiThread(() -> {
-                    updateMessage.setText("최신버전이 아닙니다. 본 버전에 오류가 있을 수 있습니다. 다운로드 :");
-                    updateMessage.setTextColor(0xFFFF0000);
-                    updateLink.setText(s);
-                });
-            }
-        });
     }
 
     private void loadSettings() {
