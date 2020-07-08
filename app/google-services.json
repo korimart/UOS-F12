@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "52009611059",
+    "firebase_url": "https://uos-f12.firebaseio.com",
+    "project_id": "uos-f12",
+    "storage_bucket": "uos-f12.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:52009611059:android:2a1837e2e9d1f40ca51846",
+        "android_client_info": {
+          "package_name": "com.korimart.f12"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "52009611059-jbmujqdnjo02oqjku02tovtnkiph4s27.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAEAPnJTrSH2CQPyoTvu1yrD2Pb21FUW0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "52009611059-jbmujqdnjo02oqjku02tovtnkiph4s27.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class ExampleUnitTest {
-    private GradesFragment frag = new GradesFragment();
+    private F12Fragment frag = new F12Fragment();
     private Document doc;
     private String totPntString;
     private String totalMarksString;
@@ -113,12 +113,12 @@ public class ExampleUnitTest {
     private void setUpMembers(String doc, boolean noPnp){
         frag.makeBuilder();
         this.doc = loadDocument(doc);
-        totPntString = GradesFragment.getContentByName(this.doc, "tot_pnt");
-        totalMarksString = GradesFragment.getContentByName(this.doc, "tot_mrks");
-        disclosedPntsString = GradesFragment.getContentByName(this.doc, "sum_pnt");
-        totalAvgString = GradesFragment.getContentByName(this.doc, "avg_mrks");
+        totPntString = F12Fragment.getContentByName(this.doc, "tot_pnt");
+        totalMarksString = F12Fragment.getContentByName(this.doc, "tot_mrks");
+        disclosedPntsString = F12Fragment.getContentByName(this.doc, "sum_pnt");
+        totalAvgString = F12Fragment.getContentByName(this.doc, "avg_mrks");
 
-        info = GradesFragment.getInfo(this.doc);
+        info = F12Fragment.getInfo(this.doc);
 
         disclosedMarksFloat = 0;
         disclosedPntsWithoutPnp = 0;
@@ -132,12 +132,12 @@ public class ExampleUnitTest {
         totalAvgFloat = Float.parseFloat(totalAvgString);
         disclosedPntsFloat = Float.parseFloat(disclosedPntsString);
 
-        hiddenPntsInt = GradesFragment.calculateHiddenPnts(totPntFloat, disclosedPntsFloat, info.nameOnlyCoursePnts);
+        hiddenPntsInt = F12Fragment.calculateHiddenPnts(totPntFloat, disclosedPntsFloat, info.nameOnlyCoursePnts);
 
         if (noPnp)
-            hiddenAvgFloat = GradesFragment.calculateHiddenAvgNoPnp(totalMarksFloat, disclosedMarksFloat, hiddenPntsInt);
+            hiddenAvgFloat = F12Fragment.calculateHiddenAvgNoPnp(totalMarksFloat, disclosedMarksFloat, hiddenPntsInt);
         else
-            hiddenAvgFloat = GradesFragment.calculateHiddenAvg(totPntFloat, totalMarksFloat,
+            hiddenAvgFloat = F12Fragment.calculateHiddenAvg(totPntFloat, totalMarksFloat,
                     totalAvgFloat, disclosedMarksFloat, disclosedPntsWithoutPnp);
     }
 

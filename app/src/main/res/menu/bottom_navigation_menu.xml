@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="F12"
+        android:id="@+id/bottomNav_F12"
+        android:icon="@android:drawable/ic_menu_my_calendar"
+        />
+    <item android:title="수업정보"
+        android:id="@+id/bottomNav_classes"
+        android:icon="@android:drawable/ic_menu_add"
+        />
+    <item android:title="도움말"
+        android:id="@+id/bottomNav_help"
+        android:icon="@android:drawable/ic_menu_help"
+        />
+</menu>

@@ -24,7 +24,8 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class LoginFragment extends Fragment {
-    private static String loginParams = "_COMMAND_=LOGIN&strTarget=MAIN&strIpAddr=123.123.123.123&strMacAddr=123.123.123.123&login_div_1_nm=%%C7%%D0%%BB%%FD&strLoginId=%s&strLoginPw=%s";
+    private static String loginParams = "_COMMAND_=LOGIN&strTarget=MAIN&strIpAddr=123.123.123.123" +
+            "&strMacAddr=123.123.123.123&login_div_1_nm=%%C7%%D0%%BB%%FD&strLoginId=%s&strLoginPw=%s";
     private static String loginURL = "https://wise.uos.ac.kr/uosdoc/com.StuLogin.serv";
     private String id;
     private String password;
@@ -46,6 +47,25 @@ public class LoginFragment extends Fragment {
         okButton = view.findViewById(R.id.login_okButton);
         systemMessage = view.findViewById(R.id.login_systemMessage);
 
+        setViewListeners();
+
+        File internalPath = getActivity().getFilesDir();
+        Path loginInfoPath = Paths.get(internalPath.getPath(), "loginInfo.txt");
+        if (loginInfoPath.toFile().isFile()){
+            try {
+                List<String> loginInfo = Files.readAllLines(loginInfoPath);
+                id = loginInfo.get(0);
+                password = loginInfo.get(1);
+            } catch (IOException ignore) {
+            }
+        }
+
+        if (id != null){
+            (new Thread(() -> tryLogin(true))).start();
+        }
+    }
+
+    private void setViewListeners() {
         idEdit.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus)
                 idEdit.setHint("");
@@ -69,21 +89,6 @@ public class LoginFragment extends Fragment {
             password = passwordEdit.getText().toString();
             (new Thread(() -> tryLogin(false))).start();
         });
-
-        File internalPath = getActivity().getFilesDir();
-        Path loginInfoPath = Paths.get(internalPath.getPath(), "loginInfo.txt");
-        if (loginInfoPath.toFile().isFile()){
-            try {
-                List<String> loginInfo = Files.readAllLines(loginInfoPath);
-                id = loginInfo.get(0);
-                password = loginInfo.get(1);
-            } catch (IOException ignore) {
-            }
-        }
-
-        if (id != null){
-            (new Thread(() -> tryLogin(true))).start();
-        }
     }
 
     private void tryLogin(boolean fromFile) {

@@ -1,52 +1,46 @@
 package com.korimart.f12;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
-import android.widget.TextView;
+import android.view.MenuItem;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.function.Consumer;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-public class MainActivity extends AppCompatActivity {
-    private GradesFragment gf;
+public class MainActivity extends AppCompatActivity
+        implements BottomNavigationView.OnNavigationItemSelectedListener {
+    private F12Fragment gf;
     private boolean isAddedFrag;
-    private TextView updateMessage;
-    private TextView updateLink;
+    private BottomNavigationView bottomNav;
+    private MainViewModel mainViewModel;
+    private F12ViewModel f12ViewModel;
+    private boolean firstFetch = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        updateMessage = findViewById(R.id.main_updateMessage);
-        updateLink = findViewById(R.id.main_updateLink);
-        (new Thread(this::checkUpdate)).start();
+        mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory())
+                .get(MainViewModel.class);
+        f12ViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory())
+                .get(F12ViewModel.class);
+        bottomNav = findViewById(R.id.main_bottomNav);
 
-        getSupportActionBar().hide();
+        setViewListeners();
+        mainViewModel.fetchNoPnp(this);
+        mainViewModel.fetchUpdateInfo(this);
         goToLoginFrag();
+    }
+
+    private void setViewListeners() {
+        mainViewModel.getUpdateLink().observe(this, s -> {
+            // TODO: add notification
+        });
+
+        bottomNav.setOnNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -62,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void goToGradesFrag() {
         if (gf == null){
-            gf = new GradesFragment();
+            gf = new F12Fragment(mainViewModel, f12ViewModel);
         }
 
         getSupportFragmentManager()
@@ -93,15 +87,32 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    private void checkUpdate(){
-        UpdateChecker.checkUpdate(this, s -> {
-            if (s != null){
-                this.runOnUiThread(() -> {
-                    updateMessage.setText("최신버전이 아닙니다. 본 버전에 오류가 있을 수 있습니다. 다운로드 :");
-                    updateMessage.setTextColor(0xFFFF0000);
-                    updateLink.setText(s);
-                });
-            }
-        });
+    public void goToHelpFrag() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frag, new HelpFragment(mainViewModel))
+                .commit();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.bottomNav_F12:
+                goToGradesFrag();
+                break;
+
+            case R.id.bottomNav_help:
+                goToHelpFrag();
+                break;
+        }
+        return true;
+    }
+
+    public boolean isFirstFetch() {
+        return firstFetch;
+    }
+
+    public void setFirstFetch(boolean firstFetch) {
+        this.firstFetch = firstFetch;
     }
 }
