@@ -13,6 +13,7 @@ public class F12ViewModel extends ViewModel {
     private MutableLiveData<Float> hiddenAvg = new MutableLiveData<>();
     private MutableLiveData<Float> totalAvg = new MutableLiveData<>();
     private MutableLiveData<DisclosedInfo> disclosedInfo = new MutableLiveData<>();
+    private MutableLiveData<String> message = new MutableLiveData<>();
 
     public void fetchF12(boolean noPnp, Runnable onSuccess, Consumer<F12Fetcher.ErrorInfo> onError, Runnable anyway){
         new Thread(() -> {
@@ -71,5 +72,9 @@ public class F12ViewModel extends ViewModel {
 
     public MutableLiveData<String> getStudentInfo() {
         return studentInfo;
+    }
+
+    public MutableLiveData<String> getMessage() {
+        return message;
     }
 }

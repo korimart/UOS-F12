@@ -1,6 +1,5 @@
 package com.korimart.f12;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import java.time.LocalDateTime;
 
 public class F12Fragment extends Fragment {
@@ -79,8 +77,9 @@ public class F12Fragment extends Fragment {
         pnpSwitch.setOnCheckedChangeListener((v, b) -> {
             f12ViewModel.recalculateHiddenAvg(pnpSwitch.isChecked());
             mainViewModel.getNoPnp().setValue(b);
-            mainViewModel.writeNoPnp(getActivity());
         });
+
+        f12ViewModel.getMessage().observe(this, (message) -> systemMessage.setText(message));
 
         f12ViewModel.getDisclosedInfo().observe(this, (info) -> {
             courseNames.removeAllViews();
@@ -127,11 +126,11 @@ public class F12Fragment extends Fragment {
     private void onSuccess(){
         getActivity().runOnUiThread(() -> {
             LocalDateTime dt = LocalDateTime.now();
-            systemMessage.setText(
-                    String.format("마지막 새로고침 : %d-%d-%d %d시 %d분 %d초",
-                            dt.getYear(), dt.getMonthValue(),
-                            dt.getDayOfMonth(), dt.getHour(),
-                            dt.getMinute(), dt.getSecond())
+            f12ViewModel.getMessage().setValue(
+                String.format("마지막 새로고침 : %d-%d-%d %d시 %d분 %d초",
+                        dt.getYear(), dt.getMonthValue(),
+                        dt.getDayOfMonth(), dt.getHour(),
+                        dt.getMinute(), dt.getSecond())
             );
         });
     }

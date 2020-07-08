@@ -35,6 +35,12 @@ public class MainActivity extends AppCompatActivity
         goToLoginFrag();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mainViewModel.writeNoPnp(this);
+    }
+
     private void setViewListeners() {
         mainViewModel.getUpdateLink().observe(this, s -> {
             // TODO: add notification
