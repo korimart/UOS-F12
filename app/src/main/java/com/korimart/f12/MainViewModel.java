@@ -38,14 +38,14 @@ public class MainViewModel extends ViewModel {
 
         String response;
         try {
-            response = WebService.sendGet(updateInfoURL, "UTF-8");
+            response = WebService.INSTANCE.sendGet(updateInfoURL, "UTF-8");
         } catch (Exception e) {
             return;
         }
 
         if (verCode < Integer.parseInt(response)){
             try {
-                String updateLink = WebService.sendGet(updateLinkURL, "UTF-8");
+                String updateLink = WebService.INSTANCE.sendGet(updateLinkURL, "UTF-8");
                 this.updateLink.postValue(updateLink);
             } catch (Exception e) {
             }

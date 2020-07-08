@@ -17,15 +17,17 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class WebService {
-    static final String COOKIES_HEADER = "Set-Cookie";
-    static final String COOKIE = "Cookie";
+public enum WebService {
+    INSTANCE;
 
-    static CookieManager msCookieManager = new CookieManager();
+    private final String COOKIES_HEADER = "Set-Cookie";
+    private final String COOKIE = "Cookie";
 
-    private static int responseCode;
+    private CookieManager msCookieManager = new CookieManager();
 
-    public static String sendPost(String requestURL, String urlParameters, String responseEncoding) {
+    private int responseCode;
+
+    public String sendPost(String requestURL, String urlParameters, String responseEncoding) {
 
         URL url;
         String response = "";
@@ -89,7 +91,7 @@ public class WebService {
 
 
     // HTTP GET request
-    public static String sendGet(String url, String responseEncoding) throws Exception {
+    public String sendGet(String url, String responseEncoding) throws Exception {
 
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -137,13 +139,13 @@ public class WebService {
         return response.toString();
     }
 
-    public static void setResponseCode(int responseCode) {
-        WebService.responseCode = responseCode;
+    public void setResponseCode(int responseCode) {
+        this.responseCode = responseCode;
         Log.i("Milad", "responseCode" + responseCode);
     }
 
 
-    public static int getResponseCode() {
+    public int getResponseCode() {
         return responseCode;
     }
 }

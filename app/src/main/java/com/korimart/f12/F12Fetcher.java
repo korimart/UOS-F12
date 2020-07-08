@@ -16,12 +16,14 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-public class F12Fetcher {
-    private static String f12URL = "https://wise.uos.ac.kr/uosdoc/ugd.UgdOtcmInq.do";
-    private static String smtParams = "_dept_authDept=auth&_code_smtList=CMN31&&_COMMAND_=onload&&_XML_=XML&_strMenuId=stud00320&";
-    private static String f12Params = "strSchYear=%d&strSmtCd=%s&strStudId=123123&strDiv=2&&_COMMAND_=list&&_XML_=XML&_strMenuId=stud00320&";
-    private static DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    private static DocumentBuilder builder;
+public enum F12Fetcher {
+    INSTANCE;
+
+    private final String f12URL = "https://wise.uos.ac.kr/uosdoc/ugd.UgdOtcmInq.do";
+    private final String smtParams = "_dept_authDept=auth&_code_smtList=CMN31&&_COMMAND_=onload&&_XML_=XML&_strMenuId=stud00320&";
+    private final String f12Params = "strSchYear=%d&strSmtCd=%s&strStudId=123123&strDiv=2&&_COMMAND_=list&&_XML_=XML&_strMenuId=stud00320&";
+    private final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    private DocumentBuilder builder;
 
     public static class ErrorInfo {
         public String errorType;
@@ -45,7 +47,7 @@ public class F12Fetcher {
         ErrorInfo errorInfo;
     }
 
-    public static Result fetchF12(boolean noPnp){
+    public Result fetchF12(boolean noPnp){
         Result result = new Result();
 
         try {
@@ -97,20 +99,20 @@ public class F12Fetcher {
         return result;
     }
 
-    public static float recalculateHiddenAvg(String f12Response, boolean noPnp){
+    public float recalculateHiddenAvg(String f12Response, boolean noPnp){
         F12Fetcher.Result result = new F12Fetcher.Result();
-        Document doc = F12Fetcher.getDocument(f12Response);
+        Document doc = getDocument(f12Response);
         if (doc == null) return 0f;
 
-        DisclosedInfo info = F12Fetcher.getInfo(doc);
+        DisclosedInfo info = getInfo(doc);
         if (info == null) return 0f;
 
-        F12Fetcher.parse(doc, info, noPnp, result);
+        parse(doc, info, noPnp, result);
         return result.hiddenAvg;
     }
 
-    private static String fetchInfoResponse() throws NetworkErrorException {
-        String infoResponse = WebService.sendPost(f12URL, smtParams, "euc-kr");
+    private String fetchInfoResponse() throws NetworkErrorException {
+        String infoResponse = WebService.INSTANCE.sendPost(f12URL, smtParams, "euc-kr");
 
         if (infoResponse.contains("세션타임")){
             throw new NetworkErrorException();
@@ -119,15 +121,15 @@ public class F12Fetcher {
         return infoResponse;
     }
 
-    private static String fetchF12Response(Document infoDoc){
+    private String fetchF12Response(Document infoDoc){
         String smtString = getContentByName(infoDoc, "strSmt");
         LocalDateTime dt = LocalDateTime.now();
         int year = getSchoolYear(dt);
 
-        return WebService.sendPost(f12URL, String.format(f12Params, year, smtString), "euc-kr");
+        return WebService.INSTANCE.sendPost(f12URL, String.format(f12Params, year, smtString), "euc-kr");
     }
 
-    private static void parse(Document f12Doc, DisclosedInfo info, boolean noPnp, Result result){
+    private void parse(Document f12Doc, DisclosedInfo info, boolean noPnp, Result result){
         float disclosedMarksFloat = 0;
         float disclosedPntsWithoutPnp = 0;
         for (DisclosedGrade dg : info.gradesForDisplay){
@@ -166,7 +168,7 @@ public class F12Fetcher {
         result.totalAvg = totalAvgFloat;
     }
 
-    private static Document getDocument(String xml){
+    private Document getDocument(String xml){
         StringBuilder xmlStringBuilder = new StringBuilder();
         xmlStringBuilder.append(xml);
         ByteArrayInputStream input = null;
@@ -195,7 +197,7 @@ public class F12Fetcher {
         return doc;
     }
 
-    private static String getContentByName(Document doc, String name){
+    private String getContentByName(Document doc, String name){
         NodeList nl = doc.getElementsByTagName(name);
         Node n = nl.item(0);
 
@@ -205,13 +207,13 @@ public class F12Fetcher {
         return nc.getNodeValue();
     }
 
-    private static int getSchoolYear(LocalDateTime dt) {
+    private int getSchoolYear(LocalDateTime dt) {
         int month = dt.getMonthValue();
         if (month < 5) return dt.getYear() - 1;
         return dt.getYear();
     }
 
-    private static DisclosedInfo getInfo(Document doc){
+    private DisclosedInfo getInfo(Document doc){
         DisclosedInfo ret = new DisclosedInfo();
         ret.gradesForDisplay = new ArrayList<>();
         NodeList points = doc.getElementsByTagName("pnt");
@@ -247,12 +249,12 @@ public class F12Fetcher {
         return ret;
     }
 
-    private static int calculateHiddenPnts(float totPntFloat, float disclosedPntsFloat, float nameOnlyCoursePnts){
+    private int calculateHiddenPnts(float totPntFloat, float disclosedPntsFloat, float nameOnlyCoursePnts){
         return (int) (totPntFloat - disclosedPntsFloat + nameOnlyCoursePnts);
     }
 
     // returns to 1 decimal place
-    private static float calculateHiddenAvg(float totalPntsWithPnp, float totalMarksFloat, float totalAvgFloat,
+    private float calculateHiddenAvg(float totalPntsWithPnp, float totalMarksFloat, float totalAvgFloat,
                                            float disclosedMarksFloat, float disclosedPntsWithoutPnp) {
         // pass non-pass
         float pnpPntFloat = totalPntsWithPnp - totalMarksFloat / totalAvgFloat;
@@ -262,7 +264,7 @@ public class F12Fetcher {
         return Math.round(ret * 10f) / 10f;
     }
 
-    private static float calculateHiddenAvgNoPnp(float totalMarksFloat, float disclosedMarksFloat, int hiddenPntsInt){
+    private float calculateHiddenAvgNoPnp(float totalMarksFloat, float disclosedMarksFloat, int hiddenPntsInt){
         return (totalMarksFloat - disclosedMarksFloat) / hiddenPntsInt;
     }
 }

@@ -17,7 +17,7 @@ public class F12ViewModel extends ViewModel {
 
     public void fetchF12(boolean noPnp, Runnable onSuccess, Consumer<F12Fetcher.ErrorInfo> onError, Runnable anyway){
         new Thread(() -> {
-            F12Fetcher.Result result = F12Fetcher.fetchF12(noPnp);
+            F12Fetcher.Result result = F12Fetcher.INSTANCE.fetchF12(noPnp);
 
             studentInfo.postValue(result.studentInfo);
             infoResponse.postValue(result.infoResponse);
@@ -38,7 +38,7 @@ public class F12ViewModel extends ViewModel {
     }
 
     public void recalculateHiddenAvg(boolean noPnp){
-        float hiddenAvgF = F12Fetcher.recalculateHiddenAvg(f12Response.getValue(), noPnp);
+        float hiddenAvgF = F12Fetcher.INSTANCE.recalculateHiddenAvg(f12Response.getValue(), noPnp);
         hiddenAvg.postValue(hiddenAvgF);
     }
 
