@@ -65,7 +65,10 @@ public class F12Fragment extends Fragment {
     }
 
     private void setViewListeners() {
-        originalButton.setOnClickListener((v) -> ((MainActivity) getActivity()).goToOriginalXMLFrag());
+        originalButton.setOnClickListener((v) -> {
+            MainActivity ma = (MainActivity) getActivity();
+            ma.goToOriginalXMLFrag(() -> ma.goToF12Frag());
+        });
 
         refreshButton.setOnClickListener((v) -> {
             refreshButton.setEnabled(false);
