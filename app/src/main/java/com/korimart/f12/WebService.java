@@ -1,7 +1,6 @@
 package com.korimart.f12;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -141,9 +140,7 @@ public enum WebService {
 
     public void setResponseCode(int responseCode) {
         this.responseCode = responseCode;
-        Log.i("Milad", "responseCode" + responseCode);
     }
-
 
     public int getResponseCode() {
         return responseCode;

@@ -19,11 +19,12 @@ import javax.xml.parsers.ParserConfigurationException;
 public enum F12Fetcher {
     INSTANCE;
 
-    private final String f12URL = "https://wise.uos.ac.kr/uosdoc/ugd.UgdOtcmInq.do";
-    private final String smtParams = "_dept_authDept=auth&_code_smtList=CMN31&&_COMMAND_=onload&&_XML_=XML&_strMenuId=stud00320&";
-    private final String f12Params = "strSchYear=%d&strSmtCd=%s&strStudId=123123&strDiv=2&&_COMMAND_=list&&_XML_=XML&_strMenuId=stud00320&";
+    public static final String f12URL = "https://wise.uos.ac.kr/uosdoc/ugd.UgdOtcmInq.do";
+    public static final String smtParams = "_dept_authDept=auth&_code_smtList=CMN31&&_COMMAND_=onload&&_XML_=XML&_strMenuId=stud00320&";
+    public static final String f12Params = "strSchYear=%d&strSmtCd=%s&strStudId=123123&strDiv=2&&_COMMAND_=list&&_XML_=XML&_strMenuId=stud00320&";
     private final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     private DocumentBuilder builder;
+    private WebService webService = WebService.INSTANCE;
 
     public static class ErrorInfo {
         public String errorType;
@@ -112,7 +113,7 @@ public enum F12Fetcher {
     }
 
     private String fetchInfoResponse() throws NetworkErrorException {
-        String infoResponse = WebService.INSTANCE.sendPost(f12URL, smtParams, "euc-kr");
+        String infoResponse = webService.sendPost(f12URL, smtParams, "euc-kr");
 
         if (infoResponse.contains("세션타임")){
             throw new NetworkErrorException();
@@ -126,7 +127,7 @@ public enum F12Fetcher {
         LocalDateTime dt = LocalDateTime.now();
         int year = getSchoolYear(dt);
 
-        return WebService.INSTANCE.sendPost(f12URL, String.format(f12Params, year, smtString), "euc-kr");
+        return webService.sendPost(f12URL, String.format(f12Params, year, smtString), "euc-kr");
     }
 
     private void parse(Document f12Doc, DisclosedInfo info, boolean noPnp, Result result){
