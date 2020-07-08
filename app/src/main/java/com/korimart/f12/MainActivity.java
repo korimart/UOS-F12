@@ -85,11 +85,11 @@ public class MainActivity extends AppCompatActivity
                 .commit();
     }
 
-    public void goToOriginalXMLFrag(String originalXML) {
+    public void goToOriginalXMLFrag() {
         isAddedFrag = true;
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.frag, new OriginalFragment(originalXML))
+                .add(R.id.frag, new OriginalFragment(f12ViewModel))
                 .commit();
     }
 

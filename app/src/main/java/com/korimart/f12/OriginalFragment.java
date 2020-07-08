@@ -22,10 +22,10 @@ import javax.xml.transform.stream.StreamSource;
 
 public class OriginalFragment extends Fragment {
     private TextView text;
-    private String originalXML;
+    private F12ViewModel f12ViewModel;
 
-    public OriginalFragment(String originalXML){
-        this.originalXML = originalXML;
+    public OriginalFragment(F12ViewModel f12ViewModel){
+        this.f12ViewModel = f12ViewModel;
     }
 
     @Nullable
@@ -38,7 +38,7 @@ public class OriginalFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         text = view.findViewById(R.id.original_text);
-        text.setText(prettyFormat(originalXML));
+        text.setText(prettyFormat(f12ViewModel.getF12Response().getValue()));
     }
 
     // from

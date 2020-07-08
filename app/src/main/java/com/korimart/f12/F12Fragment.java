@@ -65,6 +65,8 @@ public class F12Fragment extends Fragment {
     }
 
     private void setViewListeners() {
+        originalButton.setOnClickListener((v) -> ((MainActivity) getActivity()).goToOriginalXMLFrag());
+
         refreshButton.setOnClickListener((v) -> {
             refreshButton.setEnabled(false);
             systemMessage.setTextColor(0xFF000000);
