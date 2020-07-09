@@ -1,5 +1,6 @@
 package com.korimart.f12;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,10 @@ public class F12Fragment extends Fragment {
     private Button originalButton;
     private LinearLayout courseNames;
     private LinearLayout letterGrades;
+    private LinearLayout points;
     private Switch pnpSwitch;
+    private Switch hideCourse;
+    private Switch hideStudent;
 
     public F12Fragment(MainViewModel mainViewModel, F12ViewModel f12ViewModel){
         this.mainViewModel = mainViewModel;
@@ -44,17 +48,20 @@ public class F12Fragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        loginInfo = view.findViewById(R.id.grades_strMyShreg);
-        totPnt = view.findViewById(R.id.grades_tot_pnt);
-        hiddenPnts = view.findViewById(R.id.grades_hiddenPnts);
-        hiddenAvg = view.findViewById(R.id.grades_hiddenAvg);
-        totalAvg = view.findViewById(R.id.grades_avg_mrks);
-        systemMessage = view.findViewById(R.id.grades_systemMessage);
-        refreshButton = view.findViewById(R.id.grades_refreshButton);
-        originalButton = view.findViewById(R.id.grades_showOriginal);
-        courseNames = view.findViewById(R.id.grades_courseNames);
-        letterGrades = view.findViewById(R.id.grades_letterGrades);
-        pnpSwitch = view.findViewById(R.id.grades_pnpSwitch);
+        loginInfo = view.findViewById(R.id.f12_strMyShreg);
+        totPnt = view.findViewById(R.id.f12_totalPnts);
+        hiddenPnts = view.findViewById(R.id.f12_hiddenPnts);
+        hiddenAvg = view.findViewById(R.id.f12_hiddenAvg);
+        totalAvg = view.findViewById(R.id.f12_totalAvg);
+        systemMessage = view.findViewById(R.id.f12_systemMessage);
+        refreshButton = view.findViewById(R.id.f12_refreshButton);
+        originalButton = view.findViewById(R.id.f12_showOriginal);
+        courseNames = view.findViewById(R.id.f12_courseNames);
+        letterGrades = view.findViewById(R.id.f12_letterGrades);
+        points = view.findViewById(R.id.f12_points);
+        pnpSwitch = view.findViewById(R.id.f12_pnpSwitch);
+        hideCourse = view.findViewById(R.id.f12_hideCourse);
+        hideStudent = view.findViewById(R.id.f12_hideStudent);
 
         setViewListeners();
 
@@ -84,13 +91,27 @@ public class F12Fragment extends Fragment {
             mainViewModel.getNoPnp().setValue(b);
         });
 
+        f12ViewModel.getHideCourse().observe(this, (b) -> hideCourse.setChecked(b));
+        hideCourse.setOnCheckedChangeListener((v, b) ->
+                courseNames.setVisibility(b ? View.INVISIBLE : View.VISIBLE));
+
+        f12ViewModel.getHideStudent().observe(this, (b) -> hideStudent.setChecked(b));
+        hideStudent.setOnCheckedChangeListener((v, b) ->
+                loginInfo.setVisibility(b ? View.INVISIBLE : View.VISIBLE));
+
         f12ViewModel.getMessage().observe(this, (message) -> systemMessage.setText(message));
 
         f12ViewModel.getDisclosedInfo().observe(this, (info) -> {
-            courseNames.removeAllViews();
-            letterGrades.removeAllViews();
+            // 2 = 1 (description) + 1 (space)
+            courseNames.removeViews(2, courseNames.getChildCount() - 2);
+            letterGrades.removeViews(2, letterGrades.getChildCount() - 2);
+            points.removeViews(2, points.getChildCount() - 2);
 
             if (info == null) return;
+
+            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
 
             for (DisclosedGrade dg : info.gradesForDisplay){
                 TextView courseName = new TextView(getContext());
@@ -100,8 +121,13 @@ public class F12Fragment extends Fragment {
 
                 TextView letterGrade = new TextView(getContext());
                 letterGrade.setText(dg.letterGrade);
-                letterGrade.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+                letterGrade.setLayoutParams(lp);
                 letterGrades.addView(letterGrade);
+
+                TextView point = new TextView(getContext());
+                point.setText(String.valueOf((int) dg.points));
+                point.setLayoutParams(lp);
+                points.addView(point);
             }
         });
 

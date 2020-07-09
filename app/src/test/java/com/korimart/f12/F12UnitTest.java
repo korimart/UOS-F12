@@ -43,8 +43,8 @@ public class F12UnitTest {
         F12Fetcher.Result result = f12Fetcher.fetchF12(true);
         assertEquals(9, result.totalPnts);
         assertEquals(3, result.hiddenPnts);
-        assertTrue(Math.abs(result.hiddenAvg - 4) < 0.00001);
-        assertTrue(Math.abs(4.33 - result.totalAvg) < 0.01);
+        assertEquals(4f, result.hiddenAvg, 0.00001);
+        assertEquals(4.33f, result.totalAvg, 0.01);
     }
 
     @Test
@@ -53,8 +53,8 @@ public class F12UnitTest {
         F12Fetcher.Result result = f12Fetcher.fetchF12(true);
         assertEquals(6, result.totalPnts);
         assertEquals(3, result.hiddenPnts);
-        assertTrue(Math.abs(result.hiddenAvg - 4) < 0.00001);
-        assertTrue(Math.abs(4.25 - result.totalAvg) < 0.01);
+        assertEquals(4f, result.hiddenAvg, 0.00001);
+        assertEquals(4.25f, result.totalAvg, 0.01);
     }
 
     @Test
@@ -66,8 +66,8 @@ public class F12UnitTest {
         F12Fetcher.Result result = f12Fetcher.fetchF12(false);
         assertEquals(7, result.totalPnts);
         assertEquals(2, result.hiddenPnts);
-        assertTrue(Math.abs(result.hiddenAvg - 4) < 0.00001);
-        assertTrue(Math.abs(4.21 - result.totalAvg) < 0.01);
+        assertEquals(4f, result.hiddenAvg, 0.00001);
+        assertEquals(4.21f, result.totalAvg, 0.01);
     }
 
     @Test
@@ -79,8 +79,8 @@ public class F12UnitTest {
         F12Fetcher.Result result = f12Fetcher.fetchF12(false);
         assertEquals(11, result.totalPnts);
         assertEquals(5, result.hiddenPnts);
-        assertTrue(Math.abs(result.hiddenAvg - 4.1) < 0.00001);
-        assertTrue(Math.abs(3.88 - result.totalAvg) < 0.01);
+        assertEquals(4.1f, result.hiddenAvg, 0.00001);
+        assertEquals(3.88f, result.totalAvg, 0.01);
     }
 
     @Test
@@ -89,8 +89,8 @@ public class F12UnitTest {
         F12Fetcher.Result result = f12Fetcher.fetchF12(false);
         assertEquals(6, result.totalPnts);
         assertEquals(3, result.hiddenPnts);
-        assertTrue(Math.abs(result.hiddenAvg - 4) < 0.00001);
-        assertTrue(Math.abs(4.25 - result.totalAvg) < 0.01);
+        assertEquals(4f, result.hiddenAvg, 0.00001);
+        assertEquals(4.25f, result.totalAvg, 0.01);
     }
 
     @Test
@@ -99,8 +99,8 @@ public class F12UnitTest {
         F12Fetcher.Result result = f12Fetcher.fetchF12(false);
         assertEquals(9, result.totalPnts);
         assertEquals(3, result.hiddenPnts);
-        assertTrue(Math.abs(result.hiddenAvg - 4) < 0.00001);
-        assertTrue(Math.abs(4.33 - result.totalAvg) < 0.01);
+        assertEquals(4f, result.hiddenAvg, 0.00001);
+        assertEquals(4.33f, result.totalAvg, 0.01);
     }
 
     @Test
@@ -109,8 +109,8 @@ public class F12UnitTest {
         F12Fetcher.Result result = f12Fetcher.fetchF12(false);
         assertEquals(9, result.totalPnts);
         assertEquals(3, result.hiddenPnts);
-        assertTrue(Math.abs(result.hiddenAvg - 4) < 0.00001);
-        assertTrue(Math.abs(4.25 - result.totalAvg) < 0.01);
+        assertEquals(4f, result.hiddenAvg, 0.0001f);
+        assertEquals(4.25f, result.totalAvg, 0.01f);
     }
 
     @Test
@@ -119,8 +119,8 @@ public class F12UnitTest {
         F12Fetcher.Result result = f12Fetcher.fetchF12(false);
         assertEquals(12, result.totalPnts);
         assertEquals(6, result.hiddenPnts);
-        assertTrue(Math.abs(result.hiddenAvg - 4) < 0.00001);
-        assertTrue(Math.abs(4.33 - result.totalAvg) < 0.01);
+        assertEquals(4f, result.hiddenAvg, 0.00001);
+        assertEquals(4.33f, result.totalAvg, 0.01);
     }
 
     private String loadDocument(String doc){

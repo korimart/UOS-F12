@@ -135,7 +135,7 @@ public enum F12Fetcher {
         float disclosedPntsWithoutPnp = 0;
         for (DisclosedGrade dg : info.gradesForDisplay){
             disclosedMarksFloat += dg.getMarks();
-            disclosedPntsWithoutPnp += dg.points;
+            disclosedPntsWithoutPnp += dg.isPnp ? 0f : dg.points;
         }
 
         String totPntString = getContentByName(f12Doc, "tot_pnt");
@@ -227,6 +227,7 @@ public enum F12Fetcher {
         for (int i = 0; i < points.getLength(); i++){
             DisclosedGrade dg = new DisclosedGrade();
             dg.course = courses.item(i).getFirstChild().getNodeValue().trim();
+            dg.points = Float.parseFloat(points.item(i).getFirstChild().getNodeValue());
             Node letterGradeNode = letterGrades.item(i).getFirstChild();
             // 과목명만 보이게 해놓고 성적 입력 안 해놓은 경우 ㅋㅋ
             if (letterGradeNode == null){
@@ -235,13 +236,12 @@ public enum F12Fetcher {
             }
 
             dg.letterGrade = letterGradeNode.getNodeValue().trim();
-            if (dg.letterGrade.equals("S") || dg.letterGrade.equals("NS")){
+            if (dg.letterGrade.equals("S") || dg.letterGrade.equals("U")){
                 dg.grade = 0;
-                dg.points = 0;
+                dg.isPnp = true;
             }
             else {
                 dg.grade = Float.parseFloat(grades.item(i).getFirstChild().getNodeValue());
-                dg.points = Float.parseFloat(points.item(i).getFirstChild().getNodeValue());
             }
 
             ret.gradesForDisplay.add(dg);
@@ -275,6 +275,7 @@ class DisclosedGrade {
     public String letterGrade;
     public float points;
     public float grade;
+    public boolean isPnp;
 
     public float getMarks(){
         return points * grade;
