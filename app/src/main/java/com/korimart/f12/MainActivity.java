@@ -115,6 +115,13 @@ public class MainActivity extends AppCompatActivity
                 .commit();
     }
 
+    public void goToCoursesFrag(){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frag, new CoursesFragment())
+                .commit();
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         fragStack.clear();
@@ -126,6 +133,10 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.bottomNav_help:
                 goToHelpFrag();
+                break;
+
+            case R.id.bottomNav_courses:
+                goToCoursesFrag();
                 break;
         }
         return true;
