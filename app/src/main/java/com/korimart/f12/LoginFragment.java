@@ -53,8 +53,10 @@ public class LoginFragment extends Fragment {
         if (loginInfoPath.toFile().isFile()){
             try {
                 List<String> loginInfo = Files.readAllLines(loginInfoPath);
-                id = loginInfo.get(0);
-                password = loginInfo.get(1);
+                if (loginInfo.size() >= 2){
+                    id = loginInfo.get(0);
+                    password = loginInfo.get(1);
+                }
             } catch (IOException ignore) {
             }
         }
