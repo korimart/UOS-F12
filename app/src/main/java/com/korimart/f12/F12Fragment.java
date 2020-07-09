@@ -1,6 +1,8 @@
 package com.korimart.f12;
 
 import android.app.ActionBar;
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
 import java.time.LocalDateTime;
 
 public class F12Fragment extends Fragment {
@@ -33,11 +37,6 @@ public class F12Fragment extends Fragment {
     private Switch hideCourse;
     private Switch hideStudent;
 
-    public F12Fragment(MainViewModel mainViewModel, F12ViewModel f12ViewModel){
-        this.mainViewModel = mainViewModel;
-        this.f12ViewModel = f12ViewModel;
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,6 +46,10 @@ public class F12Fragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        ViewModelProvider vmp = new ViewModelProvider(getActivity(), new ViewModelProvider.NewInstanceFactory());
+        mainViewModel = vmp.get(MainViewModel.class);
+        f12ViewModel = vmp.get(F12ViewModel.class);
 
         loginInfo = view.findViewById(R.id.f12_strMyShreg);
         totPnt = view.findViewById(R.id.f12_totalPnts);

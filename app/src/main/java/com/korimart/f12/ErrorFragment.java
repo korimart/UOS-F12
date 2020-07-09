@@ -14,10 +14,6 @@ public class ErrorFragment extends Fragment {
     private TextView text;
     private String errorString;
 
-    public ErrorFragment(String errorString) {
-        this.errorString = errorString;
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -27,6 +23,7 @@ public class ErrorFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        errorString = getArguments().getString("errorString");
         text = view.findViewById(R.id.error_text);
         text.setText(errorString);
     }

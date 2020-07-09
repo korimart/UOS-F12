@@ -63,7 +63,6 @@ public class MainViewModel extends ViewModel {
             }
         }
         else {
-            noPnp.postValue(false);
             writeNoPnp(context);
         }
     }
@@ -72,7 +71,11 @@ public class MainViewModel extends ViewModel {
         try {
             OutputStreamWriter osw = new OutputStreamWriter(
                     context.openFileOutput("settings.txt", Context.MODE_PRIVATE));
-            String setting = noPnp.getValue() ? "noPnp\n" : "pnp\n";
+            Boolean noPnpVal = noPnp.getValue();
+            boolean noPnpPrim = false;
+            if (noPnpVal != null) noPnpPrim = noPnpVal;
+
+            String setting = noPnpPrim ? "noPnp\n" : "pnp\n";
             osw.write(setting);
             osw.flush();
             osw.close();

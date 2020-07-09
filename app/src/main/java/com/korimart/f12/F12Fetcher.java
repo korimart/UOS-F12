@@ -89,7 +89,7 @@ public enum F12Fetcher {
         } catch (Exception e){
             StackTraceElement[] stes = e.getStackTrace();
             StringBuilder sb = new StringBuilder();
-            sb.append(e.toString());
+            sb.append(e.toString() + "\n");
             for (StackTraceElement ste : stes) {
                 sb.append(ste.toString());
                 sb.append('\n');

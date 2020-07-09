@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -24,10 +25,6 @@ public class OriginalFragment extends Fragment {
     private TextView text;
     private F12ViewModel f12ViewModel;
 
-    public OriginalFragment(F12ViewModel f12ViewModel){
-        this.f12ViewModel = f12ViewModel;
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,6 +34,8 @@ public class OriginalFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ViewModelProvider vmp = new ViewModelProvider(getActivity(), new ViewModelProvider.NewInstanceFactory());
+        f12ViewModel = vmp.get(F12ViewModel.class);
         text = view.findViewById(R.id.original_text);
         text.setText(prettyFormat(f12ViewModel.getF12Response().getValue()));
     }

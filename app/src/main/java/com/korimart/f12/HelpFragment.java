@@ -11,16 +11,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 public class HelpFragment extends Fragment {
     private MainViewModel mainViewModel;
     private TextView version;
     private TextView updateMessage;
     private TextView updateLink;
-
-    public HelpFragment(MainViewModel mainViewModel){
-        this.mainViewModel = mainViewModel;
-    }
 
     @Nullable
     @Override
@@ -31,6 +28,9 @@ public class HelpFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        ViewModelProvider vmp = new ViewModelProvider(getActivity(), new ViewModelProvider.NewInstanceFactory());
+        mainViewModel = vmp.get(MainViewModel.class);
 
         version = view.findViewById(R.id.help_version);
         updateMessage = view.findViewById(R.id.help_updateMessage);

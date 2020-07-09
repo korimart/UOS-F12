@@ -32,9 +32,16 @@ public class MainActivity extends AppCompatActivity
         bottomNav = findViewById(R.id.main_bottomNav);
 
         setViewListeners();
+
+        if (savedInstanceState == null)
+            goToLoginFrag();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         mainViewModel.fetchNoPnp(this);
         mainViewModel.fetchUpdateInfo(this);
-        goToLoginFrag();
     }
 
     @Override
@@ -64,7 +71,7 @@ public class MainActivity extends AppCompatActivity
 
     public void goToF12Frag() {
         if (gf == null){
-            gf = new F12Fragment(mainViewModel, f12ViewModel);
+            gf = new F12Fragment();
         }
 
         getSupportFragmentManager()
@@ -75,9 +82,14 @@ public class MainActivity extends AppCompatActivity
 
     public void goToErrorFrag(String errorString) {
         fragStack.clear();
+        ErrorFragment ef = new ErrorFragment();
+        Bundle args = new Bundle();
+        args.putString("errorString", errorString);
+        ef.setArguments(args);
+
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frag, new ErrorFragment(errorString))
+                .replace(R.id.frag, ef)
                 .commit();
     }
 
@@ -92,14 +104,14 @@ public class MainActivity extends AppCompatActivity
         fragStack.add(howToGoBack);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frag, new OriginalFragment(f12ViewModel))
+                .replace(R.id.frag, new OriginalFragment())
                 .commit();
     }
 
     public void goToHelpFrag() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frag, new HelpFragment(mainViewModel))
+                .replace(R.id.frag, new HelpFragment())
                 .commit();
     }
 
