@@ -55,12 +55,6 @@ public enum F12Fetcher {
                 return result;
             }
 
-            result.studentInfo = xmlHelper.getContentByName(f12Doc, "strMyShreg");
-            if (result.studentInfo == null){
-                result.errorInfo = new ErrorInfo("noStudentInfo", null);
-                return result;
-            }
-
             parse(f12Doc, noPnp, result);
             if (result.errorInfo != null){
                 return result;
@@ -110,6 +104,12 @@ public enum F12Fetcher {
     }
 
     public void parse(Document f12Doc, boolean noPnp, Result result){
+        result.studentInfo = xmlHelper.getContentByName(f12Doc, "strMyShreg");
+        if (result.studentInfo == null){
+            result.errorInfo = new ErrorInfo("noStudentInfo", null);
+            return;
+        }
+
         result.disclosedInfo = getInfo(f12Doc);
         if (result.disclosedInfo == null){
             result.errorInfo = new ErrorInfo("noDisclosedInfo", null);

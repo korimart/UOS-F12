@@ -1,9 +1,9 @@
 package com.korimart.f12;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
@@ -54,6 +54,24 @@ public enum XMLHelper {
         if (n == null) return null;
 
         Node nc = n.getFirstChild();
-        return nc.getNodeValue();
+        return nc.getTextContent();
+    }
+
+    public String getContentByName(Element e, String name){
+        NodeList nl = e.getElementsByTagName(name);
+        Node n = nl.item(0);
+
+        if (n == null) return null;
+
+        Node nc = n.getFirstChild();
+        return nc.getTextContent();
+    }
+
+    public Element getElementByName(Element root, String name){
+        return (Element) root.getElementsByTagName(name).item(0);
+    }
+
+    public Element getElementByName(Document root, String name){
+        return (Element) root.getElementsByTagName(name).item(0);
     }
 }

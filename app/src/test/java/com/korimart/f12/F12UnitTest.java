@@ -7,11 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.file.Paths;
-
 import static com.korimart.f12.F12Fetcher.f12Params;
 import static com.korimart.f12.F12Fetcher.f12URL;
 import static com.korimart.f12.F12Fetcher.smtParams;
