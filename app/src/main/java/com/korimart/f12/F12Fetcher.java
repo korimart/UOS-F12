@@ -6,15 +6,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.io.ByteArrayInputStream;
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 public enum F12Fetcher {
     INSTANCE;
@@ -22,9 +16,8 @@ public enum F12Fetcher {
     public static final String f12URL = "https://wise.uos.ac.kr/uosdoc/ugd.UgdOtcmInq.do";
     public static final String smtParams = "_dept_authDept=auth&_code_smtList=CMN31&&_COMMAND_=onload&&_XML_=XML&_strMenuId=stud00320&";
     public static final String f12Params = "strSchYear=%d&strSmtCd=%s&strStudId=123123&strDiv=2&&_COMMAND_=list&&_XML_=XML&_strMenuId=stud00320&";
-    private final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    private DocumentBuilder builder;
     private WebService webService = WebService.INSTANCE;
+    private XMLHelper xmlHelper = XMLHelper.INSTANCE;
 
     public static class ErrorInfo {
         public String errorType;
@@ -59,20 +52,20 @@ public enum F12Fetcher {
                 return result;
             }
 
-            Document infoDoc = getDocument(result.infoResponse);
+            Document infoDoc = xmlHelper.getDocument(result.infoResponse);
             if (infoDoc == null){
                 result.errorInfo = new ErrorInfo("infoResponseFailed", null);
                 return result;
             }
 
             result.f12Response = fetchF12Response(infoDoc);
-            Document f12Doc = getDocument(result.f12Response);
+            Document f12Doc = xmlHelper.getDocument(result.f12Response);
             if (f12Doc == null){
                 result.errorInfo = new ErrorInfo("f12ResponseFailed", null);
                 return result;
             }
 
-            result.studentInfo = getContentByName(f12Doc, "strMyShreg");
+            result.studentInfo = xmlHelper.getContentByName(f12Doc, "strMyShreg");
             if (result.studentInfo == null){
                 result.errorInfo = new ErrorInfo("noStudentInfo", null);
                 return result;
@@ -102,7 +95,7 @@ public enum F12Fetcher {
 
     public float recalculateHiddenAvg(String f12Response, boolean noPnp){
         F12Fetcher.Result result = new F12Fetcher.Result();
-        Document doc = getDocument(f12Response);
+        Document doc = xmlHelper.getDocument(f12Response);
         if (doc == null) return 0f;
 
         DisclosedInfo info = getInfo(doc);
@@ -123,7 +116,7 @@ public enum F12Fetcher {
     }
 
     private String fetchF12Response(Document infoDoc){
-        String smtString = getContentByName(infoDoc, "strSmt");
+        String smtString = xmlHelper.getContentByName(infoDoc, "strSmt");
         LocalDateTime dt = LocalDateTime.now();
         int year = getSchoolYear(dt);
 
@@ -138,10 +131,10 @@ public enum F12Fetcher {
             disclosedPntsWithoutPnp += dg.isPnp ? 0f : dg.points;
         }
 
-        String totPntString = getContentByName(f12Doc, "tot_pnt");
-        String totalMarksString = getContentByName(f12Doc, "tot_mrks");
-        String disclosedPntsString = getContentByName(f12Doc, "sum_pnt");
-        String totalAvgString = getContentByName(f12Doc, "avg_mrks");
+        String totPntString = xmlHelper.getContentByName(f12Doc, "tot_pnt");
+        String totalMarksString = xmlHelper.getContentByName(f12Doc, "tot_mrks");
+        String disclosedPntsString = xmlHelper.getContentByName(f12Doc, "sum_pnt");
+        String totalAvgString = xmlHelper.getContentByName(f12Doc, "avg_mrks");
 
         float totPntFloat = Float.parseFloat(totPntString);
         float totalMarksFloat = Float.parseFloat(totalMarksString);
@@ -167,45 +160,6 @@ public enum F12Fetcher {
         result.hiddenPnts = hiddenPntsInt;
         result.hiddenAvg = hiddenAvgFloat;
         result.totalAvg = totalAvgFloat;
-    }
-
-    private Document getDocument(String xml){
-        StringBuilder xmlStringBuilder = new StringBuilder();
-        xmlStringBuilder.append(xml);
-        ByteArrayInputStream input = null;
-
-        try {
-            input = new ByteArrayInputStream(xmlStringBuilder.toString().getBytes("euc-kr"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        Document doc = null;
-
-        if (builder == null){
-            try {
-                builder = factory.newDocumentBuilder();
-            } catch (ParserConfigurationException ignore) {
-            }
-        }
-
-        try {
-            doc = builder.parse(input);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return doc;
-    }
-
-    private String getContentByName(Document doc, String name){
-        NodeList nl = doc.getElementsByTagName(name);
-        Node n = nl.item(0);
-
-        if (n == null) return null;
-
-        Node nc = n.getFirstChild();
-        return nc.getNodeValue();
     }
 
     private int getSchoolYear(LocalDateTime dt) {
