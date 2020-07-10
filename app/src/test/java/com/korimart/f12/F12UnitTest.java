@@ -30,7 +30,7 @@ public class F12UnitTest {
 
     @Before
     public void setup(){
-        String infoResponse = testHelper.loadDocument("my info response", "euc-kr");
+        String infoResponse = testHelper.loadDocument("myInfoResponse.xml", "euc-kr");
         when(webService.sendPost(f12URL, smtParams, "euc-kr")).thenReturn(infoResponse);
     }
 
@@ -41,7 +41,7 @@ public class F12UnitTest {
 
     @Test
     public void mineDoc() {
-        mockResponse("mine doc");
+        mockResponse("mineDoc.xml");
         F12Fetcher.Result result = f12Fetcher.fetch(true);
         assertEquals(9, result.totalPnts);
         assertEquals(3, result.hiddenPnts);
@@ -51,7 +51,7 @@ public class F12UnitTest {
 
     @Test
     public void nameOnlyDoc(){
-        mockResponse("Name only doc");
+        mockResponse("nameOnlyDoc.xml");
         F12Fetcher.Result result = f12Fetcher.fetch(true);
         assertEquals(6, result.totalPnts);
         assertEquals(3, result.hiddenPnts);
@@ -64,7 +64,7 @@ public class F12UnitTest {
         // 과목명만 공개된 것이 한 과목
         // 0학점 패논패가 한 과목
         // 2학점짜리 과목 하나가 숨겨져 있는 상황
-        mockResponse("park doc");
+        mockResponse("parkDoc.xml");
         F12Fetcher.Result result = f12Fetcher.fetch(false);
         assertEquals(7, result.totalPnts);
         assertEquals(2, result.hiddenPnts);
@@ -77,7 +77,7 @@ public class F12UnitTest {
         // 3학점짜리 패논패가 한 과목과
         // 3학점짜리 B+가 공개되어 있고
         // 2학점짜리 B+, 3학점짜리 A+가 숨어있는 상황
-        mockResponse("dot doc");
+        mockResponse("dotDoc.xml");
         F12Fetcher.Result result = f12Fetcher.fetch(false);
         assertEquals(11, result.totalPnts);
         assertEquals(5, result.hiddenPnts);
@@ -87,7 +87,7 @@ public class F12UnitTest {
 
     @Test
     public void S0pntsDoc(){
-        mockResponse("S 0 pnts doc");
+        mockResponse("S0PntsDoc.xml");
         F12Fetcher.Result result = f12Fetcher.fetch(false);
         assertEquals(6, result.totalPnts);
         assertEquals(3, result.hiddenPnts);
@@ -97,7 +97,7 @@ public class F12UnitTest {
 
     @Test
     public void S0pntsHiddenDoc(){
-        mockResponse("S 0 pnts hidden doc");
+        mockResponse("S0PntsHiddenDoc.xml");
         F12Fetcher.Result result = f12Fetcher.fetch(false);
         assertEquals(9, result.totalPnts);
         assertEquals(3, result.hiddenPnts);
@@ -107,7 +107,7 @@ public class F12UnitTest {
 
     @Test
     public void S3pntsDoc(){
-        mockResponse("S 3 pnts doc");
+        mockResponse("S3PntsDoc.xml");
         F12Fetcher.Result result = f12Fetcher.fetch(false);
         assertEquals(9, result.totalPnts);
         assertEquals(3, result.hiddenPnts);
@@ -117,7 +117,7 @@ public class F12UnitTest {
 
     @Test
     public void S3pntsHiddenDoc(){
-        mockResponse("S 3 pnts hidden doc");
+        mockResponse("S3PntsHiddenDoc.xml");
         F12Fetcher.Result result = f12Fetcher.fetch(false);
         assertEquals(12, result.totalPnts);
         assertEquals(6, result.hiddenPnts);

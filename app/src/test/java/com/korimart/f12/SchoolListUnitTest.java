@@ -10,7 +10,7 @@ public class SchoolListUnitTest {
     public void parserTest(){
         SchoolListFetcher.Result result = new SchoolListFetcher.Result();
 
-        String docString = testHelper.loadDocument("collegeList.txt", "euc-kr");
+        String docString = testHelper.loadDocument("collegeList.xml", "euc-kr");
         Document doc = XMLHelper.INSTANCE.getDocument(docString, "euc-kr");
         SchoolListFetcher.INSTANCE.parse(doc, result);
     }

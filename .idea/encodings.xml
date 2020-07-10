@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/app/src/test/java/com/korimart/f12/Name only doc" charset="EUC-KR" />
-    <file url="file://$PROJECT_DIR$/app/src/test/java/com/korimart/f12/S 0 pnts doc" charset="EUC-KR" />
-    <file url="file://$PROJECT_DIR$/app/src/test/java/com/korimart/f12/S 0 pnts hidden doc" charset="EUC-KR" />
-    <file url="file://$PROJECT_DIR$/app/src/test/java/com/korimart/f12/S 3 pnts doc" charset="EUC-KR" />
-    <file url="file://$PROJECT_DIR$/app/src/test/java/com/korimart/f12/S 3 pnts hidden doc" charset="EUC-KR" />
-    <file url="file://$PROJECT_DIR$/app/src/test/java/com/korimart/f12/collegeList.txt" charset="EUC-KR" />
-    <file url="file://$PROJECT_DIR$/app/src/test/java/com/korimart/f12/dot doc" charset="EUC-KR" />
-    <file url="file://$PROJECT_DIR$/app/src/test/java/com/korimart/f12/mine doc" charset="EUC-KR" />
-    <file url="file://$PROJECT_DIR$/app/src/test/java/com/korimart/f12/my info response" charset="EUC-KR" />
-    <file url="file://$PROJECT_DIR$/app/src/test/java/com/korimart/f12/park doc" charset="EUC-KR" />
+    <file url="file://$PROJECT_DIR$/app/src/test/java/com/korimart/f12/S0PntsDoc.xml" charset="EUC-KR" />
+    <file url="file://$PROJECT_DIR$/app/src/test/java/com/korimart/f12/S0PntsHiddenDoc.xml" charset="EUC-KR" />
+    <file url="file://$PROJECT_DIR$/app/src/test/java/com/korimart/f12/S3PntsDoc.xml" charset="EUC-KR" />
+    <file url="file://$PROJECT_DIR$/app/src/test/java/com/korimart/f12/S3PntsHiddenDoc.xml" charset="EUC-KR" />
+    <file url="file://$PROJECT_DIR$/app/src/test/java/com/korimart/f12/collegeList.xml" charset="EUC-KR" />
+    <file url="file://$PROJECT_DIR$/app/src/test/java/com/korimart/f12/dotDoc.xml" charset="EUC-KR" />
+    <file url="file://$PROJECT_DIR$/app/src/test/java/com/korimart/f12/mineDoc.xml" charset="EUC-KR" />
+    <file url="file://$PROJECT_DIR$/app/src/test/java/com/korimart/f12/myInfoResponse.xml" charset="EUC-KR" />
+    <file url="file://$PROJECT_DIR$/app/src/test/java/com/korimart/f12/nameOnlyDoc.xml" charset="EUC-KR" />
+    <file url="file://$PROJECT_DIR$/app/src/test/java/com/korimart/f12/parkDoc.xml" charset="EUC-KR" />
   </component>
 </project>

@@ -17,7 +17,6 @@ public enum XMLHelper {
 
     private final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     private DocumentBuilder builder;
-    private WebService webService = WebService.INSTANCE;
 
     public Document getDocument(String xml, String encoding){
         StringBuilder xmlStringBuilder = new StringBuilder();

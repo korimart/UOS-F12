@@ -18,8 +18,8 @@ public enum SchoolListFetcher {
     }
 
     public void parse(Document doc, Result result){
-        NodeList univList = doc.getElementsByTagName("univList");
-        Node node = univList.item(0);
+        NodeList univListList = doc.getElementsByTagName("univList");
+        Node univList = univListList.item(0);
         return;
     }
 }
