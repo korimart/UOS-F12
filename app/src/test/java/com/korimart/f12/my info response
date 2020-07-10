@@ -4,17 +4,17 @@
 <list>
 <prt_ord><![CDATA[23000]]></prt_ord>
 <dept_cd><![CDATA[20011]]></dept_cd>
-<dept_code_nm><![CDATA[20011-ê³µê³¼ëŒ€í•™]]></dept_code_nm>
-<dept_nm_re><![CDATA[ê³µê³¼ëŒ€í•™]]></dept_nm_re>
-<dept_nm><![CDATA[ê³µê³¼ëŒ€í•™[ëŒ€í•™]]]></dept_nm>
-<up_nm><![CDATA[ëŒ€í•™]]></up_nm>
+<dept_code_nm><![CDATA[20011-°ø°ú´ëÇÐ]]></dept_code_nm>
+<dept_nm_re><![CDATA[°ø°ú´ëÇÐ]]></dept_nm_re>
+<dept_nm><![CDATA[°ø°ú´ëÇÐ[´ëÇÐ]]]></dept_nm>
+<up_nm><![CDATA[´ëÇÐ]]></up_nm>
 <upper_dept_cd><![CDATA[20000]]></upper_dept_cd>
 <dept_div_cd><![CDATA[201]]></dept_div_cd>
 <auth_tot><![CDATA[P]]></auth_tot>
 </list>
 </authDeptUp>
-<authRangeNm>    ( ìžê¸°ë²”ìœ„ )</authRangeNm>
-<strTitle>ê°œì¸ë³„í•™ê¸°ì„±ì </strTitle>
+<authRangeNm>    ( ÀÚ±â¹üÀ§ )</authRangeNm>
+<strTitle>°³ÀÎº°ÇÐ±â¼ºÀû</strTitle>
 <strSmt>10</strSmt>
 <strUserMenuPrivacyAuthYn>Y</strUserMenuPrivacyAuthYn>
 <_COLUMNS_OF_TABLE_TO_TEXT_>{}</_COLUMNS_OF_TABLE_TO_TEXT_>
@@ -27,7 +27,7 @@
 <smtList>
 <list>
 <cd><![CDATA[10]]></cd>
-<cd_nm><![CDATA[1í•™ê¸°]]></cd_nm>
+<cd_nm><![CDATA[1ÇÐ±â]]></cd_nm>
 <cd_use1><![CDATA[01]]></cd_use1>
 <cd_use2><![CDATA[]]></cd_use2>
 <cd_use3><![CDATA[]]></cd_use3>
@@ -37,7 +37,7 @@
 </list>
 <list>
 <cd><![CDATA[20]]></cd>
-<cd_nm><![CDATA[2í•™ê¸°]]></cd_nm>
+<cd_nm><![CDATA[2ÇÐ±â]]></cd_nm>
 <cd_use1><![CDATA[01]]></cd_use1>
 <cd_use2><![CDATA[]]></cd_use2>
 <cd_use3><![CDATA[]]></cd_use3>
@@ -47,7 +47,7 @@
 </list>
 <list>
 <cd><![CDATA[11]]></cd>
-<cd_nm><![CDATA[ì—¬ë¦„ê³„ì ˆìˆ˜ì—…]]></cd_nm>
+<cd_nm><![CDATA[¿©¸§°èÀý¼ö¾÷]]></cd_nm>
 <cd_use1><![CDATA[02]]></cd_use1>
 <cd_use2><![CDATA[]]></cd_use2>
 <cd_use3><![CDATA[]]></cd_use3>
@@ -57,7 +57,7 @@
 </list>
 <list>
 <cd><![CDATA[21]]></cd>
-<cd_nm><![CDATA[ê²¨ìš¸ê³„ì ˆìˆ˜ì—…]]></cd_nm>
+<cd_nm><![CDATA[°Ü¿ï°èÀý¼ö¾÷]]></cd_nm>
 <cd_use1><![CDATA[02]]></cd_use1>
 <cd_use2><![CDATA[]]></cd_use2>
 <cd_use3><![CDATA[]]></cd_use3>
@@ -67,7 +67,7 @@
 </list>
 <list>
 <cd><![CDATA[30]]></cd>
-<cd_nm><![CDATA[0_1í•™ê¸°]]></cd_nm>
+<cd_nm><![CDATA[0_1ÇÐ±â]]></cd_nm>
 <cd_use1><![CDATA[03]]></cd_use1>
 <cd_use2><![CDATA[]]></cd_use2>
 <cd_use3><![CDATA[]]></cd_use3>
@@ -77,7 +77,7 @@
 </list>
 <list>
 <cd><![CDATA[40]]></cd>
-<cd_nm><![CDATA[0_2í•™ê¸°]]></cd_nm>
+<cd_nm><![CDATA[0_2ÇÐ±â]]></cd_nm>
 <cd_use1><![CDATA[]]></cd_use1>
 <cd_use2><![CDATA[]]></cd_use2>
 <cd_use3><![CDATA[]]></cd_use3>
@@ -97,17 +97,17 @@
 <list>
 <prt_ord><![CDATA[23600]]></prt_ord>
 <dept_cd><![CDATA[20020]]></dept_cd>
-<dept_code_nm><![CDATA[20020-ì»´í“¨í„°ê³¼í•™ë¶€]]></dept_code_nm>
-<dept_nm_re><![CDATA[ì»´í“¨í„°ê³¼í•™ë¶€]]></dept_nm_re>
-<dept_nm><![CDATA[ì»´í“¨í„°ê³¼í•™ë¶€]]></dept_nm>
-<up_nm><![CDATA[ê³µê³¼ëŒ€í•™]]></up_nm>
+<dept_code_nm><![CDATA[20020-ÄÄÇ»ÅÍ°úÇÐºÎ]]></dept_code_nm>
+<dept_nm_re><![CDATA[ÄÄÇ»ÅÍ°úÇÐºÎ]]></dept_nm_re>
+<dept_nm><![CDATA[ÄÄÇ»ÅÍ°úÇÐºÎ]]></dept_nm>
+<up_nm><![CDATA[°ø°ú´ëÇÐ]]></up_nm>
 <upper_dept_cd><![CDATA[20011]]></upper_dept_cd>
 <dept_div_cd><![CDATA[210]]></dept_div_cd>
 <col_cd><![CDATA[20011]]></col_cd>
-<col_nm><![CDATA[ê³µê³¼ëŒ€í•™]]></col_nm>
+<col_nm><![CDATA[°ø°ú´ëÇÐ]]></col_nm>
 <close_dt><![CDATA[]]></close_dt>
 </list>
 </authDept>
-<strUserNm>í—ˆìœ¤</strUserNm>
+<strUserNm>ÇãÀ±</strUserNm>
 <strFileSaveYn></strFileSaveYn>
 </root>

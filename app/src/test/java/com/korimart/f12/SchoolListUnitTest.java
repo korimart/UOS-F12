@@ -11,7 +11,7 @@ public class SchoolListUnitTest {
         SchoolListFetcher.Result result = new SchoolListFetcher.Result();
 
         String docString = testHelper.loadDocument("collegeList.txt", "euc-kr");
-        Document doc = XMLHelper.INSTANCE.getDocument(docString);
+        Document doc = XMLHelper.INSTANCE.getDocument(docString, "euc-kr");
         SchoolListFetcher.INSTANCE.parse(doc, result);
     }
 }

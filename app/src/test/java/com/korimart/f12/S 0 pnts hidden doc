@@ -6,16 +6,16 @@
 <smt_cd><![CDATA[10]]></smt_cd>
 <class_no><![CDATA[01]]></class_no>
 <curi_no><![CDATA[71065]]></curi_no>
-<curi_nm><![CDATA[í´ë¼ìš°ë“œì»´í“¨íŒ…      ]]></curi_nm>
+<curi_nm><![CDATA[Å¬¶ó¿ìµåÄÄÇ»ÆÃ      ]]></curi_nm>
 <curi_eng_nm><![CDATA[Cloud Computing]]></curi_eng_nm>
 <stud_id><![CDATA[2017920072]]></stud_id>
 <sust_cd><![CDATA[20020]]></sust_cd>
-<stud_nm><![CDATA[í—ˆìœ¤]]></stud_nm>
-<sust_cd_nm><![CDATA[ì»´í“¨í„°ê³¼í•™ë¶€]]></sust_cd_nm>
+<stud_nm><![CDATA[ÇãÀ±]]></stud_nm>
+<sust_cd_nm><![CDATA[ÄÄÇ»ÅÍ°úÇÐºÎ]]></sust_cd_nm>
 <colg_cd><![CDATA[20011]]></colg_cd>
-<colg_nm><![CDATA[ê³µê³¼ëŒ€í•™]]></colg_nm>
-<cmp_div_nm><![CDATA[ì „ê³µì„ íƒ]]></cmp_div_nm>
-<prof_no_nm><![CDATA[í˜„ì² ìŠ¹]]></prof_no_nm>
+<colg_nm><![CDATA[°ø°ú´ëÇÐ]]></colg_nm>
+<cmp_div_nm><![CDATA[Àü°ø¼±ÅÃ]]></cmp_div_nm>
+<prof_no_nm><![CDATA[ÇöÃ¶½Â]]></prof_no_nm>
 <prof_eng_nm><![CDATA[Chul-seung, Hyun]]></prof_eng_nm>
 <pnt>3</pnt>
 <conv_grade><![CDATA[A+]]></conv_grade>
@@ -32,16 +32,16 @@
 <smt_cd><![CDATA[10]]></smt_cd>
 <class_no><![CDATA[01]]></class_no>
 <curi_no><![CDATA[71015]]></curi_no>
-<curi_nm><![CDATA[ìš´ì˜ì²´ì œ]]></curi_nm>
+<curi_nm><![CDATA[¿î¿µÃ¼Á¦]]></curi_nm>
 <curi_eng_nm><![CDATA[Operating System]]></curi_eng_nm>
 <stud_id><![CDATA[2017920072]]></stud_id>
 <sust_cd><![CDATA[20020]]></sust_cd>
-<stud_nm><![CDATA[í—ˆìœ¤]]></stud_nm>
-<sust_cd_nm><![CDATA[ì»´í“¨í„°ê³¼í•™ë¶€]]></sust_cd_nm>
+<stud_nm><![CDATA[ÇãÀ±]]></stud_nm>
+<sust_cd_nm><![CDATA[ÄÄÇ»ÅÍ°úÇÐºÎ]]></sust_cd_nm>
 <colg_cd><![CDATA[20011]]></colg_cd>
-<colg_nm><![CDATA[ê³µê³¼ëŒ€í•™]]></colg_nm>
-<cmp_div_nm><![CDATA[ì „ê³µí•„ìˆ˜]]></cmp_div_nm>
-<prof_no_nm><![CDATA[ì´ë™í¬]]></prof_no_nm>
+<colg_nm><![CDATA[°ø°ú´ëÇÐ]]></colg_nm>
+<cmp_div_nm><![CDATA[Àü°øÇÊ¼ö]]></cmp_div_nm>
+<prof_no_nm><![CDATA[ÀÌµ¿Èñ]]></prof_no_nm>
 <prof_eng_nm><![CDATA[Lee, Dong-Hee]]></prof_eng_nm>
 <pnt>3</pnt>
 <conv_grade><![CDATA[A+]]></conv_grade>
@@ -57,6 +57,6 @@
 <strFlag>Y</strFlag>
 <strMyEngShreg>Her Yun (2017920072) College of Engineering  School of Computer Science  </strMyEngShreg>
 <strDiv>2</strDiv>
-<strMyShreg>í—ˆìœ¤ (2017920072) ê³µê³¼ëŒ€í•™  ì»´í“¨í„°ê³¼í•™ë¶€  </strMyShreg>
+<strMyShreg>ÇãÀ± (2017920072) °ø°ú´ëÇÐ  ÄÄÇ»ÅÍ°úÇÐºÎ  </strMyShreg>
 <_COLUMNS_OF_TABLE_TO_TEXT_>{}</_COLUMNS_OF_TABLE_TO_TEXT_>
 </root>

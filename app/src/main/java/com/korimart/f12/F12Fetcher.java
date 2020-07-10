@@ -42,14 +42,14 @@ public enum F12Fetcher {
                 return result;
             }
 
-            Document infoDoc = xmlHelper.getDocument(result.infoResponse);
+            Document infoDoc = xmlHelper.getDocument(result.infoResponse, "euc-kr");
             if (infoDoc == null){
                 result.errorInfo = new ErrorInfo("infoResponseFailed", null);
                 return result;
             }
 
             result.f12Response = fetchF12Response(infoDoc);
-            Document f12Doc = xmlHelper.getDocument(result.f12Response);
+            Document f12Doc = xmlHelper.getDocument(result.f12Response, "euc-kr");
             if (f12Doc == null){
                 result.errorInfo = new ErrorInfo("f12ResponseFailed", null);
                 return result;
@@ -82,7 +82,7 @@ public enum F12Fetcher {
 
     public float recalculateHiddenAvg(String f12Response, boolean noPnp){
         F12Fetcher.Result result = new F12Fetcher.Result();
-        Document doc = xmlHelper.getDocument(f12Response);
+        Document doc = xmlHelper.getDocument(f12Response, "euc-kr");
         if (doc == null) return 0f;
 
         parse(doc, noPnp, result);
