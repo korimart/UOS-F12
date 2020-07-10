@@ -122,6 +122,14 @@ public class MainActivity extends AppCompatActivity
                 .commit();
     }
 
+    public void goToCoursesFilterFrag(Runnable howToGoBack){
+        fragStack.add(howToGoBack);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frag, new CoursesFilterFragment())
+                .commit();
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         fragStack.clear();

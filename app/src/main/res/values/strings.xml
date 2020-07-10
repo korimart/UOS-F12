@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">서울시립대학교 F12</string>
+    <string-array name="school_array">
+        <item>정경대학</item>
+        <item>경영대학</item>
+        <item>공과대학</item>
+    </string-array>
 </resources>

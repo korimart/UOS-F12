@@ -126,6 +126,7 @@
             android:layout_height="wrap_content"
             android:text="입력된 학점 수"
             android:textAlignment="textEnd"
+            android:textColor="#000000"
             android:textSize="30sp" />
 
         <Space
@@ -138,6 +139,7 @@
             android:layout_height="wrap_content"
             android:text="숨겨진 학점 평균"
             android:textAlignment="textEnd"
+            android:textColor="#000000"
             android:textSize="30sp" />
 
         <Space
@@ -150,6 +152,7 @@
             android:layout_height="wrap_content"
             android:text="숨겨진 학점 수"
             android:textAlignment="textEnd"
+            android:textColor="#000000"
             android:textSize="30sp" />
 
         <Space
@@ -162,6 +165,7 @@
             android:layout_height="wrap_content"
             android:text="입력 평균"
             android:textAlignment="textEnd"
+            android:textColor="#000000"
             android:textSize="30sp" />
 
     </LinearLayout>
@@ -184,6 +188,7 @@
             android:layout_gravity="center"
             android:text="0"
             android:textAlignment="center"
+            android:textColor="#000000"
             android:textSize="30sp" />
 
         <Space
@@ -197,6 +202,7 @@
             android:layout_gravity="center"
             android:text="0"
             android:textAlignment="center"
+            android:textColor="#000000"
             android:textSize="30sp" />
 
         <Space
@@ -210,6 +216,7 @@
             android:layout_gravity="center"
             android:text="0"
             android:textAlignment="center"
+            android:textColor="#000000"
             android:textSize="30sp" />
 
         <Space
@@ -223,6 +230,7 @@
             android:layout_gravity="center"
             android:text="0"
             android:textAlignment="center"
+            android:textColor="#000000"
             android:textSize="30sp" />
 
     </LinearLayout>

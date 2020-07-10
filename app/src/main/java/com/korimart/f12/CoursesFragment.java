@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,7 +35,9 @@ public class CoursesFragment extends Fragment {
         DividerItemDecoration did = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(did);
 
-        view.findViewById(R.id.courses_filterButton).setOnClickListener(v -> Log.i("hehe", "hehe"));
+        MainActivity ma = (MainActivity) getActivity();
+        view.findViewById(R.id.courses_filterButton).setOnClickListener(v ->
+                ma.goToCoursesFilterFrag(() -> ma.goToCoursesFrag()));
     }
 
     public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
