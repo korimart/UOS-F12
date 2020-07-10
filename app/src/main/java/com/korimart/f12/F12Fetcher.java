@@ -19,29 +19,19 @@ public enum F12Fetcher {
     private WebService webService = WebService.INSTANCE;
     private XMLHelper xmlHelper = XMLHelper.INSTANCE;
 
-    public static class ErrorInfo {
-        public String errorType;
-        public String callStack;
-
-        public ErrorInfo(String type, String callStack){
-            errorType = type;
-            this.callStack = callStack;
-        }
-    }
-
     public static class Result {
-        String studentInfo;
-        String infoResponse;
-        String f12Response;
-        int totalPnts;
-        int hiddenPnts;
-        float hiddenAvg;
-        float totalAvg;
-        DisclosedInfo disclosedInfo;
-        ErrorInfo errorInfo;
+        public String studentInfo;
+        public String infoResponse;
+        public String f12Response;
+        public int totalPnts;
+        public int hiddenPnts;
+        public float hiddenAvg;
+        public float totalAvg;
+        public DisclosedInfo disclosedInfo;
+        public ErrorInfo errorInfo;
     }
 
-    public Result fetchF12(boolean noPnp){
+    public Result fetch(boolean noPnp){
         Result result = new Result();
 
         try {
@@ -71,13 +61,10 @@ public enum F12Fetcher {
                 return result;
             }
 
-            result.disclosedInfo = getInfo(f12Doc);
-            if (result.disclosedInfo == null){
-                result.errorInfo = new ErrorInfo("noDisclosedInfo", null);
+            parse(f12Doc, noPnp, result);
+            if (result.errorInfo != null){
                 return result;
             }
-
-            parse(f12Doc, result.disclosedInfo, noPnp, result);
 
         } catch (Exception e){
             StackTraceElement[] stes = e.getStackTrace();
@@ -98,10 +85,9 @@ public enum F12Fetcher {
         Document doc = xmlHelper.getDocument(f12Response);
         if (doc == null) return 0f;
 
-        DisclosedInfo info = getInfo(doc);
-        if (info == null) return 0f;
+        parse(doc, noPnp, result);
+        if (result.errorInfo != null) return 0f;
 
-        parse(doc, info, noPnp, result);
         return result.hiddenAvg;
     }
 
@@ -123,10 +109,16 @@ public enum F12Fetcher {
         return webService.sendPost(f12URL, String.format(f12Params, year, smtString), "euc-kr");
     }
 
-    private void parse(Document f12Doc, DisclosedInfo info, boolean noPnp, Result result){
+    public void parse(Document f12Doc, boolean noPnp, Result result){
+        result.disclosedInfo = getInfo(f12Doc);
+        if (result.disclosedInfo == null){
+            result.errorInfo = new ErrorInfo("noDisclosedInfo", null);
+            return;
+        }
+
         float disclosedMarksFloat = 0;
         float disclosedPntsWithoutPnp = 0;
-        for (DisclosedGrade dg : info.gradesForDisplay){
+        for (DisclosedGrade dg : result.disclosedInfo.gradesForDisplay){
             disclosedMarksFloat += dg.getMarks();
             disclosedPntsWithoutPnp += dg.isPnp ? 0f : dg.points;
         }
@@ -141,7 +133,7 @@ public enum F12Fetcher {
         float totalAvgFloat = Float.parseFloat(totalAvgString);
         float disclosedPntsFloat = Float.parseFloat(disclosedPntsString);
 
-        int hiddenPntsInt = calculateHiddenPnts(totPntFloat, disclosedPntsFloat, info.nameOnlyCoursePnts);
+        int hiddenPntsInt = calculateHiddenPnts(totPntFloat, disclosedPntsFloat, result.disclosedInfo.nameOnlyCoursePnts);
 
         float hiddenAvgFloat;
         if (hiddenPntsInt == 0)

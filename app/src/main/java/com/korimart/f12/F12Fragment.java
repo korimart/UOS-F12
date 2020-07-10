@@ -1,8 +1,5 @@
 package com.korimart.f12;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -174,7 +171,7 @@ public class F12Fragment extends Fragment {
      * make sure to run on the UI thread if doing UI stuff
      * @param errorInfo
      */
-    private void onError(F12Fetcher.ErrorInfo errorInfo){
+    private void onError(ErrorInfo errorInfo){
         getActivity().runOnUiThread(() -> {
             switch (errorInfo.errorType){
                 case "sessionExpired":
