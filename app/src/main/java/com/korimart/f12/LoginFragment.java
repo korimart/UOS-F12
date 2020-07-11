@@ -48,6 +48,8 @@ public class LoginFragment extends Fragment {
         okButton = view.findViewById(R.id.login_okButton);
         systemMessage = view.findViewById(R.id.login_systemMessage);
 
+        ((MainActivity) getActivity()).getBottomNav().setVisibility(View.INVISIBLE);
+
         setViewListeners();
 
         File internalPath = getActivity().getFilesDir();
@@ -123,6 +125,7 @@ public class LoginFragment extends Fragment {
 
         MainActivity mainActivity = ((MainActivity) getActivity());
         mainActivity.runOnUiThread(() -> {
+            mainActivity.getBottomNav().setVisibility(View.VISIBLE);
             switch (nextFrag){
                 case 0:
                 mainActivity.goToF12Frag();

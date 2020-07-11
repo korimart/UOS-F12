@@ -63,6 +63,8 @@ public class CoursesFragment extends Fragment {
 
             if (coursesViewModel.getSchoolListResult().getValue() == null)
                 fetchSchoolList();
+            else
+                changeTitle();
 
             if (coursesViewModel.getPersonalInfoResult().getValue() == null)
                 fetchPersonalInfo();
@@ -88,7 +90,7 @@ public class CoursesFragment extends Fragment {
     private void changeTitle() {
         String title = "";
         title += coursesViewModel.getSchoolYears().getValue().get(
-                coursesViewModel.getSchoolSelection().getValue()
+                coursesViewModel.getSchoolYearSelection().getValue()
         );
 
         title += "년 ";
@@ -245,6 +247,7 @@ public class CoursesFragment extends Fragment {
             coursesViewModel.getSchoolYears().setValue(schoolYears);
 
             fetchCourses();
+            changeTitle();
         });
     }
 
