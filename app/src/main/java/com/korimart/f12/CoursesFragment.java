@@ -316,7 +316,7 @@ public class CoursesFragment extends Fragment {
 
             final ArrayList<String> buildings = new ArrayList<>(Arrays.asList(
                     "1", "전농관",
-                    "2", "제 1공학관",
+                    "2", "제1공학관",
                     "3", "건설공학관",
                     "4", "창공관",
                     "5", "인문학관",
@@ -324,7 +324,7 @@ public class CoursesFragment extends Fragment {
                     "7", "대학본부",
                     "8", "자연과학관",
                     "10", "경농관",
-                    "11", "제 2공학관",
+                    "11", "제2공학관",
                     "12", "학생회관",
                     "13", "학군단",
                     "14", "과학기술관",
@@ -346,7 +346,7 @@ public class CoursesFragment extends Fragment {
                     "34", "국제학사",
                     "35", "음악관",
                     "36", "어린이집",
-                    "37", "100주년 기념관",
+                    "37", "100주년기념관",
                     "38", "스마트연구동",
                     "41", "실외테니스장",
                     "81", "자동화온실"
