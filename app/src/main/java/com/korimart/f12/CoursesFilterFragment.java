@@ -14,9 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CoursesFilterFragment extends Fragment {
@@ -50,11 +49,12 @@ public class CoursesFilterFragment extends Fragment {
         ArrayAdapter<String> schoolAdapter = setSpinnerAdapter(school);
         ArrayAdapter<String> deptAdapter = setSpinnerAdapter(department);
 
-        coursesViewModel.getSchoolListResult().observe(this, result -> {
+        coursesViewModel.getSchoolSelection().observe(this, i -> school.setSelection(i));
+        coursesViewModel.getDepartmentSelection().observe(this, i -> department.setSelection(i));
+
+        coursesViewModel.getSchools().observe(this, schools -> {
             schoolAdapter.clear();
-            for (SchoolListFetcher.DeptInfo info : result.schoolToDepts.keySet()){
-                schoolAdapter.add(info.name);
-            }
+            schoolAdapter.addAll(schools);
         });
 
         coursesViewModel.getDepartments().observe(this, departments -> {
@@ -68,9 +68,7 @@ public class CoursesFilterFragment extends Fragment {
                 SchoolListFetcher.Result result = coursesViewModel.getSchoolListResult().getValue();
                 for (SchoolListFetcher.DeptInfo dept : result.schoolToDepts.keySet())
                     if (dept.name.equals(((TextView) view).getText())){
-                        List<String> deptStrings = new ArrayList<>();
-                        result.schoolToDepts.get(dept).forEach((info) -> deptStrings.add(info.name));
-                        coursesViewModel.getDepartments().setValue(deptStrings);
+                        coursesViewModel.setDepartments(result.schoolToDepts.get(dept));
                     }
             }
 
