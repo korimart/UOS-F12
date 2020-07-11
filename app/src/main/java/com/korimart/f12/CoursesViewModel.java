@@ -12,6 +12,7 @@ public class CoursesViewModel extends ViewModel {
     private MutableLiveData<SchoolListFetcher.Result> schoolListResult = new MutableLiveData<>();
     private MutableLiveData<PersonalInfoFetcher.Result> personalInfoResult = new MutableLiveData<>();
     private MutableLiveData<CourseListFetcher.Result> courseListResult = new MutableLiveData<>();
+    private MutableLiveData<List<CourseListFetcher.CourseInfo>> filteredCourses = new MutableLiveData<>();
     private MutableLiveData<List<StringPair>> schools = new MutableLiveData<>();
     private MutableLiveData<List<StringPair>> departments = new MutableLiveData<>();
     private MutableLiveData<List<String>> schoolYears = new MutableLiveData<>();
@@ -24,9 +25,15 @@ public class CoursesViewModel extends ViewModel {
     private MutableLiveData<Boolean> junior = new MutableLiveData<>();
     private MutableLiveData<Boolean> senior = new MutableLiveData<>();
     private MutableLiveData<Boolean> shouldFetchCourses = new MutableLiveData<>();
+    private MutableLiveData<Boolean> shouldApplyFilter = new MutableLiveData<>();
 
     public CoursesViewModel(){
         shouldFetchCourses.setValue(false);
+        shouldApplyFilter.setValue(false);
+        freshman.setValue(false);
+        sophomore.setValue(false);
+        junior.setValue(false);
+        senior.setValue(false);
     }
 
     public void fetchSchoolList(Runnable onSuccess, Consumer<ErrorInfo> onError, Runnable anyway){
@@ -67,6 +74,9 @@ public class CoursesViewModel extends ViewModel {
             );
 
             this.courseListResult.postValue(result);
+            List<CourseListFetcher.CourseInfo> filteredCourses = new ArrayList<>(result.courseInfos);
+            filterCourses(filteredCourses);
+            this.filteredCourses.postValue(filteredCourses);
 
             if (result.errorInfo != null)
                 onError.accept(result.errorInfo);
@@ -75,6 +85,32 @@ public class CoursesViewModel extends ViewModel {
 
             anyway.run();
         }).start();
+    }
+
+    public void applyFilter() {
+        List<CourseListFetcher.CourseInfo> filteredCourses = new ArrayList<>(courseListResult.getValue().courseInfos);
+        filterCourses(filteredCourses);
+        this.filteredCourses.setValue(filteredCourses);
+    }
+
+    private void filterCourses(List<CourseListFetcher.CourseInfo> rawCoursesCopy) {
+        boolean[] yearLevels = {
+                freshman.getValue(),
+                sophomore.getValue(),
+                junior.getValue(),
+                senior.getValue()};
+
+        rawCoursesCopy.removeIf(courseInfo -> {
+            for (int i = 0; i < yearLevels.length; i++){
+                if (yearLevels[i]){
+                    if (courseInfo.yearLevel.contains(String.valueOf(i + 1)))
+                        return false;
+                }
+            }
+            return true;
+        });
+
+        Collections.sort(rawCoursesCopy, (o1, o2) -> o1.name.compareTo(o2.name));
     }
 
     private String getSemesterCode(Integer value) {
@@ -158,5 +194,13 @@ public class CoursesViewModel extends ViewModel {
 
     public MutableLiveData<Boolean> getShouldFetchCourses() {
         return shouldFetchCourses;
+    }
+
+    public MutableLiveData<List<CourseListFetcher.CourseInfo>> getFilteredCourses() {
+        return filteredCourses;
+    }
+
+    public MutableLiveData<Boolean> getShouldApplyFilter() {
+        return shouldApplyFilter;
     }
 }

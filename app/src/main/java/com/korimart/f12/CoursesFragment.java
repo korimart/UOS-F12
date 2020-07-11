@@ -71,6 +71,13 @@ public class CoursesFragment extends Fragment {
                 coursesViewModel.getShouldFetchCourses().setValue(false);
             }
         });
+
+        coursesViewModel.getShouldApplyFilter().observe(this, (b) -> {
+            if (b) {
+                coursesViewModel.applyFilter();
+                coursesViewModel.getShouldApplyFilter().setValue(false);
+            }
+        });
     }
 
     private void fetchPersonalInfo() {
@@ -148,43 +155,43 @@ public class CoursesFragment extends Fragment {
             List<StringPair> schools = coursesViewModel.getSchools().getValue();
 
             for (Map.Entry<DeptInfo, List<DeptInfo>> e : schoolResult.schoolToDepts.entrySet()){
-                if (e.getKey().code.equals(f12Result.schoolCode)){
-                    for (DeptInfo dept : e.getValue()){
-                        if (dept.code.equals(f12Result.deptCode)){
-                            coursesViewModel.setDepartments(e.getValue());
-                            List<StringPair> depts = coursesViewModel.getDepartments().getValue();
+                if (!e.getKey().code.equals(f12Result.schoolCode)) continue;
 
-                            int schoolPos = LinearTimeHelper.INSTANCE.indexOf(
-                                    schools,
-                                    e.getKey().name,
-                                    (stringPair, s) -> stringPair.s1.compareTo(s)
-                            );
+                for (DeptInfo dept : e.getValue()){
+                    if (!dept.code.equals(f12Result.deptCode)) continue;
 
-                            int deptPos = LinearTimeHelper.INSTANCE.indexOf(
-                                    depts,
-                                    dept.name,
-                                    (stringPair, s) -> stringPair.s1.compareTo(s)
-                            );
+                    coursesViewModel.setDepartments(e.getValue());
+                    List<StringPair> depts = coursesViewModel.getDepartments().getValue();
 
-                            int semesterPos = 0;
-                            switch (schoolResult.latestSemester){
-                                case "10":
-                                    semesterPos = 0;
-                                    break;
-                                case "20":
-                                    semesterPos = 1;
-                                    break;
-                                case "11":
-                                    semesterPos = 2;
-                                    break;
-                            }
+                    int schoolPos = LinearTimeHelper.INSTANCE.indexOf(
+                            schools,
+                            e.getKey().name,
+                            (stringPair, s) -> stringPair.s1.compareTo(s)
+                    );
 
-                            coursesViewModel.getSchoolYearSelection().setValue(0);
-                            coursesViewModel.getSchoolSelection().setValue(schoolPos);
-                            coursesViewModel.getDepartmentSelection().setValue(deptPos);
-                            coursesViewModel.getSemesterSelection().setValue(semesterPos);
-                        }
+                    int deptPos = LinearTimeHelper.INSTANCE.indexOf(
+                            depts,
+                            dept.name,
+                            (stringPair, s) -> stringPair.s1.compareTo(s)
+                    );
+
+                    int semesterPos = 0;
+                    switch (schoolResult.latestSemester){
+                        case "10":
+                            semesterPos = 0;
+                            break;
+                        case "20":
+                            semesterPos = 1;
+                            break;
+                        case "11":
+                            semesterPos = 2;
+                            break;
                     }
+
+                    coursesViewModel.getSchoolYearSelection().setValue(0);
+                    coursesViewModel.getSchoolSelection().setValue(schoolPos);
+                    coursesViewModel.getDepartmentSelection().setValue(deptPos);
+                    coursesViewModel.getSemesterSelection().setValue(semesterPos);
                 }
             }
 
@@ -208,8 +215,7 @@ public class CoursesFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            CourseListFetcher.Result result = coursesViewModel.getCourseListResult().getValue();
-            CourseListFetcher.CourseInfo course = result.courseInfos.get(position);
+            CourseListFetcher.CourseInfo course = coursesViewModel.getFilteredCourses().getValue().get(position);
 
             holder.name.setText(course.name);
             holder.classNumber.setText(course.classNumber + "분반");
@@ -232,8 +238,8 @@ public class CoursesFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            CourseListFetcher.Result result = coursesViewModel.getCourseListResult().getValue();
-            return result == null ? 0 : result.courseInfos.size();
+            List<CourseListFetcher.CourseInfo> infos = coursesViewModel.getFilteredCourses().getValue();
+            return infos == null ? 0 : infos.size();
         }
 
         private String[] parseTimePlace(String timePlace){
