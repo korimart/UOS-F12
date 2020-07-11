@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import static com.korimart.f12.SchoolListFetcher.DeptInfo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +45,7 @@ public class CoursesFragment extends Fragment {
 
         RecyclerView recyclerView = view.findViewById(R.id.courses_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new RecyclerViewAdapter(10);
+        adapter = new RecyclerViewAdapter();
         recyclerView.setAdapter(adapter);
 
         DividerItemDecoration did = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
@@ -61,11 +64,27 @@ public class CoursesFragment extends Fragment {
             if (coursesViewModel.getPersonalInfoResult().getValue() == null)
                 fetchPersonalInfo();
         }));
+
+        coursesViewModel.getShouldFetchCourses().observe(this, (b) -> {
+            if (b) {
+                fetchCourses();
+                coursesViewModel.getShouldFetchCourses().setValue(false);
+            }
+        });
     }
 
     private void fetchPersonalInfo() {
         FragmentActivity fa = getActivity();
         coursesViewModel.fetchPersonalInfo(() -> onPersonalInfoFetched(fa), this::onError, () -> {});
+    }
+
+    private void fetchCourses(){
+        FragmentActivity fa = getActivity();
+        coursesViewModel.fetchCourses(() -> onCoursesFetched(fa), this::onError, () -> {});
+    }
+
+    private void onCoursesFetched(FragmentActivity fa) {
+        fa.runOnUiThread(() -> adapter.notifyDataSetChanged());
     }
 
     private void onPersonalInfoFetched(FragmentActivity fa) {
@@ -121,19 +140,32 @@ public class CoursesFragment extends Fragment {
 
             F12Fetcher.Result f12Result = f12ViewModel.getResult().getValue();
 
-            ArrayList<String> al = new ArrayList<>();
-            schoolResult.schoolToDepts.keySet().forEach((info) -> al.add(info.name));
-            Collections.sort(al);
+            ArrayList<StringPair> al = new ArrayList<>();
+            schoolResult.schoolToDepts.keySet().forEach((info) -> al.add(new StringPair(info.name, info.code)));
+            Collections.sort(al, (o1, o2) -> o1.s1.compareTo(o2.s1));
             coursesViewModel.getSchools().setValue(al);
+
+            List<StringPair> schools = coursesViewModel.getSchools().getValue();
 
             for (Map.Entry<DeptInfo, List<DeptInfo>> e : schoolResult.schoolToDepts.entrySet()){
                 if (e.getKey().code.equals(f12Result.schoolCode)){
                     for (DeptInfo dept : e.getValue()){
                         if (dept.code.equals(f12Result.deptCode)){
                             coursesViewModel.setDepartments(e.getValue());
+                            List<StringPair> depts = coursesViewModel.getDepartments().getValue();
 
-                            int schoolPos = coursesViewModel.getSchools().getValue().indexOf(e.getKey().name);
-                            int deptPos = coursesViewModel.getDepartments().getValue().indexOf(dept.name);
+                            int schoolPos = LinearTimeHelper.INSTANCE.indexOf(
+                                    schools,
+                                    e.getKey().name,
+                                    (stringPair, s) -> stringPair.s1.compareTo(s)
+                            );
+
+                            int deptPos = LinearTimeHelper.INSTANCE.indexOf(
+                                    depts,
+                                    dept.name,
+                                    (stringPair, s) -> stringPair.s1.compareTo(s)
+                            );
+
                             int semesterPos = 0;
                             switch (schoolResult.latestSemester){
                                 case "10":
@@ -147,6 +179,7 @@ public class CoursesFragment extends Fragment {
                                     break;
                             }
 
+                            coursesViewModel.getSchoolYearSelection().setValue(0);
                             coursesViewModel.getSchoolSelection().setValue(schoolPos);
                             coursesViewModel.getDepartmentSelection().setValue(deptPos);
                             coursesViewModel.getSemesterSelection().setValue(semesterPos);
@@ -154,16 +187,17 @@ public class CoursesFragment extends Fragment {
                     }
                 }
             }
+
+            ArrayList<String> schoolYears = new ArrayList<>();
+            for (int i = schoolResult.latestSchoolYear; i > schoolResult.latestSchoolYear - 10; i--)
+                schoolYears.add(String.valueOf(i));
+            coursesViewModel.getSchoolYears().setValue(schoolYears);
+
+            fetchCourses();
         });
     }
 
     public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-        private int itemCount;
-
-        public RecyclerViewAdapter(int itemCount){
-            this.itemCount = itemCount;
-        }
-
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -174,17 +208,177 @@ public class CoursesFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            // nothing yet
+            CourseListFetcher.Result result = coursesViewModel.getCourseListResult().getValue();
+            CourseListFetcher.CourseInfo course = result.courseInfos.get(position);
+
+            holder.name.setText(course.name);
+            holder.classNumber.setText(course.classNumber + "분반");
+            holder.classification.setText(course.classification);
+            holder.yearLevel.setText(course.yearLevel + "학년");
+            holder.professor.setText(course.professor);
+            holder.points.setText(course.points + "학점");
+            holder.nonKorean.setVisibility(course.nonKorean ? View.VISIBLE : View.INVISIBLE);
+
+            holder.timePlace.removeAllViews();
+            String[] timePlaces = parseTimePlace(course.timePlace);
+            for (String s : timePlaces){
+                if (s == null) continue;
+
+                TextView timePlaceChild = new TextView(getContext());
+                timePlaceChild.setText(s.isEmpty() ? "강의실 정보 없음" : s);
+                holder.timePlace.addView(timePlaceChild);
+            }
         }
 
         @Override
         public int getItemCount() {
-            return itemCount;
+            CourseListFetcher.Result result = coursesViewModel.getCourseListResult().getValue();
+            return result == null ? 0 : result.courseInfos.size();
+        }
+
+        private String[] parseTimePlace(String timePlace){
+            String[] ret = timePlace.split(", ");
+            if (ret.length == 1 && ret[0].isEmpty())
+                return ret;
+
+            final ArrayList<String> dayEng
+                    = new ArrayList<>(Arrays.asList("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"));
+            final ArrayList<String> dayKor
+                    = new ArrayList<>(Arrays.asList("월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"));
+
+            for (int i = 0; i < ret.length; i++){
+                String[] dayAndTimePlace = ret[i].split(" ");
+                ret[i] = dayKor.get(dayEng.indexOf(dayAndTimePlace[0]));
+
+                String[] timeAndPlace = dayAndTimePlace[1].split("/", 2);
+                ret[i] += "    " + parseTime(timeAndPlace[0]);
+                ret[i] += "    " + parsePlace(timeAndPlace[1]);
+            }
+
+            return ret;
+        }
+
+        private String parsePlace(String place) {
+            String[] buildingAndRoom = place.split("-");
+
+            final ArrayList<String> buildings = new ArrayList<>(Arrays.asList(
+                    "1", "전농관",
+                    "2", "제 1공학관",
+                    "3", "건설공학관",
+                    "4", "창공관",
+                    "5", "인문학관",
+                    "6", "배봉관",
+                    "7", "대학본부",
+                    "8", "자연과학관",
+                    "10", "경농관",
+                    "11", "제 2공학관",
+                    "12", "학생회관",
+                    "13", "학군단",
+                    "14", "과학기술관",
+                    "15", "21세기관",
+                    "16", "조형관",
+                    "18", "자작마루",
+                    "19", "정보기술관",
+                    "20", "법학관",
+                    "21", "중앙도서관",
+                    "22", "생활관",
+                    "23", "건축구조실험동",
+                    "24", "토목구조실험동",
+                    "25", "미디어관",
+                    "27", "대강당",
+                    "28", "운동장",
+                    "29", "박물관",
+                    "32", "웰니스센터",
+                    "33", "미래관",
+                    "34", "국제학사",
+                    "35", "음악관",
+                    "36", "어린이집",
+                    "37", "100주년 기념관",
+                    "38", "스마트연구동",
+                    "41", "실외테니스장",
+                    "81", "자동화온실"
+            ));
+
+            String ret = "";
+            int index = buildings.indexOf(buildingAndRoom[0]) + 1;
+            if (index == 0)
+                ret += "모르는건물";
+            else
+                ret += buildings.get(index);
+
+            ret += "    ";
+
+            String[] rooms = buildingAndRoom[1].split("/");
+            for (String room : rooms)
+                ret += room + "호 ";
+
+            return ret;
+        }
+
+        private String parseTime(String time){
+            class TimeGroup {
+                int start;
+                int end;
+            }
+
+            String[] timeDivs = time.split(",");
+            int[] intTimeDivs = new int[timeDivs.length];
+            for (int i = 0; i < intTimeDivs.length; i++){
+                intTimeDivs[i] = Integer.parseInt(timeDivs[i]);
+            }
+
+            TimeGroup currTimeGroup = null;
+            ArrayList<TimeGroup> timeGroups = new ArrayList<>();
+            for (int i = 0; i + 1 < intTimeDivs.length; i++){
+                if (currTimeGroup == null){
+                    currTimeGroup = new TimeGroup();
+                    currTimeGroup.start = intTimeDivs[i];
+                    timeGroups.add(currTimeGroup);
+                }
+
+                if (intTimeDivs[i + 1] - intTimeDivs[i] > 1){
+                    currTimeGroup.end = intTimeDivs[i];
+                    currTimeGroup = null;
+                }
+            }
+
+            if (currTimeGroup != null)
+                currTimeGroup.end = intTimeDivs[intTimeDivs.length - 1];
+
+            StringBuilder ret = new StringBuilder();
+            for (int i = 0; i < timeGroups.size(); i++){
+                ret.append(String.format("%02d", timeGroups.get(i).start + 8))
+                        .append("시~")
+                        .append(timeGroups.get(i).end + 8)
+                        .append("시50분");
+
+                if (i < timeGroups.size() - 1)
+                    ret.append("    ");
+            }
+
+            return ret.toString();
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
+            public TextView name;
+            public TextView classNumber;
+            public TextView classification;
+            public TextView yearLevel;
+            public TextView professor;
+            public TextView points;
+            public TextView nonKorean;
+            public LinearLayout timePlace;
+
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
+                name = itemView.findViewById(R.id.item_course_name);
+                classNumber = itemView.findViewById(R.id.item_course_class_number);
+                classification = itemView.findViewById(R.id.item_course_classification);
+                yearLevel = itemView.findViewById(R.id.item_course_year_level);
+                professor = itemView.findViewById(R.id.item_course_professor);
+                points = itemView.findViewById(R.id.item_course_points);
+                nonKorean = itemView.findViewById(R.id.item_course_nonKorean);
+                timePlace = itemView.findViewById(R.id.item_course_time_place);
             }
         }
     }

@@ -11,8 +11,10 @@ import java.util.function.Consumer;
 public class CoursesViewModel extends ViewModel {
     private MutableLiveData<SchoolListFetcher.Result> schoolListResult = new MutableLiveData<>();
     private MutableLiveData<PersonalInfoFetcher.Result> personalInfoResult = new MutableLiveData<>();
-    private MutableLiveData<List<String>> schools = new MutableLiveData<>();
-    private MutableLiveData<List<String>> departments = new MutableLiveData<>();
+    private MutableLiveData<CourseListFetcher.Result> courseListResult = new MutableLiveData<>();
+    private MutableLiveData<List<StringPair>> schools = new MutableLiveData<>();
+    private MutableLiveData<List<StringPair>> departments = new MutableLiveData<>();
+    private MutableLiveData<List<String>> schoolYears = new MutableLiveData<>();
     private MutableLiveData<Integer> schoolYearSelection = new MutableLiveData<>();
     private MutableLiveData<Integer> semesterSelection = new MutableLiveData<>();
     private MutableLiveData<Integer> schoolSelection = new MutableLiveData<>();
@@ -21,6 +23,11 @@ public class CoursesViewModel extends ViewModel {
     private MutableLiveData<Boolean> sophomore = new MutableLiveData<>();
     private MutableLiveData<Boolean> junior = new MutableLiveData<>();
     private MutableLiveData<Boolean> senior = new MutableLiveData<>();
+    private MutableLiveData<Boolean> shouldFetchCourses = new MutableLiveData<>();
+
+    public CoursesViewModel(){
+        shouldFetchCourses.setValue(false);
+    }
 
     public void fetchSchoolList(Runnable onSuccess, Consumer<ErrorInfo> onError, Runnable anyway){
         new Thread(() -> {
@@ -50,14 +57,46 @@ public class CoursesViewModel extends ViewModel {
         }).start();
     }
 
+    public void fetchCourses(Runnable onSuccess, Consumer<ErrorInfo> onError, Runnable anyway){
+        new Thread(() -> {
+            CourseListFetcher.Result result = CourseListFetcher.INSTANCE.fetch(
+                    Integer.parseInt(schoolYears.getValue().get(schoolYearSelection.getValue())),
+                    getSemesterCode(semesterSelection.getValue()),
+                    schools.getValue().get(schoolSelection.getValue()).s2,
+                    departments.getValue().get(departmentSelection.getValue()).s2
+            );
+
+            this.courseListResult.postValue(result);
+
+            if (result.errorInfo != null)
+                onError.accept(result.errorInfo);
+            else
+                onSuccess.run();
+
+            anyway.run();
+        }).start();
+    }
+
+    private String getSemesterCode(Integer value) {
+        switch (value){
+            case 0:
+                return "10";
+            case 1:
+                return "20";
+            case 2:
+                return "11";
+        }
+        return null;
+    }
+
     /**
      * This is "set"-Departments not "post"-Departments
      * @param departments
      */
     public void setDepartments(List<SchoolListFetcher.DeptInfo> departments){
-        List<String> deptStrings = new ArrayList<>();
-        departments.forEach((info) -> deptStrings.add(info.name));
-        Collections.sort(deptStrings);
+        List<StringPair> deptStrings = new ArrayList<>();
+        departments.forEach((info) -> deptStrings.add(new StringPair(info.name, info.code)));
+        Collections.sort(deptStrings, (o1, o2) -> o1.s1.compareTo(o2.s1));
         getDepartments().setValue(deptStrings);
     }
 
@@ -69,6 +108,10 @@ public class CoursesViewModel extends ViewModel {
         return personalInfoResult;
     }
 
+    public MutableLiveData<CourseListFetcher.Result> getCourseListResult() {
+        return courseListResult;
+    }
+
     public MutableLiveData<Integer> getSchoolYearSelection() {
         return schoolYearSelection;
     }
@@ -77,11 +120,15 @@ public class CoursesViewModel extends ViewModel {
         return semesterSelection;
     }
 
-    public MutableLiveData<List<String>> getSchools() {
+    public MutableLiveData<List<StringPair>> getSchools() {
         return schools;
     }
 
-    public MutableLiveData<List<String>> getDepartments() {
+    public MutableLiveData<List<String>> getSchoolYears() {
+        return schoolYears;
+    }
+
+    public MutableLiveData<List<StringPair>> getDepartments() {
         return departments;
     }
 
@@ -107,5 +154,9 @@ public class CoursesViewModel extends ViewModel {
 
     public MutableLiveData<Boolean> getSenior() {
         return senior;
+    }
+
+    public MutableLiveData<Boolean> getShouldFetchCourses() {
+        return shouldFetchCourses;
     }
 }

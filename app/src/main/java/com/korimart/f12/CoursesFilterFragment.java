@@ -1,5 +1,6 @@
 package com.korimart.f12;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.RadioGroup;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -22,7 +23,6 @@ public class CoursesFilterFragment extends Fragment {
     private Spinner school;
     private Spinner department;
     private CheckBox[] yearLevels = new CheckBox[4];
-
     private CoursesViewModel coursesViewModel;
 
     @Nullable
@@ -52,10 +52,10 @@ public class CoursesFilterFragment extends Fragment {
     }
 
     private void setViewListeners() {
-        ArrayAdapter<String> schoolYearAdapter = setSpinnerAdapter(schoolYear);
-        ArrayAdapter<String> semesterAdapter = setSpinnerAdapter(semester);
-        ArrayAdapter<String> schoolAdapter = setSpinnerAdapter(school);
-        ArrayAdapter<String> deptAdapter = setSpinnerAdapter(department);
+        StringPairAdapter schoolYearAdapter = setSpinnerAdapter(schoolYear);
+        StringPairAdapter semesterAdapter = setSpinnerAdapter(semester);
+        StringPairAdapter schoolAdapter = setSpinnerAdapter(school);
+        StringPairAdapter deptAdapter = setSpinnerAdapter(department);
 
         coursesViewModel.getSchoolYearSelection().observe(this, i -> schoolYear.setSelection(i));
         coursesViewModel.getSemesterSelection().observe(this, i -> semester.setSelection(i));
@@ -72,15 +72,15 @@ public class CoursesFilterFragment extends Fragment {
         yearLevels[2].setOnCheckedChangeListener((v, b) -> coursesViewModel.getJunior().setValue(b));
         yearLevels[3].setOnCheckedChangeListener((v, b) -> coursesViewModel.getSenior().setValue(b));
 
-        coursesViewModel.getSchoolListResult().observe(this, result -> {
+        coursesViewModel.getSchoolYears().observe(this, list -> {
             schoolYearAdapter.clear();
-            for (int i = result.latestSchoolYear; i > result.latestSchoolYear - 10; i--)
-                schoolYearAdapter.add(String.valueOf(i));
+            for (String year : list)
+                schoolYearAdapter.add(new StringPair(year, null));
         });
 
-        semesterAdapter.add("1학기");
-        semesterAdapter.add("2학기");
-        semesterAdapter.add("계절학기");
+        semesterAdapter.add(new StringPair("1학기", "10"));
+        semesterAdapter.add(new StringPair("2학기", "20"));
+        semesterAdapter.add(new StringPair("계절학기", "11"));
 
         coursesViewModel.getSchools().observe(this, schools -> {
             schoolAdapter.clear();
@@ -96,6 +96,7 @@ public class CoursesFilterFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 coursesViewModel.getSchoolYearSelection().setValue(position);
+                coursesViewModel.getShouldFetchCourses().setValue(true);
             }
 
             @Override
@@ -107,6 +108,7 @@ public class CoursesFilterFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 coursesViewModel.getSemesterSelection().setValue(position);
+                coursesViewModel.getShouldFetchCourses().setValue(true);
             }
 
             @Override
@@ -118,6 +120,7 @@ public class CoursesFilterFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 coursesViewModel.getSchoolSelection().setValue(position);
+                coursesViewModel.getShouldFetchCourses().setValue(true);
 
                 SchoolListFetcher.Result result = coursesViewModel.getSchoolListResult().getValue();
                 for (SchoolListFetcher.DeptInfo dept : result.schoolToDepts.keySet())
@@ -135,6 +138,7 @@ public class CoursesFilterFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 coursesViewModel.getDepartmentSelection().setValue(position);
+                coursesViewModel.getShouldFetchCourses().setValue(true);
             }
 
             @Override
@@ -143,10 +147,45 @@ public class CoursesFilterFragment extends Fragment {
         });
     }
 
-    private ArrayAdapter<String> setSpinnerAdapter(Spinner spinner){
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_courses_filter);
+    private StringPairAdapter setSpinnerAdapter(Spinner spinner){
+        StringPairAdapter adapter = new StringPairAdapter(getContext());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         return adapter;
+    }
+}
+
+class StringPair {
+    String s1;
+    String s2;
+
+    public StringPair(String s1, String s2){
+        this.s1 = s1;
+        this.s2 = s2;
+    }
+}
+
+class StringPairAdapter extends ArrayAdapter<StringPair> {
+    public StringPairAdapter(@NonNull Context context) {
+        super(context, 0);
+    }
+
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        if (convertView == null){
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_courses_filter, parent, false);
+        }
+
+        TextView textView = convertView.findViewById(R.id.item_courses_filter);
+        textView.setText(getItem(position).s1);
+        return textView;
+    }
+
+    @Override
+    public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        TextView textView = (TextView) super.getDropDownView(position, convertView, parent);
+        textView.setText(getItem(position).s1);
+        return textView;
     }
 }

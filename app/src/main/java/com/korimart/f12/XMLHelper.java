@@ -73,7 +73,7 @@ public enum XMLHelper {
         if (n == null) return null;
 
         Node nc = n.getFirstChild();
-        return nc.getTextContent();
+        return nc == null ? "" : nc.getTextContent();
     }
 
     public String getContentByName(Element e, String name){
@@ -83,7 +83,7 @@ public enum XMLHelper {
         if (n == null) return null;
 
         Node nc = n.getFirstChild();
-        return nc.getTextContent();
+        return nc == null ? "" : nc.getTextContent();
     }
 
     public String getLastContentByName(Document doc, String name){
