@@ -17,7 +17,7 @@ public enum CourseListFetcher {
         String name;
         String classification;
         String classNumber;
-        int schoolYear;
+        int yearLevel;
         int points;
         String timePlace;
         String professor;
@@ -46,7 +46,7 @@ public enum CourseListFetcher {
             courseInfo.name = xmlHelper.getContentByName(listEl, "curi_nm");
             courseInfo.classification = xmlHelper.getContentByName(listEl, "cmp_div_nm");
             courseInfo.classNumber = xmlHelper.getContentByName(listEl, "class_no");
-            courseInfo.schoolYear = Integer.parseInt(xmlHelper.getContentByName(listEl, "cmp_shyr"));
+            courseInfo.yearLevel = Integer.parseInt(xmlHelper.getContentByName(listEl, "cmp_shyr"));
             courseInfo.points = Integer.parseInt(xmlHelper.getContentByName(listEl, "pnt"));
             courseInfo.timePlace = xmlHelper.getContentByName(listEl, "lec_eng_nm");
             courseInfo.professor = xmlHelper.getContentByName(listEl, "prof_nm");

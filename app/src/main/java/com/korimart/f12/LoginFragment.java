@@ -33,6 +33,8 @@ public class LoginFragment extends Fragment {
     private Button okButton;
     private TextView systemMessage;
 
+    private int nextFrag = 0;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -64,6 +66,9 @@ public class LoginFragment extends Fragment {
         if (id != null){
             (new Thread(() -> tryLogin(true))).start();
         }
+
+        if (savedInstanceState != null)
+            nextFrag = savedInstanceState.getInt("onLogin");
     }
 
     private void setViewListeners() {
@@ -117,6 +122,16 @@ public class LoginFragment extends Fragment {
         }
 
         MainActivity mainActivity = ((MainActivity) getActivity());
-        mainActivity.runOnUiThread(() -> mainActivity.goToF12Frag());
+        mainActivity.runOnUiThread(() -> {
+            switch (nextFrag){
+                case 0:
+                mainActivity.goToF12Frag();
+                break;
+
+                case 1:
+                mainActivity.goToCoursesFrag();
+                break;
+            }
+        });
     }
 }

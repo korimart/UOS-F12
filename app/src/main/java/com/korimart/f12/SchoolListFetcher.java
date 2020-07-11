@@ -27,6 +27,8 @@ public enum SchoolListFetcher {
     public static class Result {
         String response;
         HashMap<DeptInfo, List<DeptInfo>> schoolToDepts;
+        int latestSchoolYear;
+        String latestSemester;
         ErrorInfo errorInfo;
     }
 
@@ -113,6 +115,13 @@ public enum SchoolListFetcher {
         }
 
         result.schoolToDepts = ret;
+
+        try {
+            result.latestSchoolYear = Integer.parseInt(xmlHelper.getContentByName(doc, "strSchYear"));
+        } catch (NumberFormatException e){
+            result.latestSchoolYear = -1;
+        }
+        result.latestSemester = xmlHelper.getContentByName(doc, "strSmtCd");
 
         if (result.schoolToDepts.isEmpty())
             result.errorInfo = new ErrorInfo("noSchoolFound", null);

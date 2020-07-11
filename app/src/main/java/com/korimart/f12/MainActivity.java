@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity
         setViewListeners();
 
         if (savedInstanceState == null)
-            goToLoginFrag();
+            goToLoginFrag(0);
     }
 
     @Override
@@ -90,10 +90,18 @@ public class MainActivity extends AppCompatActivity
                 .commit();
     }
 
-    public void goToLoginFrag() {
+    /**
+     * @param onLogin 0 f12 1 courses
+     */
+    public void goToLoginFrag(int onLogin) {
+        LoginFragment lf = new LoginFragment();
+        Bundle args = new Bundle();
+        args.putInt("onLogin", onLogin);
+        lf.setArguments(args);
+
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frag, new LoginFragment())
+                .replace(R.id.frag, lf)
                 .commit();
     }
 

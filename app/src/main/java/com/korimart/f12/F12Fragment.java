@@ -172,7 +172,7 @@ public class F12Fragment extends Fragment {
         getActivity().runOnUiThread(() -> {
             switch (errorInfo.errorType){
                 case "sessionExpired":
-                    ((MainActivity) getActivity()).goToLoginFrag();
+                    ((MainActivity) getActivity()).goToLoginFrag(0);
                     break;
 
                 case "infoResponseFailed":

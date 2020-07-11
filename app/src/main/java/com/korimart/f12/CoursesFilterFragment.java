@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -19,8 +21,9 @@ public class CoursesFilterFragment extends Fragment {
     private Spinner semester;
     private Spinner school;
     private Spinner department;
+    private CheckBox[] yearLevels = new CheckBox[4];
+
     private CoursesViewModel coursesViewModel;
-    private F12ViewModel f12ViewModel;
 
     @Nullable
     @Override
@@ -35,12 +38,15 @@ public class CoursesFilterFragment extends Fragment {
         ViewModelProvider vmp = new ViewModelProvider(getActivity(),
                 new ViewModelProvider.NewInstanceFactory());
         coursesViewModel = vmp.get(CoursesViewModel.class);
-        f12ViewModel = vmp.get(F12ViewModel.class);
 
         schoolYear = view.findViewById(R.id.courses_filter_school_year);
         semester = view.findViewById(R.id.courses_filter_semester);
         school = view.findViewById(R.id.courses_filter_school);
         department = view.findViewById(R.id.courses_filter_department);
+        yearLevels[0] = view.findViewById(R.id.courses_filter_freshman);
+        yearLevels[1] = view.findViewById(R.id.courses_filter_sophomore);
+        yearLevels[2] = view.findViewById(R.id.courses_filter_junior);
+        yearLevels[3] = view.findViewById(R.id.courses_filter_senior);
 
         setViewListeners();
     }
@@ -56,9 +62,19 @@ public class CoursesFilterFragment extends Fragment {
         coursesViewModel.getSchoolSelection().observe(this, i -> school.setSelection(i));
         coursesViewModel.getDepartmentSelection().observe(this, i -> department.setSelection(i));
 
-        f12ViewModel.getResult().observe(this, result -> {
+        coursesViewModel.getFreshman().observe(this, b -> yearLevels[0].setChecked(b));
+        coursesViewModel.getSophomore().observe(this, b -> yearLevels[1].setChecked(b));
+        coursesViewModel.getJunior().observe(this, b -> yearLevels[2].setChecked(b));
+        coursesViewModel.getSenior().observe(this, b -> yearLevels[3].setChecked(b));
+
+        yearLevels[0].setOnCheckedChangeListener((v, b) -> coursesViewModel.getFreshman().setValue(b));
+        yearLevels[1].setOnCheckedChangeListener((v, b) -> coursesViewModel.getSophomore().setValue(b));
+        yearLevels[2].setOnCheckedChangeListener((v, b) -> coursesViewModel.getJunior().setValue(b));
+        yearLevels[3].setOnCheckedChangeListener((v, b) -> coursesViewModel.getSenior().setValue(b));
+
+        coursesViewModel.getSchoolListResult().observe(this, result -> {
             schoolYearAdapter.clear();
-            for (int i = result.schoolYear; i > result.schoolYear - 10; i--)
+            for (int i = result.latestSchoolYear; i > result.latestSchoolYear - 10; i--)
                 schoolYearAdapter.add(String.valueOf(i));
         });
 
@@ -76,9 +92,33 @@ public class CoursesFilterFragment extends Fragment {
             deptAdapter.addAll(departments);
         });
 
+        schoolYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                coursesViewModel.getSchoolYearSelection().setValue(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        semester.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                coursesViewModel.getSemesterSelection().setValue(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
         school.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                coursesViewModel.getSchoolSelection().setValue(position);
+
                 SchoolListFetcher.Result result = coursesViewModel.getSchoolListResult().getValue();
                 for (SchoolListFetcher.DeptInfo dept : result.schoolToDepts.keySet())
                     if (dept.name.equals(((TextView) view).getText())){
@@ -88,7 +128,17 @@ public class CoursesFilterFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // nothing
+            }
+        });
+
+        department.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                coursesViewModel.getDepartmentSelection().setValue(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
     }

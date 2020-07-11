@@ -1,7 +1,6 @@
 package com.korimart.f12;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -54,24 +54,68 @@ public class CoursesFragment extends Fragment {
 
         f12ViewModel.getResult().observe(this, (result -> {
             if (result == null || result.schoolCode == null) return;
-            if (coursesViewModel.getSchoolListResult().getValue() != null) return;
 
-            fetchSchoolList();
+            if (coursesViewModel.getSchoolListResult().getValue() == null)
+                fetchSchoolList();
+
+            if (coursesViewModel.getPersonalInfoResult().getValue() == null)
+                fetchPersonalInfo();
         }));
     }
 
-    private void fetchSchoolList() {
-        coursesViewModel.fetchSchoolList(this::onSuccess, this::onError, this::anyway);
+    private void fetchPersonalInfo() {
+        FragmentActivity fa = getActivity();
+        coursesViewModel.fetchPersonalInfo(() -> onPersonalInfoFetched(fa), this::onError, () -> {});
     }
 
-    private void anyway() {
+    private void onPersonalInfoFetched(FragmentActivity fa) {
+        fa.runOnUiThread(() -> {
+            switch (coursesViewModel.getPersonalInfoResult().getValue().yearLevel){
+                case 1:
+                    coursesViewModel.getFreshman().setValue(true);
+                    break;
+
+                case 2:
+                    coursesViewModel.getSophomore().setValue(true);
+                    break;
+
+                case 3:
+                    coursesViewModel.getJunior().setValue(true);
+                    break;
+
+                case 4:
+                    coursesViewModel.getSenior().setValue(true);
+                    break;
+            }
+        });
+    }
+
+    private void fetchSchoolList() {
+        FragmentActivity fa = getActivity();
+        coursesViewModel.fetchSchoolList(() -> onSchoolListFetched(fa), this::onError, () -> {});
     }
 
     private void onError(ErrorInfo errorInfo) {
+        getActivity().runOnUiThread(() -> {
+            switch (errorInfo.errorType){
+                case "sessionExpired":
+                    MainActivity ma = (MainActivity) getActivity();
+                    ma.goToLoginFrag(1);
+                    break;
+
+                case "responseFailed":
+                    // TODO
+                    break;
+
+                default:
+                    ((MainActivity) getActivity()).goToErrorFrag(errorInfo.callStack);
+                    break;
+            }
+        });
     }
 
-    private void onSuccess() {
-        getActivity().runOnUiThread(() -> {
+    private void onSchoolListFetched(FragmentActivity activity) {
+        activity.runOnUiThread(() -> {
             SchoolListFetcher.Result schoolResult = coursesViewModel.getSchoolListResult().getValue();
             if (schoolResult == null) return;
 
@@ -90,9 +134,22 @@ public class CoursesFragment extends Fragment {
 
                             int schoolPos = coursesViewModel.getSchools().getValue().indexOf(e.getKey().name);
                             int deptPos = coursesViewModel.getDepartments().getValue().indexOf(dept.name);
+                            int semesterPos = 0;
+                            switch (schoolResult.latestSemester){
+                                case "10":
+                                    semesterPos = 0;
+                                    break;
+                                case "20":
+                                    semesterPos = 1;
+                                    break;
+                                case "11":
+                                    semesterPos = 2;
+                                    break;
+                            }
 
                             coursesViewModel.getSchoolSelection().setValue(schoolPos);
                             coursesViewModel.getDepartmentSelection().setValue(deptPos);
+                            coursesViewModel.getSemesterSelection().setValue(semesterPos);
                         }
                     }
                 }
