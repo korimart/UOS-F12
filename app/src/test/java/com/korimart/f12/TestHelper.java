@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 public enum TestHelper {
     INSTANCE;
 
-    public String loadDocument(String doc, String encoding){
+    public byte[] loadDocument(String doc){
         try {
             File file = new File(
                     Paths.get(System.getProperty("user.dir"), "src/test/java/com/korimart/f12", doc)
@@ -17,7 +17,7 @@ public enum TestHelper {
             byte[] data = new byte[(int) file.length()];
             fis.read(data);
             fis.close();
-            return new String(data, encoding);
+            return data;
         } catch (IOException e) {
             e.printStackTrace();
         }

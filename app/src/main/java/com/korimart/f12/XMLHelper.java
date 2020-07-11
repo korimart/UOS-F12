@@ -4,8 +4,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -19,12 +21,10 @@ public enum XMLHelper {
     private DocumentBuilder builder;
 
     public Document getDocument(String xml, String encoding){
-        StringBuilder xmlStringBuilder = new StringBuilder();
-        xmlStringBuilder.append(xml);
         ByteArrayInputStream input = null;
 
         try {
-            input = new ByteArrayInputStream(xmlStringBuilder.toString().getBytes(encoding));
+            input = new ByteArrayInputStream(xml.getBytes(encoding));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -47,6 +47,25 @@ public enum XMLHelper {
         return doc;
     }
 
+    public Document getDocument(byte[] xml){
+        Document doc = null;
+
+        if (builder == null){
+            try {
+                builder = factory.newDocumentBuilder();
+            } catch (ParserConfigurationException ignore) {
+            }
+        }
+
+        try {
+            doc = builder.parse(new ByteArrayInputStream(xml));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return doc;
+    }
+
     public String getContentByName(Document doc, String name){
         NodeList nl = doc.getElementsByTagName(name);
         Node n = nl.item(0);
@@ -60,6 +79,16 @@ public enum XMLHelper {
     public String getContentByName(Element e, String name){
         NodeList nl = e.getElementsByTagName(name);
         Node n = nl.item(0);
+
+        if (n == null) return null;
+
+        Node nc = n.getFirstChild();
+        return nc.getTextContent();
+    }
+
+    public String getLastContentByName(Document doc, String name){
+        NodeList nl = doc.getElementsByTagName(name);
+        Node n = nl.item(nl.getLength() - 1);
 
         if (n == null) return null;
 

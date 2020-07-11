@@ -6,6 +6,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,45 +22,47 @@ public enum F12Fetcher {
     private XMLHelper xmlHelper = XMLHelper.INSTANCE;
 
     public static class Result {
-        public String studentInfo;
-        public String infoResponse;
-        public String f12Response;
-        public int totalPnts;
-        public int hiddenPnts;
-        public float hiddenAvg;
-        public float totalAvg;
-        public DisclosedInfo disclosedInfo;
-        public ErrorInfo errorInfo;
+        String studentInfo;
+        String infoResponse;
+        String f12Response;
+        int totalPnts;
+        int hiddenPnts;
+        float hiddenAvg;
+        float totalAvg;
+        DisclosedInfo disclosedInfo;
+        String schoolCode;
+        String deptCode;
+        ErrorInfo errorInfo;
     }
 
     public Result fetch(boolean noPnp){
         Result result = new Result();
 
         try {
-            try {
-                result.infoResponse = fetchInfoResponse();
-            } catch (NetworkErrorException e) {
+            byte[] infoResponse = fetchInfoResponse(result);
+            if (result.infoResponse.contains("세션타임")){
                 result.errorInfo = new ErrorInfo("sessionExpired", null);
                 return result;
             }
 
-            Document infoDoc = xmlHelper.getDocument(result.infoResponse, "euc-kr");
+            Document infoDoc = xmlHelper.getDocument(infoResponse);
             if (infoDoc == null){
                 result.errorInfo = new ErrorInfo("infoResponseFailed", null);
                 return result;
             }
 
-            result.f12Response = fetchF12Response(infoDoc);
-            Document f12Doc = xmlHelper.getDocument(result.f12Response, "euc-kr");
+            byte[] f12Response = fetchF12Response(infoDoc, result);
+            Document f12Doc = xmlHelper.getDocument(f12Response);
             if (f12Doc == null){
                 result.errorInfo = new ErrorInfo("f12ResponseFailed", null);
                 return result;
             }
 
-            parse(f12Doc, noPnp, result);
-            if (result.errorInfo != null){
+            parseUser(infoDoc, result);
+            if (result.errorInfo != null)
                 return result;
-            }
+
+            parseF12(f12Doc, noPnp, result);
 
         } catch (Exception e){
             StackTraceElement[] stes = e.getStackTrace();
@@ -74,36 +78,26 @@ public enum F12Fetcher {
         return result;
     }
 
-    public float recalculateHiddenAvg(String f12Response, boolean noPnp){
-        F12Fetcher.Result result = new F12Fetcher.Result();
-        Document doc = xmlHelper.getDocument(f12Response, "euc-kr");
-        if (doc == null) return 0f;
+    private byte[] fetchInfoResponse(Result result) {
+        byte[] ret = webService.sendPost(f12URL, smtParams);
 
-        parse(doc, noPnp, result);
-        if (result.errorInfo != null) return 0f;
-
-        return result.hiddenAvg;
-    }
-
-    private String fetchInfoResponse() throws NetworkErrorException {
-        String infoResponse = webService.sendPost(f12URL, smtParams, "euc-kr");
-
-        if (infoResponse.contains("세션타임")){
-            throw new NetworkErrorException();
+        try {
+            result.infoResponse = new String(ret, "euc-kr");
+        } catch (UnsupportedEncodingException ignore) {
         }
 
-        return infoResponse;
+        return ret;
     }
 
-    private String fetchF12Response(Document infoDoc){
-        String smtString = xmlHelper.getContentByName(infoDoc, "strSmt");
-        LocalDateTime dt = LocalDateTime.now();
-        int year = getSchoolYear(dt);
+    public void parseUser(Document userDoc, Result result){
+        result.schoolCode = xmlHelper.getLastContentByName(userDoc, "upper_dept_cd");
+        result.deptCode = xmlHelper.getLastContentByName(userDoc, "dept_cd");
 
-        return webService.sendPost(f12URL, String.format(f12Params, year, smtString), "euc-kr");
+        if (result.schoolCode == null || result.deptCode == null)
+            result.errorInfo = new ErrorInfo("noUserInfo", null);
     }
 
-    public void parse(Document f12Doc, boolean noPnp, Result result){
+    public void parseF12(Document f12Doc, boolean noPnp, Result result){
         result.studentInfo = xmlHelper.getContentByName(f12Doc, "strMyShreg");
         if (result.studentInfo == null){
             result.errorInfo = new ErrorInfo("noStudentInfo", null);
@@ -152,6 +146,31 @@ public enum F12Fetcher {
         result.hiddenPnts = hiddenPntsInt;
         result.hiddenAvg = hiddenAvgFloat;
         result.totalAvg = totalAvgFloat;
+    }
+
+    public float recalculateHiddenAvg(String f12Response, boolean noPnp){
+        F12Fetcher.Result result = new F12Fetcher.Result();
+        Document doc = xmlHelper.getDocument(f12Response, "euc-kr");
+        if (doc == null) return 0f;
+
+        parseF12(doc, noPnp, result);
+        if (result.errorInfo != null) return 0f;
+
+        return result.hiddenAvg;
+    }
+
+    private byte[] fetchF12Response(Document infoDoc, Result result){
+        String smtString = xmlHelper.getContentByName(infoDoc, "strSmt");
+        LocalDateTime dt = LocalDateTime.now();
+        int year = getSchoolYear(dt);
+
+        byte[] ret = webService.sendPost(f12URL, String.format(f12Params, year, smtString));
+        try {
+            result.f12Response = new String(ret, "euc-kr");
+        } catch (UnsupportedEncodingException ignored) {
+        }
+
+        return ret;
     }
 
     private int getSchoolYear(LocalDateTime dt) {

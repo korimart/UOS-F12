@@ -13,8 +13,8 @@ public class CourseListUnitTest {
 
     @Test
     public void parserTest(){
-        String docString = testHelper.loadDocument("courseList2.xml", "euc-kr");
-        Document doc = XMLHelper.INSTANCE.getDocument(docString, "euc-kr");
+        byte[] docByte = testHelper.loadDocument("courseList2.xml");
+        Document doc = XMLHelper.INSTANCE.getDocument(docByte);
 
         Result result = new Result();
         CourseListFetcher.INSTANCE.parse(doc, result);
@@ -68,8 +68,8 @@ public class CourseListUnitTest {
 
     @Test
     public void parserTest2(){
-        String docString = testHelper.loadDocument("courseList3.xml", "euc-kr");
-        Document doc = XMLHelper.INSTANCE.getDocument(docString, "euc-kr");
+        byte[] docByte = testHelper.loadDocument("courseList3.xml");
+        Document doc = XMLHelper.INSTANCE.getDocument(docByte);
 
         Result result = new Result();
         CourseListFetcher.INSTANCE.parse(doc, result);

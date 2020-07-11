@@ -47,7 +47,7 @@
 
                 <Spinner
                     android:id="@+id/spinner2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="0"
@@ -85,7 +85,7 @@
 
                 <Spinner
                     android:id="@+id/spinner3"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="0"
@@ -122,8 +122,8 @@
                 android:orientation="vertical">
 
                 <Spinner
-                    android:id="@+id/courses_filter_department"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/courses_filter_school"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="0"
@@ -160,8 +160,8 @@
                 android:orientation="vertical">
 
                 <Spinner
-                    android:id="@+id/spinner5"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/courses_filter_department"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="0"
@@ -204,6 +204,7 @@
                     android:layout_height="wrap_content"
                     android:button="@null"
                     android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                    android:paddingBottom="10dp"
                     android:text="1학년"
                     android:textSize="24sp" />
 
@@ -213,6 +214,7 @@
                     android:layout_height="wrap_content"
                     android:button="@null"
                     android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                    android:paddingBottom="10dp"
                     android:text="2학년"
                     android:textSize="24sp" />
 
@@ -222,6 +224,7 @@
                     android:layout_height="wrap_content"
                     android:button="@null"
                     android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                    android:paddingBottom="10dp"
                     android:text="3학년"
                     android:textSize="24sp" />
 
@@ -231,6 +234,7 @@
                     android:layout_height="wrap_content"
                     android:button="@null"
                     android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                    android:paddingBottom="10dp"
                     android:text="4학년"
                     android:textSize="24sp" />
             </LinearLayout>

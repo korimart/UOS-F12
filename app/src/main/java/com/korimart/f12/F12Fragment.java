@@ -65,10 +65,8 @@ public class F12Fragment extends Fragment {
 
         setViewListeners();
 
-        if (((MainActivity) getActivity()).isFirstFetch()){
+        if (f12ViewModel.getResult().getValue() == null)
             fetchF12();
-            ((MainActivity) getActivity()).setFirstFetch(false);
-        }
     }
 
     private void setViewListeners() {
@@ -101,49 +99,48 @@ public class F12Fragment extends Fragment {
 
         f12ViewModel.getMessage().observe(this, (message) -> systemMessage.setText(message));
 
-        f12ViewModel.getDisclosedInfo().observe(this, (info) -> {
+        f12ViewModel.getResult().observe(this, (result) -> {
             // 2 = 1 (description) + 1 (space)
             courseNames.removeViews(2, courseNames.getChildCount() - 2);
             letterGrades.removeViews(2, letterGrades.getChildCount() - 2);
             points.removeViews(2, points.getChildCount() - 2);
 
-            if (info == null) return;
+            if (result.disclosedInfo != null){
+                ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
 
-            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
+                for (DisclosedGrade dg : result.disclosedInfo.gradesForDisplay){
+                    TextView courseName = new TextView(getContext());
+                    courseName.setText(dg.course);
+                    courseName.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
+                    courseNames.addView(courseName);
 
-            for (DisclosedGrade dg : info.gradesForDisplay){
-                TextView courseName = new TextView(getContext());
-                courseName.setText(dg.course);
-                courseName.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
-                courseNames.addView(courseName);
+                    TextView letterGrade = new TextView(getContext());
+                    letterGrade.setText(dg.letterGrade);
+                    letterGrade.setLayoutParams(lp);
+                    letterGrades.addView(letterGrade);
 
-                TextView letterGrade = new TextView(getContext());
-                letterGrade.setText(dg.letterGrade);
-                letterGrade.setLayoutParams(lp);
-                letterGrades.addView(letterGrade);
-
-                TextView point = new TextView(getContext());
-                point.setText(String.valueOf((int) dg.points));
-                point.setLayoutParams(lp);
-                points.addView(point);
+                    TextView point = new TextView(getContext());
+                    point.setText(String.valueOf((int) dg.points));
+                    point.setLayoutParams(lp);
+                    points.addView(point);
+                }
             }
-        });
 
-        f12ViewModel.getStudentInfo().observe(this, (info) -> loginInfo.setText(info));
-        f12ViewModel.getTotalPnts().observe(this, (pnts) -> totPnt.setText(String.valueOf(pnts)));
-        f12ViewModel.getHiddenPnts().observe(this, (pnts) -> hiddenPnts.setText(String.valueOf(pnts)));
-        f12ViewModel.getHiddenAvg().observe(this, (avg) -> {
+            loginInfo.setText(result.studentInfo);
+            totPnt.setText(String.valueOf(result.totalPnts));
+            hiddenPnts.setText(String.valueOf(result.hiddenPnts));
+            totalAvg.setText(String.format("%.2f", result.totalAvg));
+
             boolean noPnp = pnpSwitch.isChecked();
             String avgText;
             if (noPnp)
-                avgText = String.format("%.2f", avg);
+                avgText = String.format("%.2f", result.hiddenAvg);
             else
-                avgText = String.format("%.1f", avg);
+                avgText = String.format("%.1f", result.hiddenAvg);
             hiddenAvg.setText(avgText);
         });
-        f12ViewModel.getTotalAvg().observe(this, (avg) -> totalAvg.setText(String.format("%.2f", avg)));
     }
 
     public void fetchF12(){

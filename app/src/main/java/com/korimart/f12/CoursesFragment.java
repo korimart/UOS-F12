@@ -10,12 +10,14 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CoursesFragment extends Fragment {
     private RecyclerViewAdapter adapter;
+    private CoursesViewModel coursesViewModel;
 
     @Nullable
     @Override
@@ -26,6 +28,9 @@ public class CoursesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        ViewModelProvider vmp = new ViewModelProvider(getActivity(), new ViewModelProvider.NewInstanceFactory());
+        coursesViewModel = vmp.get(CoursesViewModel.class);
 
         RecyclerView recyclerView = view.findViewById(R.id.courses_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -38,6 +43,22 @@ public class CoursesFragment extends Fragment {
         MainActivity ma = (MainActivity) getActivity();
         view.findViewById(R.id.courses_filterButton).setOnClickListener(v ->
                 ma.goToCoursesFilterFrag(() -> ma.goToCoursesFrag()));
+
+        if (coursesViewModel.getSchoolListResult().getValue() == null)
+            fetchSchoolList();
+    }
+
+    private void fetchSchoolList() {
+        coursesViewModel.fetchSchoolList(this::onSuccess, this::onError, this::anyway);
+    }
+
+    private void anyway() {
+    }
+
+    private void onError(ErrorInfo errorInfo) {
+    }
+
+    private void onSuccess() {
     }
 
     public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {

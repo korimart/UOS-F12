@@ -25,13 +25,13 @@ public class F12UnitTest {
 
     @Before
     public void setup(){
-        String infoResponse = testHelper.loadDocument("myInfoResponse.xml", "euc-kr");
-        when(webService.sendPost(f12URL, smtParams, "euc-kr")).thenReturn(infoResponse);
+        byte[] infoResponse = testHelper.loadDocument("myInfoResponse.xml");
+        when(webService.sendPost(f12URL, smtParams)).thenReturn(infoResponse);
     }
 
     private void mockResponse(String doc) {
-        when(webService.sendPost(f12URL, String.format(f12Params, 2020, "10"), "euc-kr"))
-                .thenReturn(testHelper.loadDocument(doc, "euc-kr"));
+        when(webService.sendPost(f12URL, String.format(f12Params, 2020, "10")))
+                .thenReturn(testHelper.loadDocument(doc));
     }
 
     @Test

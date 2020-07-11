@@ -16,19 +16,16 @@ public class MainActivity extends AppCompatActivity
     private F12Fragment gf;
     private BottomNavigationView bottomNav;
     private MainViewModel mainViewModel;
-    private F12ViewModel f12ViewModel;
     private Stack<Runnable> fragStack = new Stack<>();
-    private boolean firstFetch = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory())
-                .get(MainViewModel.class);
-        f12ViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory())
-                .get(F12ViewModel.class);
+        ViewModelProvider vmp = new ViewModelProvider(this,
+                new ViewModelProvider.NewInstanceFactory());
+        mainViewModel = vmp.get(MainViewModel.class);
         bottomNav = findViewById(R.id.main_bottomNav);
 
         setViewListeners();
@@ -148,13 +145,5 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
         return true;
-    }
-
-    public boolean isFirstFetch() {
-        return firstFetch;
-    }
-
-    public void setFirstFetch(boolean firstFetch) {
-        this.firstFetch = firstFetch;
     }
 }

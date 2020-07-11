@@ -4,9 +4,13 @@ import android.text.TextUtils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.CookieManager;
 import java.net.HttpCookie;
 import java.net.HttpURLConnection;
@@ -27,9 +31,17 @@ public enum WebService {
     private int responseCode;
 
     public String sendPost(String requestURL, String urlParameters, String responseEncoding) {
+        try {
+            return new String(sendPost(requestURL, urlParameters), responseEncoding);
+        } catch (UnsupportedEncodingException e) {
+            return null;
+        }
+    }
 
+    public byte[] sendPost(String requestURL, String urlParameters){
         URL url;
-        String response = "";
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
         try {
             url = new URL(requestURL);
 
@@ -72,20 +84,17 @@ public enum WebService {
             setResponseCode(conn.getResponseCode());
 
             if (getResponseCode() == HttpsURLConnection.HTTP_OK) {
-
-                String line;
-                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), responseEncoding));
-                while ((line = br.readLine()) != null) {
-                    response += line;
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = conn.getInputStream().read(buffer)) != -1) {
+                    baos.write(buffer, 0, length);
                 }
-            } else {
-                response = "";
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return response;
+        return baos.toByteArray();
     }
 
 
