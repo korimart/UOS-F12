@@ -28,6 +28,7 @@ public class CoursesFragment extends Fragment {
     private RecyclerViewAdapter adapter;
     private CoursesViewModel coursesViewModel;
     private F12ViewModel f12ViewModel;
+    private TextView title;
 
     @Nullable
     @Override
@@ -55,6 +56,8 @@ public class CoursesFragment extends Fragment {
         view.findViewById(R.id.courses_filterButton).setOnClickListener(v ->
                 ma.goToCoursesFilterFrag(ma::goToCoursesFrag));
 
+        title = view.findViewById(R.id.courses_title);
+
         f12ViewModel.getResult().observe(this, (result -> {
             if (result == null || result.schoolCode == null) return;
 
@@ -68,6 +71,7 @@ public class CoursesFragment extends Fragment {
         coursesViewModel.getShouldFetchCourses().observe(this, (b) -> {
             if (b) {
                 fetchCourses();
+                changeTitle();
                 coursesViewModel.getShouldFetchCourses().setValue(false);
             }
         });
@@ -75,9 +79,49 @@ public class CoursesFragment extends Fragment {
         coursesViewModel.getShouldApplyFilter().observe(this, (b) -> {
             if (b) {
                 coursesViewModel.applyFilter();
+                changeTitle();
                 coursesViewModel.getShouldApplyFilter().setValue(false);
             }
         });
+    }
+
+    private void changeTitle() {
+        String title = "";
+        title += coursesViewModel.getSchoolYears().getValue().get(
+                coursesViewModel.getSchoolSelection().getValue()
+        );
+
+        title += "년 ";
+        switch (coursesViewModel.getSemesterSelection().getValue()){
+            case 0:
+                title += "1학기 ";
+                break;
+
+            case 1:
+                title += "2학기 ";
+                break;
+
+            case 2:
+                title += "계절학기 ";
+                break;
+        }
+        title += coursesViewModel.getDepartments().getValue().get(
+                coursesViewModel.getDepartmentSelection().getValue()
+        ).s1;
+
+        title += " ";
+        if (coursesViewModel.getFreshman().getValue())
+            title += "1 ";
+        if (coursesViewModel.getSophomore().getValue())
+            title += "2 ";
+        if (coursesViewModel.getJunior().getValue())
+            title += "3 ";
+        if (coursesViewModel.getSenior().getValue())
+            title += "4 ";
+
+        title = title.substring(0, title.length() - 1);
+        title += "학년";
+        this.title.setText(title);
     }
 
     private void fetchPersonalInfo() {

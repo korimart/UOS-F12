@@ -5,7 +5,7 @@
         android:id="@+id/bottomNav_F12"
         android:icon="@android:drawable/ic_menu_my_calendar"
         />
-    <item android:title="강의계획서"
+    <item android:title="전공시간표"
         android:id="@+id/bottomNav_courses"
         android:icon="@android:drawable/ic_menu_add"
         />
