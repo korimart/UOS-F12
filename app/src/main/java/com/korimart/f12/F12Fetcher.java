@@ -1,14 +1,10 @@
 package com.korimart.f12;
 
-import android.accounts.NetworkErrorException;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +28,8 @@ public enum F12Fetcher {
         DisclosedInfo disclosedInfo;
         String schoolCode;
         String deptCode;
+        int schoolYear;
+        String semester;
         ErrorInfo errorInfo;
     }
 
@@ -51,16 +49,16 @@ public enum F12Fetcher {
                 return result;
             }
 
-            byte[] f12Response = fetchF12Response(infoDoc, result);
+            parseInfo(infoDoc, result);
+            if (result.errorInfo != null)
+                return result;
+
+            byte[] f12Response = fetchF12Response(result);
             Document f12Doc = xmlHelper.getDocument(f12Response);
             if (f12Doc == null){
                 result.errorInfo = new ErrorInfo("f12ResponseFailed", null);
                 return result;
             }
-
-            parseUser(infoDoc, result);
-            if (result.errorInfo != null)
-                return result;
 
             parseF12(f12Doc, noPnp, result);
 
@@ -89,11 +87,19 @@ public enum F12Fetcher {
         return ret;
     }
 
-    public void parseUser(Document userDoc, Result result){
-        result.schoolCode = xmlHelper.getLastContentByName(userDoc, "upper_dept_cd");
-        result.deptCode = xmlHelper.getLastContentByName(userDoc, "dept_cd");
+    public void parseInfo(Document infoDoc, Result result){
+        try {
+            result.schoolYear = Integer.parseInt(xmlHelper.getContentByName(infoDoc, "strYear"));
+        } catch (NumberFormatException e){
+            result.errorInfo = new ErrorInfo("noUserInfo", null);
+            return;
+        }
 
-        if (result.schoolCode == null || result.deptCode == null)
+        result.semester = xmlHelper.getContentByName(infoDoc, "strSmt");
+        result.schoolCode = xmlHelper.getLastContentByName(infoDoc, "upper_dept_cd");
+        result.deptCode = xmlHelper.getLastContentByName(infoDoc, "dept_cd");
+
+        if (result.semester == null || result.schoolCode == null || result.deptCode == null)
             result.errorInfo = new ErrorInfo("noUserInfo", null);
     }
 
@@ -159,24 +165,14 @@ public enum F12Fetcher {
         return result.hiddenAvg;
     }
 
-    private byte[] fetchF12Response(Document infoDoc, Result result){
-        String smtString = xmlHelper.getContentByName(infoDoc, "strSmt");
-        LocalDateTime dt = LocalDateTime.now();
-        int year = getSchoolYear(dt);
-
-        byte[] ret = webService.sendPost(f12URL, String.format(f12Params, year, smtString));
+    private byte[] fetchF12Response(Result result){
+        byte[] ret = webService.sendPost(f12URL, String.format(f12Params, result.schoolYear, result.semester));
         try {
             result.f12Response = new String(ret, "euc-kr");
         } catch (UnsupportedEncodingException ignored) {
         }
 
         return ret;
-    }
-
-    private int getSchoolYear(LocalDateTime dt) {
-        int month = dt.getMonthValue();
-        if (month < 5) return dt.getYear() - 1;
-        return dt.getYear();
     }
 
     private DisclosedInfo getInfo(Document doc){

@@ -46,7 +46,7 @@
                 android:orientation="vertical">
 
                 <Spinner
-                    android:id="@+id/spinner2"
+                    android:id="@+id/courses_filter_school_year"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -84,7 +84,7 @@
                 android:orientation="vertical">
 
                 <Spinner
-                    android:id="@+id/spinner3"
+                    android:id="@+id/courses_filter_semester"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"

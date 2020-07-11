@@ -12,8 +12,10 @@ public class CoursesViewModel extends ViewModel {
     private MutableLiveData<SchoolListFetcher.Result> schoolListResult = new MutableLiveData<>();
     private MutableLiveData<List<String>> schools = new MutableLiveData<>();
     private MutableLiveData<List<String>> departments = new MutableLiveData<>();
-    private MutableLiveData<Integer> departmentSelection = new MutableLiveData<>();
+    private MutableLiveData<Integer> schoolYearSelection = new MutableLiveData<>();
+    private MutableLiveData<Integer> semesterSelection = new MutableLiveData<>();
     private MutableLiveData<Integer> schoolSelection = new MutableLiveData<>();
+    private MutableLiveData<Integer> departmentSelection = new MutableLiveData<>();
 
     public void fetchSchoolList(Runnable onSuccess, Consumer<ErrorInfo> onError, Runnable anyway){
         new Thread(() -> {
@@ -42,6 +44,14 @@ public class CoursesViewModel extends ViewModel {
 
     public MutableLiveData<SchoolListFetcher.Result> getSchoolListResult() {
         return schoolListResult;
+    }
+
+    public MutableLiveData<Integer> getSchoolYearSelection() {
+        return schoolYearSelection;
+    }
+
+    public MutableLiveData<Integer> getSemesterSelection() {
+        return semesterSelection;
     }
 
     public MutableLiveData<List<String>> getSchools() {

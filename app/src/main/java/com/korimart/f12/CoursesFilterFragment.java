@@ -14,11 +14,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public class CoursesFilterFragment extends Fragment {
+    private Spinner schoolYear;
+    private Spinner semester;
     private Spinner school;
     private Spinner department;
     private CoursesViewModel coursesViewModel;
@@ -39,6 +37,8 @@ public class CoursesFilterFragment extends Fragment {
         coursesViewModel = vmp.get(CoursesViewModel.class);
         f12ViewModel = vmp.get(F12ViewModel.class);
 
+        schoolYear = view.findViewById(R.id.courses_filter_school_year);
+        semester = view.findViewById(R.id.courses_filter_semester);
         school = view.findViewById(R.id.courses_filter_school);
         department = view.findViewById(R.id.courses_filter_department);
 
@@ -46,11 +46,25 @@ public class CoursesFilterFragment extends Fragment {
     }
 
     private void setViewListeners() {
+        ArrayAdapter<String> schoolYearAdapter = setSpinnerAdapter(schoolYear);
+        ArrayAdapter<String> semesterAdapter = setSpinnerAdapter(semester);
         ArrayAdapter<String> schoolAdapter = setSpinnerAdapter(school);
         ArrayAdapter<String> deptAdapter = setSpinnerAdapter(department);
 
+        coursesViewModel.getSchoolYearSelection().observe(this, i -> schoolYear.setSelection(i));
+        coursesViewModel.getSemesterSelection().observe(this, i -> semester.setSelection(i));
         coursesViewModel.getSchoolSelection().observe(this, i -> school.setSelection(i));
         coursesViewModel.getDepartmentSelection().observe(this, i -> department.setSelection(i));
+
+        f12ViewModel.getResult().observe(this, result -> {
+            schoolYearAdapter.clear();
+            for (int i = result.schoolYear; i > result.schoolYear - 10; i--)
+                schoolYearAdapter.add(String.valueOf(i));
+        });
+
+        semesterAdapter.add("1학기");
+        semesterAdapter.add("2학기");
+        semesterAdapter.add("계절학기");
 
         coursesViewModel.getSchools().observe(this, schools -> {
             schoolAdapter.clear();
