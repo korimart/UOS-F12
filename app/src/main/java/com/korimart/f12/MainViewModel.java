@@ -18,15 +18,31 @@ import java.util.List;
 public class MainViewModel extends ViewModel {
     private static String updateInfoURL = "https://korimart.github.io/UOS-12/updateInfo.txt";
     private static String updateLinkURL = "https://korimart.github.io/UOS-12/updateLink.txt";
+    private static String announcementURL = "https://korimart.github.io/UOS-12/announcement.txt";
 
     private MutableLiveData<String> updateLink = new MutableLiveData<>();
+    private MutableLiveData<String> announcement = new MutableLiveData<>();
     private MutableLiveData<Boolean> noPnp = new MutableLiveData<>();
 
-    public void fetchUpdateInfo(Context context){
-        new Thread(() -> checkUpdate(context)).start();
+    public void fetchGithub(Context context){
+        new Thread(() -> {
+            fetchUpdate(context);
+            fetchAnnouncement();
+        }).start();
     }
 
-    private void checkUpdate(Context context){
+    private void fetchAnnouncement(){
+        String response;
+        try {
+            response = WebService.INSTANCE.sendGet(announcementURL, "UTF-8");
+        } catch (Exception e) {
+            return;
+        }
+
+        announcement.postValue(response);
+    }
+
+    private void fetchUpdate(Context context){
         int verCode = 0;
 
         try {
@@ -43,10 +59,10 @@ public class MainViewModel extends ViewModel {
             return;
         }
 
-        if (verCode < Integer.parseInt(response)){
+        if (verCode < Integer.parseInt(response.trim())){
             try {
                 String updateLink = WebService.INSTANCE.sendGet(updateLinkURL, "UTF-8");
-                this.updateLink.postValue(updateLink);
+                this.updateLink.postValue(updateLink.trim());
             } catch (Exception e) {
             }
         }
@@ -81,6 +97,10 @@ public class MainViewModel extends ViewModel {
             osw.close();
         } catch (IOException ignore) {
         }
+    }
+
+    public MutableLiveData<String> getAnnouncement() {
+        return announcement;
     }
 
     public MutableLiveData<String> getUpdateLink() {

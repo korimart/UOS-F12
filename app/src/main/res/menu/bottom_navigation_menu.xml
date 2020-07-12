@@ -9,7 +9,7 @@
         android:id="@+id/bottomNav_courses"
         android:icon="@android:drawable/ic_menu_add"
         />
-    <item android:title="도움말"
+    <item android:title="업데이트"
         android:id="@+id/bottomNav_help"
         android:icon="@android:drawable/ic_menu_help"
         />

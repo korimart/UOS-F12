@@ -18,6 +18,7 @@ public class HelpFragment extends Fragment {
     private TextView version;
     private TextView updateMessage;
     private TextView updateLink;
+    private TextView announcement;
 
     @Nullable
     @Override
@@ -35,6 +36,7 @@ public class HelpFragment extends Fragment {
         version = view.findViewById(R.id.help_version);
         updateMessage = view.findViewById(R.id.help_updateMessage);
         updateLink = view.findViewById(R.id.help_updateLink);
+        announcement = view.findViewById(R.id.help_announcement);
 
         setViewListeners();
     }
@@ -45,6 +47,12 @@ public class HelpFragment extends Fragment {
             updateMessage.setText("최신버전이 아닙니다. 본 버전에 오류가 있을 수 있습니다. 다운로드 :");
             updateMessage.setTextColor(0xFFFF0000);
             updateLink.setText(s);
+            updateLink.setVisibility(View.VISIBLE);
+        });
+
+        mainViewModel.getAnnouncement().observe(this, s -> {
+            if (s == null) return;
+            announcement.setText(s);
         });
 
         try {
