@@ -69,6 +69,7 @@
                 android:id="@+id/help_updateLink"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:autoLink="web"
                 android:linksClickable="true"
                 android:textSize="18sp"
@@ -91,6 +92,7 @@
                 android:id="@+id/help_updateLink2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:autoLink="web"
                 android:linksClickable="true"
                 android:text="https://open.kakao.com/o/guPboWjc"
@@ -114,6 +116,7 @@
                 android:id="@+id/help_announcement"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:textColor="#000000"
                 android:textSize="18sp" />
