@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,8 +33,9 @@ public class LoginFragment extends Fragment {
     private EditText passwordEdit;
     private Button okButton;
     private TextView systemMessage;
-
     private int nextFrag = 0;
+    private F12ViewModel f12ViewModel;
+    private MainViewModel mainViewModel;
 
     @Nullable
     @Override
@@ -43,6 +45,10 @@ public class LoginFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        ViewModelProvider vmp = new ViewModelProvider(getActivity(), new ViewModelProvider.NewInstanceFactory());
+        f12ViewModel = vmp.get(F12ViewModel.class);
+        mainViewModel = vmp.get(MainViewModel.class);
+
         idEdit = view.findViewById(R.id.login_id);
         passwordEdit = view.findViewById(R.id.login_password);
         okButton = view.findViewById(R.id.login_okButton);
@@ -126,6 +132,8 @@ public class LoginFragment extends Fragment {
         MainActivity mainActivity = ((MainActivity) getActivity());
         mainActivity.runOnUiThread(() -> {
             mainActivity.getBottomNav().setVisibility(View.VISIBLE);
+            f12ViewModel.fetchF12(mainViewModel.getNoPnp().getValue(), () -> {}, (errorInfo) -> {}, () -> {});
+
             switch (nextFrag){
                 case 0:
                 mainActivity.goToF12Frag();

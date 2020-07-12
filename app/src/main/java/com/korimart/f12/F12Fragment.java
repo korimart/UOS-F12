@@ -64,9 +64,6 @@ public class F12Fragment extends Fragment {
         hideStudent = view.findViewById(R.id.f12_hideStudent);
 
         setViewListeners();
-
-        if (f12ViewModel.getResult().getValue() == null)
-            fetchF12();
     }
 
     private void setViewListeners() {
