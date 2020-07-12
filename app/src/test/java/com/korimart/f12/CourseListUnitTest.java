@@ -23,7 +23,7 @@ public class CourseListUnitTest {
             name = "창의공학기초설계";
             classification = "전공필수";
             classNumber = "02";
-            yearLevel = 1;
+            yearLevel = "1";
             points = 3;
             timePlace = "Fri 10,11,12,13/2-114";
             professor = "이동희";
@@ -37,7 +37,7 @@ public class CourseListUnitTest {
             name = "창의공학기초설계";
             classification = "전공필수";
             classNumber = "03";
-            yearLevel = 1;
+            yearLevel = "1";
             points = 3;
             timePlace = "Thu 10,11,12,13/2-114";
             professor = "현철승";
@@ -51,7 +51,7 @@ public class CourseListUnitTest {
             name = "학업설계상담 Ⅱ";
             classification = "전공필수";
             classNumber = "01";
-            yearLevel = 1;
+            yearLevel = "1";
             points = 0;
             timePlace = "";
             professor = "홍의경";
@@ -78,7 +78,7 @@ public class CourseListUnitTest {
             name = "공학수학Ⅱ";
             classification = "전공필수";
             classNumber = "02";
-            yearLevel = 2;
+            yearLevel = "2";
             points = 3;
             timePlace = "Wed 06,07,08/19-B114/115";
             professor = "안도열";
@@ -92,7 +92,7 @@ public class CourseListUnitTest {
             name = "알고리듬";
             classification = "전공선택";
             classNumber = "01";
-            yearLevel = 3;
+            yearLevel = "3";
             points = 3;
             timePlace = "Mon 07/19-216/217, Mon 08,09/19-104/105";
             professor = "안영아";
