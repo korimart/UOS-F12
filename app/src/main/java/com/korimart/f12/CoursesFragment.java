@@ -29,6 +29,7 @@ public class CoursesFragment extends Fragment {
     private CoursesViewModel coursesViewModel;
     private F12ViewModel f12ViewModel;
     private TextView title;
+    private TextView systemMessage;
 
     @Nullable
     @Override
@@ -57,14 +58,13 @@ public class CoursesFragment extends Fragment {
                 ma.goToCoursesFilterFrag(ma::goToCoursesFrag));
 
         title = view.findViewById(R.id.courses_title);
+        systemMessage = view.findViewById(R.id.courses_system_message);
 
         f12ViewModel.getResult().observe(this, (result -> {
-            if (result == null || result.schoolCode == null) return;
-
             if (coursesViewModel.getSchoolListResult().getValue() == null)
                 fetchSchoolList();
             else
-                changeTitle();
+                setTitle();
 
             if (coursesViewModel.getPersonalInfoResult().getValue() == null)
                 fetchPersonalInfo();
@@ -73,21 +73,37 @@ public class CoursesFragment extends Fragment {
         coursesViewModel.getShouldFetchCourses().observe(this, (b) -> {
             if (b) {
                 fetchCourses();
-                changeTitle();
+                setTitle();
                 coursesViewModel.getShouldFetchCourses().setValue(false);
             }
         });
 
         coursesViewModel.getShouldApplyFilter().observe(this, (b) -> {
             if (b) {
-                coursesViewModel.applyFilter();
-                changeTitle();
+                // if fetching, don't apply filter
+                if (coursesViewModel.getFilteredCourses().getValue() != null){
+                    coursesViewModel.applyFilter();
+                    setSystemMessage();
+                }
+                setTitle();
                 coursesViewModel.getShouldApplyFilter().setValue(false);
             }
         });
+
+        coursesViewModel.getSystemMessgae().observe(this, s -> systemMessage.setText(s));
     }
 
-    private void changeTitle() {
+    private void setSystemMessage(){
+        if (coursesViewModel.getFilteredCourses().getValue().size() == 0)
+            coursesViewModel.getSystemMessgae().setValue("검색 결과가 없습니다.");
+        else
+            coursesViewModel.getSystemMessgae().setValue("");
+    }
+
+    private void setTitle() {
+        if (coursesViewModel.getSchoolYears().getValue() == null)
+            return;
+
         String title = "";
         title += coursesViewModel.getSchoolYears().getValue().get(
                 coursesViewModel.getSchoolYearSelection().getValue()
@@ -132,12 +148,17 @@ public class CoursesFragment extends Fragment {
     }
 
     private void fetchCourses(){
+        coursesViewModel.getSystemMessgae().setValue("가져오는 중...");
+
         FragmentActivity fa = getActivity();
         coursesViewModel.fetchCourses(() -> onCoursesFetched(fa), this::onError, () -> {});
     }
 
     private void onCoursesFetched(FragmentActivity fa) {
-        fa.runOnUiThread(() -> adapter.notifyDataSetChanged());
+        fa.runOnUiThread(() -> {
+            adapter.notifyDataSetChanged();
+            setSystemMessage();
+        });
     }
 
     private void onPersonalInfoFetched(FragmentActivity fa) {
@@ -176,7 +197,7 @@ public class CoursesFragment extends Fragment {
                     break;
 
                 case "responseFailed":
-                    // TODO
+                    coursesViewModel.getSystemMessgae().setValue("불러오기 실패");
                     break;
 
                 default:
@@ -247,7 +268,7 @@ public class CoursesFragment extends Fragment {
             coursesViewModel.getSchoolYears().setValue(schoolYears);
 
             fetchCourses();
-            changeTitle();
+            setTitle();
         });
     }
 
@@ -268,7 +289,7 @@ public class CoursesFragment extends Fragment {
             holder.classNumber.setText(course.classNumber + "분반");
             holder.classification.setText(course.classification);
             holder.yearLevel.setText(course.yearLevel + "학년");
-            holder.professor.setText(course.professor);
+            holder.professor.setText(course.professor.isEmpty() ? "TBA" : course.professor);
             holder.points.setText(course.points + "학점");
             holder.nonKorean.setVisibility(course.nonKorean ? View.VISIBLE : View.INVISIBLE);
 
@@ -395,8 +416,13 @@ public class CoursesFragment extends Fragment {
                 }
             }
 
-            if (currTimeGroup != null)
-                currTimeGroup.end = intTimeDivs[intTimeDivs.length - 1];
+            if (currTimeGroup == null){
+                currTimeGroup = new TimeGroup();
+                currTimeGroup.start = intTimeDivs[intTimeDivs.length - 1];
+                timeGroups.add(currTimeGroup);
+            }
+
+            currTimeGroup.end = intTimeDivs[intTimeDivs.length - 1];
 
             StringBuilder ret = new StringBuilder();
             for (int i = 0; i < timeGroups.size(); i++){

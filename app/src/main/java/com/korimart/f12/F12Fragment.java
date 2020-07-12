@@ -177,19 +177,19 @@ public class F12Fragment extends Fragment {
 
                 case "infoResponseFailed":
                 case "f12ResponseFailed":
-                    systemMessage.setText("성적 불러오기 실패");
+                    f12ViewModel.getMessage().setValue("성적 불러오기 실패");
                     systemMessage.setTextColor(0xFFFF0000);
                     refreshButton.setEnabled(true);
                     break;
 
                 case "noStudentInfo":
-                    systemMessage.setText("와이즈 시스템 방식이 변경된 듯 (F12가 막혔을 수 있음)");
+                    f12ViewModel.getMessage().setValue("와이즈 시스템 방식이 변경된 듯 (F12가 막혔을 수 있음)");
                     systemMessage.setTextColor(0xFFFF0000);
                     refreshButton.setEnabled(true);
                     break;
 
                 case "noDisclosedInfo":
-                    systemMessage.setText("성적이 하나도 안 떠서 볼 수가 없음");
+                    f12ViewModel.getMessage().setValue("성적이 하나도 안 떠서 볼 수가 없음");
                     systemMessage.setTextColor(0xFFFF0000);
                     refreshButton.setEnabled(true);
                     break;

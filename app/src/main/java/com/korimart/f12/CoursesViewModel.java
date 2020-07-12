@@ -26,6 +26,7 @@ public class CoursesViewModel extends ViewModel {
     private MutableLiveData<Boolean> senior = new MutableLiveData<>();
     private MutableLiveData<Boolean> shouldFetchCourses = new MutableLiveData<>();
     private MutableLiveData<Boolean> shouldApplyFilter = new MutableLiveData<>();
+    private MutableLiveData<String> systemMessgae = new MutableLiveData<>();
 
     public CoursesViewModel(){
         shouldFetchCourses.setValue(false);
@@ -65,6 +66,8 @@ public class CoursesViewModel extends ViewModel {
     }
 
     public void fetchCourses(Runnable onSuccess, Consumer<ErrorInfo> onError, Runnable anyway){
+        getFilteredCourses().setValue(null);
+
         new Thread(() -> {
             CourseListFetcher.Result result = CourseListFetcher.INSTANCE.fetch(
                     Integer.parseInt(schoolYears.getValue().get(schoolYearSelection.getValue())),
@@ -74,14 +77,16 @@ public class CoursesViewModel extends ViewModel {
             );
 
             this.courseListResult.postValue(result);
-            List<CourseListFetcher.CourseInfo> filteredCourses = new ArrayList<>(result.courseInfos);
-            filterCourses(filteredCourses);
-            this.filteredCourses.postValue(filteredCourses);
 
-            if (result.errorInfo != null)
+            if (result.errorInfo != null){
                 onError.accept(result.errorInfo);
-            else
+            }
+            else {
+                List<CourseListFetcher.CourseInfo> filteredCourses = new ArrayList<>(result.courseInfos);
+                filterCourses(filteredCourses);
+                this.filteredCourses.postValue(filteredCourses);
                 onSuccess.run();
+            }
 
             anyway.run();
         }).start();
@@ -202,5 +207,9 @@ public class CoursesViewModel extends ViewModel {
 
     public MutableLiveData<Boolean> getShouldApplyFilter() {
         return shouldApplyFilter;
+    }
+
+    public MutableLiveData<String> getSystemMessgae() {
+        return systemMessgae;
     }
 }
