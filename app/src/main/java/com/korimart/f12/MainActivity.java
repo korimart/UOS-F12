@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity
      * @param onLogin 0 f12 1 courses
      */
     public void goToLoginFrag(int onLogin) {
+        getViewModelStore().clear();
         LoginFragment lf = new LoginFragment();
         Bundle args = new Bundle();
         args.putInt("onLogin", onLogin);
