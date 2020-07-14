@@ -32,6 +32,9 @@ public class LoginViewModel extends ViewModel {
 
     public CompletableFuture<Void> tryLogin(String id, String password){
         errorInfo = null;
+        this.id = id;
+        this.password = password;
+
         return CompletableFuture.runAsync(() -> {
             String response = WebService.INSTANCE.sendPost(loginURL, String.format(loginParams, id, password), "euc-kr");
             if (response.isEmpty()){

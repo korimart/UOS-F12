@@ -2,6 +2,7 @@ package com.korimart.f12;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 public class LoginFragment extends Fragment {
-    private String id;
-    private String password;
     private EditText idEdit;
     private EditText passwordEdit;
     private Button okButton;
@@ -75,10 +74,9 @@ public class LoginFragment extends Fragment {
             imm.hideSoftInputFromWindow(idEdit.getWindowToken(), 0);
             imm.hideSoftInputFromWindow(passwordEdit.getWindowToken(), 0);
             okButton.setEnabled(false);
-            id = idEdit.getText().toString();
-            password = passwordEdit.getText().toString();
 
-            tryLogin(id, password);
+            loginViewModel.setShouldWriteToFile(true);
+            tryLogin(idEdit.getText().toString(), passwordEdit.getText().toString());
         });
 
         loginViewModel.getMessage().observe(this, message -> systemMessage.setText(message));
@@ -127,6 +125,9 @@ public class LoginFragment extends Fragment {
 
             case "loginFailed":
                 loginViewModel.getMessage().setValue("로그인 실패");
+                break;
+
+            case "noLoginInfo":
                 break;
 
             default:

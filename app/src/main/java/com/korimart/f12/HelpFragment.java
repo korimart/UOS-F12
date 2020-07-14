@@ -56,8 +56,6 @@ public class HelpFragment extends Fragment {
             announcement.setText(s);
         });
 
-        Log.i("hehe", mainViewModel.getAnnouncement().getValue());
-
         try {
             PackageInfo pInfo = getContext().getPackageManager()
                     .getPackageInfo(getContext().getPackageName(), 0);

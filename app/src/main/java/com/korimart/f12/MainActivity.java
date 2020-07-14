@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Stack;
@@ -53,7 +54,11 @@ public class MainActivity extends AppCompatActivity
 
     private void setViewListeners() {
         mainViewModel.getUpdateLink().observe(this, s -> {
-            // TODO: add notification
+            if (s == null) return;
+
+            BadgeDrawable badge = bottomNav.getOrCreateBadge(R.id.bottomNav_help);
+            badge.setVisible(true);
+            badge.setNumber(1);
         });
 
         bottomNav.setOnNavigationItemSelectedListener(this);
