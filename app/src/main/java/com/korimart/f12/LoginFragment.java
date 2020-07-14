@@ -83,7 +83,7 @@ public class LoginFragment extends Fragment {
         loginViewModel.getMessageColor().observe(this, color -> systemMessage.setTextColor(color));
 
         loginViewModel.getLoginTryComplete().observe(this, b -> {
-            if (!b) return;
+            if (b == null || !b) return;
 
             anyway();
             loginViewModel.getLoginTryComplete().setValue(false);
@@ -97,7 +97,7 @@ public class LoginFragment extends Fragment {
         });
 
         loginViewModel.getLoginInfoReady().observe(this, b -> {
-            if (!b) return;
+            if (b == null || !b) return;
 
             loginViewModel.getLoginInfoReady().setValue(false);
 
