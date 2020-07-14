@@ -30,8 +30,12 @@ public class MainActivity extends AppCompatActivity
 
         setViewListeners();
 
-        if (savedInstanceState == null)
-            goToLoginFrag(0);
+        if (savedInstanceState == null){
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frag, new LoginFragment())
+                    .commit();
+        }
     }
 
     @Override

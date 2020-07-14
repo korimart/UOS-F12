@@ -32,13 +32,12 @@ public class MainViewModel extends ViewModel {
     }
 
     private void fetchAnnouncement(){
-        String response;
+        String response = null;
         try {
             response = WebService.INSTANCE.sendGet(announcementURL, "UTF-8");
         } catch (Exception e) {
             return;
         }
-
         announcement.postValue(response);
     }
 
