@@ -1,74 +1,39 @@
 package com.korimart.f12;
 
-import android.accounts.NetworkErrorException;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public enum SchoolListFetcher {
+public enum SchoolListParser implements WiseParser {
     INSTANCE;
 
-    public static final String url = "https://wise.uos.ac.kr/uosdoc/ucr.UcrMjTimeInq.do";
-    public static final String params = "_code_smtList=CMN31&_code_cmpList=UCS12&&_COMMAND_=onload" +
-            "&&_XML_=XML&_strMenuId=stud00180&";
-
-    private WebService webService = WebService.INSTANCE;
     private XMLHelper xmlHelper = XMLHelper.INSTANCE;
 
-    public static class Result {
-        String response;
+    @Override
+    public void parse(Document doc, WiseParser.Result result) {
+        parse(doc, (Result) result);
+    }
+
+    public static class Result implements WiseParser.Result {
         HashMap<DeptInfo, List<DeptInfo>> schoolToDepts;
         int latestSchoolYear;
         String latestSemester;
         ErrorInfo errorInfo;
+
+        @Override
+        public ErrorInfo getErrorInfo() {
+            return errorInfo;
+        }
     }
 
     public static class DeptInfo {
         String name;
         String code;
         String parentCode;
-    }
-
-    public Result fetch(){
-        Result result = new Result();
-
-        try {
-            byte[] response = webService.sendPost(url, params);
-            result.response = new String(response, "euc-kr");
-            if (result.response.contains("세션타임")){
-                result.errorInfo = new ErrorInfo("sessionExpired", null);
-                return result;
-            }
-
-            Document doc = xmlHelper.getDocument(response);
-            if (doc == null){
-                result.errorInfo = new ErrorInfo("responseFailed", null);
-                return result;
-            }
-
-            parse(doc, result);
-
-        } catch (Exception e){
-            StackTraceElement[] stes = e.getStackTrace();
-            StringBuilder sb = new StringBuilder();
-            sb.append(e.toString() + "\n");
-            for (StackTraceElement ste : stes) {
-                sb.append(ste.toString());
-                sb.append('\n');
-            }
-            result.errorInfo = new ErrorInfo("unknownError", sb.toString());
-        }
-
-        return result;
     }
 
     public void parse(Document doc, Result result){

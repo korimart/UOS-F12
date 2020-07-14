@@ -132,7 +132,6 @@ public class LoginFragment extends Fragment {
         MainActivity mainActivity = ((MainActivity) getActivity());
         mainActivity.runOnUiThread(() -> {
             mainActivity.getBottomNav().setVisibility(View.VISIBLE);
-            f12ViewModel.fetchF12(mainViewModel.getNoPnp().getValue(), () -> {}, (errorInfo) -> {}, () -> {});
 
             switch (nextFrag){
                 case 0:

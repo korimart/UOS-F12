@@ -9,18 +9,18 @@ import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
-import static com.korimart.f12.SchoolListFetcher.DeptInfo;
+import static com.korimart.f12.SchoolListParser.DeptInfo;
 
 public class SchoolListUnitTest {
     TestHelper testHelper = TestHelper.INSTANCE;
 
     @Test
     public void parserTest() {
-        SchoolListFetcher.Result result = new SchoolListFetcher.Result();
+        SchoolListParser.Result result = new SchoolListParser.Result();
 
         byte[] docByte = testHelper.loadDocument("collegeList.xml");
         Document doc = XMLHelper.INSTANCE.getDocument(docByte);
-        SchoolListFetcher.INSTANCE.parse(doc, result);
+        SchoolListParser.INSTANCE.parse(doc, result);
 
         HashMap<DeptInfo, List<DeptInfo>> hm = result.schoolToDepts;
         Set<DeptInfo> keys = hm.keySet();

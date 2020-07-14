@@ -7,9 +7,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static com.korimart.f12.F12Fetcher.f12Params;
-import static com.korimart.f12.F12Fetcher.f12URL;
-import static com.korimart.f12.F12Fetcher.smtParams;
+import static com.korimart.f12.F12Parser.f12Params;
+import static com.korimart.f12.F12Parser.f12URL;
+import static com.korimart.f12.F12Parser.smtParams;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
@@ -18,7 +18,7 @@ public class F12UnitTest {
     TestHelper testHelper = TestHelper.INSTANCE;
 
     @InjectMocks
-    F12Fetcher f12Fetcher = F12Fetcher.INSTANCE;
+    F12Parser f12Parser = F12Parser.INSTANCE;
 
     @Mock
     WebService webService;
@@ -37,7 +37,7 @@ public class F12UnitTest {
     @Test
     public void mineDoc() {
         mockResponse("mineDoc.xml");
-        F12Fetcher.Result result = f12Fetcher.fetch(true);
+        F12Parser.Result result = f12Parser.fetch(true);
         assertEquals(9, result.totalPnts);
         assertEquals(3, result.hiddenPnts);
         assertEquals(4f, result.hiddenAvg, 0.00001);
@@ -47,7 +47,7 @@ public class F12UnitTest {
     @Test
     public void nameOnlyDoc(){
         mockResponse("nameOnlyDoc.xml");
-        F12Fetcher.Result result = f12Fetcher.fetch(true);
+        F12Parser.Result result = f12Parser.fetch(true);
         assertEquals(6, result.totalPnts);
         assertEquals(3, result.hiddenPnts);
         assertEquals(4f, result.hiddenAvg, 0.00001);
@@ -60,7 +60,7 @@ public class F12UnitTest {
         // 0학점 패논패가 한 과목
         // 2학점짜리 과목 하나가 숨겨져 있는 상황
         mockResponse("parkDoc.xml");
-        F12Fetcher.Result result = f12Fetcher.fetch(false);
+        F12Parser.Result result = f12Parser.fetch(false);
         assertEquals(7, result.totalPnts);
         assertEquals(2, result.hiddenPnts);
         assertEquals(4f, result.hiddenAvg, 0.00001);
@@ -73,7 +73,7 @@ public class F12UnitTest {
         // 3학점짜리 B+가 공개되어 있고
         // 2학점짜리 B+, 3학점짜리 A+가 숨어있는 상황
         mockResponse("dotDoc.xml");
-        F12Fetcher.Result result = f12Fetcher.fetch(false);
+        F12Parser.Result result = f12Parser.fetch(false);
         assertEquals(11, result.totalPnts);
         assertEquals(5, result.hiddenPnts);
         assertEquals(4.1f, result.hiddenAvg, 0.00001);
@@ -83,7 +83,7 @@ public class F12UnitTest {
     @Test
     public void S0pntsDoc(){
         mockResponse("S0PntsDoc.xml");
-        F12Fetcher.Result result = f12Fetcher.fetch(false);
+        F12Parser.Result result = f12Parser.fetch(false);
         assertEquals(6, result.totalPnts);
         assertEquals(3, result.hiddenPnts);
         assertEquals(4f, result.hiddenAvg, 0.00001);
@@ -93,7 +93,7 @@ public class F12UnitTest {
     @Test
     public void S0pntsHiddenDoc(){
         mockResponse("S0PntsHiddenDoc.xml");
-        F12Fetcher.Result result = f12Fetcher.fetch(false);
+        F12Parser.Result result = f12Parser.fetch(false);
         assertEquals(9, result.totalPnts);
         assertEquals(3, result.hiddenPnts);
         assertEquals(4f, result.hiddenAvg, 0.00001);
@@ -103,7 +103,7 @@ public class F12UnitTest {
     @Test
     public void S3pntsDoc(){
         mockResponse("S3PntsDoc.xml");
-        F12Fetcher.Result result = f12Fetcher.fetch(false);
+        F12Parser.Result result = f12Parser.fetch(false);
         assertEquals(9, result.totalPnts);
         assertEquals(3, result.hiddenPnts);
         assertEquals(4f, result.hiddenAvg, 0.0001f);
@@ -113,7 +113,7 @@ public class F12UnitTest {
     @Test
     public void S3pntsHiddenDoc(){
         mockResponse("S3PntsHiddenDoc.xml");
-        F12Fetcher.Result result = f12Fetcher.fetch(false);
+        F12Parser.Result result = f12Parser.fetch(false);
         assertEquals(12, result.totalPnts);
         assertEquals(6, result.hiddenPnts);
         assertEquals(4f, result.hiddenAvg, 0.00001);

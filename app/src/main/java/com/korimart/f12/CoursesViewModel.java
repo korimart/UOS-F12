@@ -6,13 +6,23 @@ import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
 
 public class CoursesViewModel extends ViewModel {
-    private MutableLiveData<SchoolListFetcher.Result> schoolListResult = new MutableLiveData<>();
-    private MutableLiveData<PersonalInfoFetcher.Result> personalInfoResult = new MutableLiveData<>();
-    private MutableLiveData<CourseListFetcher.Result> courseListResult = new MutableLiveData<>();
-    private MutableLiveData<List<CourseListFetcher.CourseInfo>> filteredCourses = new MutableLiveData<>();
+    public static final String schoolListUrl = "https://wise.uos.ac.kr/uosdoc/ucr.UcrMjTimeInq.do";
+    public static final String schoolListParams = "_code_smtList=CMN31&_code_cmpList=UCS12&&_COMMAND_=onload" +
+            "&&_XML_=XML&_strMenuId=stud00180&";
+
+    public static final String persInfoUrl = "https://wise.uos.ac.kr/uosdoc/usr.UsrMasterInq.do";
+    public static final String persInfoParams = "strStudId=123123&_user_info=userid&&_COMMAND_=list&&_XML_=XML&_strMenuId=stud00040&";
+
+    public static final String courseListUrl = "https://wise.uos.ac.kr/uosdoc/ucr.UcrMjTimeInq.do";
+    public static final String courseListParam = "strSchYear=%d&strSmtCd=%s&strUnivCd=%s&" +
+            "strSustCd=%s&strCmpDivCd=&strCuriNo=&strClassNo=&strCuriNm=&strGradDivCd=20000&" +
+            "strEtcYn=&&_COMMAND_=list&&_XML_=XML&_strMenuId=stud00180&";
+
+    private MutableLiveData<List<CourseListParser.CourseInfo>> filteredCourses = new MutableLiveData<>();
     private MutableLiveData<List<StringPair>> schools = new MutableLiveData<>();
     private MutableLiveData<List<StringPair>> departments = new MutableLiveData<>();
     private MutableLiveData<List<String>> schoolYears = new MutableLiveData<>();
@@ -27,6 +37,24 @@ public class CoursesViewModel extends ViewModel {
     private MutableLiveData<Boolean> shouldFetchCourses = new MutableLiveData<>();
     private MutableLiveData<Boolean> shouldApplyFilter = new MutableLiveData<>();
     private MutableLiveData<String> systemMessgae = new MutableLiveData<>();
+    private MutableLiveData<Boolean> allFetchedAndParsed = new MutableLiveData();
+
+    private MutableLiveData<WiseFetcher.Result> schoolListFetched = new MutableLiveData<>();
+    private MutableLiveData<SchoolListParser.Result> schoolListParsed = new MutableLiveData<>();
+    private MutableLiveData<WiseFetcher.Result> personalInfoFetched = new MutableLiveData<>();
+    private MutableLiveData<PersonalInfoParser.Result> personalInfoParsed = new MutableLiveData<>();
+    private MutableLiveData<WiseFetcher.Result> courseListFetched = new MutableLiveData<>();
+    private MutableLiveData<CourseListParser.Result> courseListParsed = new MutableLiveData<>();
+
+    private CompletableFuture<Void> schoolListFuture;
+    private CompletableFuture<Void> personalInfoFuture;
+    private CompletableFuture<Void> coursesFuture;
+
+    private WiseHelper wiseHelper = WiseHelper.INSTANCE;
+    private WiseFetcher wiseFetcher = WiseFetcher.INSTNACE;
+    private SchoolListParser schoolListParser = SchoolListParser.INSTANCE;
+    private PersonalInfoParser personalInfoParser = PersonalInfoParser.INSTANCE;
+    private CourseListParser courseListParser = CourseListParser.INSTANCE;
 
     public CoursesViewModel(){
         shouldFetchCourses.setValue(false);
@@ -37,68 +65,71 @@ public class CoursesViewModel extends ViewModel {
         senior.setValue(false);
     }
 
-    public void fetchSchoolList(Runnable onSuccess, Consumer<ErrorInfo> onError, Runnable anyway){
-        new Thread(() -> {
-            SchoolListFetcher.Result result = SchoolListFetcher.INSTANCE.fetch();
-            this.schoolListResult.postValue(result);
+    public CompletableFuture<Void> fetchAndParseSchoolList(){
+        if (schoolListFuture == null){
+            schoolListFuture = CompletableFuture.runAsync(() -> {
+                SchoolListParser.Result schoolListParsed = new SchoolListParser.Result();
 
-            if (result.errorInfo != null)
-                onError.accept(result.errorInfo);
-            else
-                onSuccess.run();
+                wiseHelper.fetchAndParse(
+                        schoolListUrl, schoolListParams, wiseFetcher, this.schoolListFetched,
+                        schoolListParser, this.schoolListParsed, schoolListParsed);
+            });
+        }
 
-            anyway.run();
-        }).start();
+        return schoolListFuture;
     }
 
-    public void fetchPersonalInfo(Runnable onSuccess, Consumer<ErrorInfo> onError, Runnable anyway){
-        new Thread(() -> {
-            PersonalInfoFetcher.Result result = PersonalInfoFetcher.INSTANCE.fetch();
-            this.personalInfoResult.postValue(result);
+    public CompletableFuture<Void> fetchAndParsePersInfo(){
+        if (personalInfoFuture == null){
+            personalInfoFuture = CompletableFuture.runAsync(() -> {
+                PersonalInfoParser.Result persInfoParsed = new PersonalInfoParser.Result();
 
-            if (result.errorInfo != null)
-                onError.accept(result.errorInfo);
-            else
-                onSuccess.run();
+                wiseHelper.fetchAndParse(
+                        persInfoUrl, persInfoParams, wiseFetcher, this.personalInfoFetched,
+                        personalInfoParser, this.personalInfoParsed, persInfoParsed);
+            });
+        }
 
-            anyway.run();
-        }).start();
+        return personalInfoFuture;
     }
 
-    public void fetchCourses(Runnable onSuccess, Consumer<ErrorInfo> onError, Runnable anyway){
-        getFilteredCourses().setValue(null);
+    public CompletableFuture<Void> fetchCourses(boolean refetch){
+        if (coursesFuture == null || refetch){
+            getFilteredCourses().setValue(null);
+            coursesFuture = CompletableFuture.runAsync(() -> {
+                CourseListParser.Result courseListParsed = new CourseListParser.Result();
+                String formattedParams = String.format(
+                        Locale.US,
+                        courseListParam,
+                        Integer.parseInt(schoolYears.getValue().get(schoolYearSelection.getValue())),
+                        getSemesterCode(semesterSelection.getValue()),
+                        schools.getValue().get(schoolSelection.getValue()).s2,
+                        departments.getValue().get(departmentSelection.getValue()).s2);
 
-        new Thread(() -> {
-            CourseListFetcher.Result result = CourseListFetcher.INSTANCE.fetch(
-                    Integer.parseInt(schoolYears.getValue().get(schoolYearSelection.getValue())),
-                    getSemesterCode(semesterSelection.getValue()),
-                    schools.getValue().get(schoolSelection.getValue()).s2,
-                    departments.getValue().get(departmentSelection.getValue()).s2
-            );
+                if (!wiseHelper.fetchAndParse(
+                        courseListUrl, formattedParams, wiseFetcher, this.courseListFetched,
+                        courseListParser, this.courseListParsed, courseListParsed))
+                    return;
 
-            this.courseListResult.postValue(result);
-
-            if (result.errorInfo != null){
-                onError.accept(result.errorInfo);
-            }
-            else {
-                List<CourseListFetcher.CourseInfo> filteredCourses = new ArrayList<>(result.courseInfos);
+                List<CourseListParser.CourseInfo> filteredCourses = new ArrayList<>(courseListParsed.courseInfos);
                 filterCourses(filteredCourses);
                 this.filteredCourses.postValue(filteredCourses);
-                onSuccess.run();
-            }
+            });
+        }
 
-            anyway.run();
-        }).start();
+        return coursesFuture;
     }
 
     public void applyFilter() {
-        List<CourseListFetcher.CourseInfo> filteredCourses = new ArrayList<>(courseListResult.getValue().courseInfos);
+        CourseListParser.Result courses = courseListParsed.getValue();
+        if (courses == null) return;
+
+        List<CourseListParser.CourseInfo> filteredCourses = new ArrayList<>(courses.courseInfos);
         filterCourses(filteredCourses);
         this.filteredCourses.setValue(filteredCourses);
     }
 
-    private void filterCourses(List<CourseListFetcher.CourseInfo> rawCoursesCopy) {
+    private void filterCourses(List<CourseListParser.CourseInfo> rawCoursesCopy) {
         boolean[] yearLevels = {
                 freshman.getValue(),
                 sophomore.getValue(),
@@ -134,23 +165,23 @@ public class CoursesViewModel extends ViewModel {
      * This is "set"-Departments not "post"-Departments
      * @param departments
      */
-    public void setDepartments(List<SchoolListFetcher.DeptInfo> departments){
+    public void setDepartments(List<SchoolListParser.DeptInfo> departments){
         List<StringPair> deptStrings = new ArrayList<>();
         departments.forEach((info) -> deptStrings.add(new StringPair(info.name, info.code)));
         Collections.sort(deptStrings, (o1, o2) -> o1.s1.compareTo(o2.s1));
         getDepartments().setValue(deptStrings);
     }
 
-    public MutableLiveData<SchoolListFetcher.Result> getSchoolListResult() {
-        return schoolListResult;
+    public MutableLiveData<SchoolListParser.Result> getSchoolListParsed() {
+        return schoolListParsed;
     }
 
-    public MutableLiveData<PersonalInfoFetcher.Result> getPersonalInfoResult() {
-        return personalInfoResult;
+    public MutableLiveData<PersonalInfoParser.Result> getPersonalInfoParsed() {
+        return personalInfoParsed;
     }
 
-    public MutableLiveData<CourseListFetcher.Result> getCourseListResult() {
-        return courseListResult;
+    public MutableLiveData<CourseListParser.Result> getCourseListParsed() {
+        return courseListParsed;
     }
 
     public MutableLiveData<Integer> getSchoolYearSelection() {
@@ -201,7 +232,7 @@ public class CoursesViewModel extends ViewModel {
         return shouldFetchCourses;
     }
 
-    public MutableLiveData<List<CourseListFetcher.CourseInfo>> getFilteredCourses() {
+    public MutableLiveData<List<CourseListParser.CourseInfo>> getFilteredCourses() {
         return filteredCourses;
     }
 
@@ -211,5 +242,21 @@ public class CoursesViewModel extends ViewModel {
 
     public MutableLiveData<String> getSystemMessgae() {
         return systemMessgae;
+    }
+
+    public MutableLiveData<WiseFetcher.Result> getSchoolListFetched() {
+        return schoolListFetched;
+    }
+
+    public MutableLiveData<WiseFetcher.Result> getPersonalInfoFetched() {
+        return personalInfoFetched;
+    }
+
+    public MutableLiveData<WiseFetcher.Result> getCourseListFetched() {
+        return courseListFetched;
+    }
+
+    public MutableLiveData<Boolean> getAllFetchedAndParsed() {
+        return allFetchedAndParsed;
     }
 }

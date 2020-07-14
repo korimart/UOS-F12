@@ -23,7 +23,6 @@ import javax.xml.transform.stream.StreamSource;
 
 public class OriginalFragment extends Fragment {
     private TextView text;
-    private F12ViewModel f12ViewModel;
 
     @Nullable
     @Override
@@ -35,9 +34,13 @@ public class OriginalFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ViewModelProvider vmp = new ViewModelProvider(getActivity(), new ViewModelProvider.NewInstanceFactory());
-        f12ViewModel = vmp.get(F12ViewModel.class);
+        F12ViewModel f12ViewModel = vmp.get(F12ViewModel.class);
         text = view.findViewById(R.id.original_text);
-        text.setText(prettyFormat(f12ViewModel.getResult().getValue().f12Response));
+
+        f12ViewModel.getF12Fetched().observe(this, fetched -> {
+            if (fetched == null) return;
+            text.setText(prettyFormat(fetched.response));
+        });
     }
 
     // from

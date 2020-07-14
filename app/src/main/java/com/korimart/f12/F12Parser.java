@@ -4,106 +4,38 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-public enum F12Fetcher {
-    INSTANCE;
-
+public class F12Parser implements WiseParser {
     public static final String f12URL = "https://wise.uos.ac.kr/uosdoc/ugd.UgdOtcmInq.do";
     public static final String smtParams = "_dept_authDept=auth&_code_smtList=CMN31&&_COMMAND_=onload&&_XML_=XML&_strMenuId=stud00320&";
     public static final String f12Params = "strSchYear=%d&strSmtCd=%s&strStudId=123123&strDiv=2&&_COMMAND_=list&&_XML_=XML&_strMenuId=stud00320&";
-    private WebService webService = WebService.INSTANCE;
     private XMLHelper xmlHelper = XMLHelper.INSTANCE;
+    private boolean noPnp = false;
 
-    public static class Result {
+    public static class Result implements WiseParser.Result {
         String studentInfo;
-        String infoResponse;
-        String f12Response;
         int totalPnts;
         int hiddenPnts;
         float hiddenAvg;
         float totalAvg;
         DisclosedInfo disclosedInfo;
-        String schoolCode;
-        String deptCode;
-        int schoolYear;
-        String semester;
         ErrorInfo errorInfo;
-    }
 
-    public Result fetch(boolean noPnp){
-        Result result = new Result();
-
-        try {
-            byte[] infoResponse = fetchInfoResponse(result);
-            if (result.infoResponse.contains("세션타임")){
-                result.errorInfo = new ErrorInfo("sessionExpired", null);
-                return result;
-            }
-
-            Document infoDoc = xmlHelper.getDocument(infoResponse);
-            if (infoDoc == null){
-                result.errorInfo = new ErrorInfo("infoResponseFailed", null);
-                return result;
-            }
-
-            parseInfo(infoDoc, result);
-            if (result.errorInfo != null)
-                return result;
-
-            byte[] f12Response = fetchF12Response(result);
-            Document f12Doc = xmlHelper.getDocument(f12Response);
-            if (f12Doc == null){
-                result.errorInfo = new ErrorInfo("f12ResponseFailed", null);
-                return result;
-            }
-
-            parseF12(f12Doc, noPnp, result);
-
-        } catch (Exception e){
-            StackTraceElement[] stes = e.getStackTrace();
-            StringBuilder sb = new StringBuilder();
-            sb.append(e.toString() + "\n");
-            for (StackTraceElement ste : stes) {
-                sb.append(ste.toString());
-                sb.append('\n');
-            }
-            result.errorInfo = new ErrorInfo("unknownError", sb.toString());
+        @Override
+        public ErrorInfo getErrorInfo() {
+            return errorInfo;
         }
-
-        return result;
     }
 
-    private byte[] fetchInfoResponse(Result result) {
-        byte[] ret = webService.sendPost(f12URL, smtParams);
-
-        try {
-            result.infoResponse = new String(ret, "euc-kr");
-        } catch (UnsupportedEncodingException ignore) {
-        }
-
-        return ret;
+    @Override
+    public void parse(Document doc, WiseParser.Result result) {
+        Result result2 = (Result) result;
+        parse(doc, noPnp, result2);
     }
 
-    public void parseInfo(Document infoDoc, Result result){
-        try {
-            result.schoolYear = Integer.parseInt(xmlHelper.getContentByName(infoDoc, "strYear"));
-        } catch (NumberFormatException e){
-            result.errorInfo = new ErrorInfo("noUserInfo", null);
-            return;
-        }
-
-        result.semester = xmlHelper.getContentByName(infoDoc, "strSmt");
-        result.schoolCode = xmlHelper.getLastContentByName(infoDoc, "upper_dept_cd");
-        result.deptCode = xmlHelper.getLastContentByName(infoDoc, "dept_cd");
-
-        if (result.semester == null || result.schoolCode == null || result.deptCode == null)
-            result.errorInfo = new ErrorInfo("noUserInfo", null);
-    }
-
-    public void parseF12(Document f12Doc, boolean noPnp, Result result){
+    public void parse(Document f12Doc, boolean noPnp, Result result){
         result.studentInfo = xmlHelper.getContentByName(f12Doc, "strMyShreg");
         if (result.studentInfo == null){
             result.errorInfo = new ErrorInfo("noStudentInfo", null);
@@ -154,25 +86,19 @@ public enum F12Fetcher {
         result.totalAvg = totalAvgFloat;
     }
 
-    public float recalculateHiddenAvg(String f12Response, boolean noPnp){
-        F12Fetcher.Result result = new F12Fetcher.Result();
+    public float recalculateHiddenAvg(String f12Response){
+        F12Parser.Result result = new F12Parser.Result();
         Document doc = xmlHelper.getDocument(f12Response, "euc-kr");
         if (doc == null) return 0f;
 
-        parseF12(doc, noPnp, result);
+        parse(doc, noPnp, result);
         if (result.errorInfo != null) return 0f;
 
         return result.hiddenAvg;
     }
 
-    private byte[] fetchF12Response(Result result){
-        byte[] ret = webService.sendPost(f12URL, String.format(f12Params, result.schoolYear, result.semester));
-        try {
-            result.f12Response = new String(ret, "euc-kr");
-        } catch (UnsupportedEncodingException ignored) {
-        }
-
-        return ret;
+    public void setNoPnp(boolean noPnp) {
+        this.noPnp = noPnp;
     }
 
     private DisclosedInfo getInfo(Document doc){

@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -151,8 +149,8 @@ public class CoursesFilterFragment extends Fragment {
                 if (count > 0)
                     coursesViewModel.getShouldFetchCourses().setValue(true);
 
-                SchoolListFetcher.Result result = coursesViewModel.getSchoolListResult().getValue();
-                for (SchoolListFetcher.DeptInfo dept : result.schoolToDepts.keySet())
+                SchoolListParser.Result result = coursesViewModel.getSchoolListParsed().getValue();
+                for (SchoolListParser.DeptInfo dept : result.schoolToDepts.keySet())
                     if (dept.name.equals(((TextView) view).getText())){
                         coursesViewModel.setDepartments(result.schoolToDepts.get(dept));
                     }

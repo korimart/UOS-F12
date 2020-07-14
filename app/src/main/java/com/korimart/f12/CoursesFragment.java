@@ -16,13 +16,14 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static com.korimart.f12.SchoolListFetcher.DeptInfo;
+import static com.korimart.f12.SchoolListParser.DeptInfo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public class CoursesFragment extends Fragment {
     private RecyclerViewAdapter adapter;
@@ -60,22 +61,19 @@ public class CoursesFragment extends Fragment {
         title = view.findViewById(R.id.courses_title);
         systemMessage = view.findViewById(R.id.courses_system_message);
 
-        f12ViewModel.getResult().observe(this, (result -> {
-            if (coursesViewModel.getSchoolListResult().getValue() == null)
-                fetchSchoolList();
-            else
-                setTitle();
+        coursesViewModel.getAllFetchedAndParsed().setValue(false);
+        CompletableFuture.allOf(
+                coursesViewModel.fetchAndParsePersInfo(),
+                f12ViewModel.fetchAndParse(false, false),
+                coursesViewModel.fetchAndParseSchoolList()
+                ).thenRun(() -> coursesViewModel.getAllFetchedAndParsed().postValue(true));
 
-            if (coursesViewModel.getPersonalInfoResult().getValue() == null)
-                fetchPersonalInfo();
-        }));
+        coursesViewModel.getAllFetchedAndParsed().observe(this, b -> {
+            if (!b) return;
 
-        coursesViewModel.getShouldFetchCourses().observe(this, (b) -> {
-            if (b) {
-                fetchCourses();
-                setTitle();
-                coursesViewModel.getShouldFetchCourses().setValue(false);
-            }
+            onSchoolListParsed(coursesViewModel.getSchoolListParsed().getValue());
+            coursesViewModel.fetchCourses(false);
+            setTitle();
         });
 
         coursesViewModel.getShouldApplyFilter().observe(this, (b) -> {
@@ -142,18 +140,6 @@ public class CoursesFragment extends Fragment {
         this.title.setText(title);
     }
 
-    private void fetchPersonalInfo() {
-        FragmentActivity fa = getActivity();
-        coursesViewModel.fetchPersonalInfo(() -> onPersonalInfoFetched(fa), this::onError, () -> {});
-    }
-
-    private void fetchCourses(){
-        coursesViewModel.getSystemMessgae().setValue("가져오는 중...");
-
-        FragmentActivity fa = getActivity();
-        coursesViewModel.fetchCourses(() -> onCoursesFetched(fa), this::onError, () -> {});
-    }
-
     private void onCoursesFetched(FragmentActivity fa) {
         fa.runOnUiThread(() -> {
             adapter.notifyDataSetChanged();
@@ -163,7 +149,7 @@ public class CoursesFragment extends Fragment {
 
     private void onPersonalInfoFetched(FragmentActivity fa) {
         fa.runOnUiThread(() -> {
-            switch (coursesViewModel.getPersonalInfoResult().getValue().yearLevel){
+            switch (coursesViewModel.getPersonalInfoParsed().getValue().yearLevel){
                 case 1:
                     coursesViewModel.getFreshman().setValue(true);
                     break;
@@ -183,93 +169,78 @@ public class CoursesFragment extends Fragment {
         });
     }
 
-    private void fetchSchoolList() {
-        FragmentActivity fa = getActivity();
-        coursesViewModel.fetchSchoolList(() -> onSchoolListFetched(fa), this::onError, () -> {});
-    }
-
     private void onError(ErrorInfo errorInfo) {
-        getActivity().runOnUiThread(() -> {
-            switch (errorInfo.errorType){
-                case "sessionExpired":
-                    MainActivity ma = (MainActivity) getActivity();
-                    ma.goToLoginFrag(1);
-                    break;
+        switch (errorInfo.errorType){
+            case "sessionExpired":
+                MainActivity ma = (MainActivity) getActivity();
+                ma.goToLoginFrag(1);
+                break;
 
-                case "responseFailed":
-                    coursesViewModel.getSystemMessgae().setValue("불러오기 실패");
-                    break;
+            case "responseFailed":
+                coursesViewModel.getSystemMessgae().setValue("불러오기 실패");
+                break;
 
-                default:
-                    ((MainActivity) getActivity()).goToErrorFrag(errorInfo.callStack);
-                    break;
-            }
-        });
+            default:
+                ((MainActivity) getActivity()).goToErrorFrag(errorInfo.callStack);
+                break;
+        }
     }
 
-    private void onSchoolListFetched(FragmentActivity activity) {
-        activity.runOnUiThread(() -> {
-            SchoolListFetcher.Result schoolResult = coursesViewModel.getSchoolListResult().getValue();
-            if (schoolResult == null) return;
+    private void onSchoolListParsed(@NonNull SchoolListParser.Result schoolResult) {
+        F12InfoParser.Result f12Result = f12ViewModel.getF12InfoParsed().getValue();
 
-            F12Fetcher.Result f12Result = f12ViewModel.getResult().getValue();
+        ArrayList<StringPair> al = new ArrayList<>();
+        schoolResult.schoolToDepts.keySet().forEach((info) -> al.add(new StringPair(info.name, info.code)));
+        Collections.sort(al, (o1, o2) -> o1.s1.compareTo(o2.s1));
+        coursesViewModel.getSchools().setValue(al);
 
-            ArrayList<StringPair> al = new ArrayList<>();
-            schoolResult.schoolToDepts.keySet().forEach((info) -> al.add(new StringPair(info.name, info.code)));
-            Collections.sort(al, (o1, o2) -> o1.s1.compareTo(o2.s1));
-            coursesViewModel.getSchools().setValue(al);
+        List<StringPair> schools = coursesViewModel.getSchools().getValue();
 
-            List<StringPair> schools = coursesViewModel.getSchools().getValue();
+        for (Map.Entry<DeptInfo, List<DeptInfo>> e : schoolResult.schoolToDepts.entrySet()){
+            if (!e.getKey().code.equals(f12Result.schoolCode)) continue;
 
-            for (Map.Entry<DeptInfo, List<DeptInfo>> e : schoolResult.schoolToDepts.entrySet()){
-                if (!e.getKey().code.equals(f12Result.schoolCode)) continue;
+            for (DeptInfo dept : e.getValue()){
+                if (!dept.code.equals(f12Result.deptCode)) continue;
 
-                for (DeptInfo dept : e.getValue()){
-                    if (!dept.code.equals(f12Result.deptCode)) continue;
+                coursesViewModel.setDepartments(e.getValue());
+                List<StringPair> depts = coursesViewModel.getDepartments().getValue();
 
-                    coursesViewModel.setDepartments(e.getValue());
-                    List<StringPair> depts = coursesViewModel.getDepartments().getValue();
+                int schoolPos = LinearTimeHelper.INSTANCE.indexOf(
+                        schools,
+                        e.getKey().name,
+                        (stringPair, s) -> stringPair.s1.compareTo(s)
+                );
 
-                    int schoolPos = LinearTimeHelper.INSTANCE.indexOf(
-                            schools,
-                            e.getKey().name,
-                            (stringPair, s) -> stringPair.s1.compareTo(s)
-                    );
+                int deptPos = LinearTimeHelper.INSTANCE.indexOf(
+                        depts,
+                        dept.name,
+                        (stringPair, s) -> stringPair.s1.compareTo(s)
+                );
 
-                    int deptPos = LinearTimeHelper.INSTANCE.indexOf(
-                            depts,
-                            dept.name,
-                            (stringPair, s) -> stringPair.s1.compareTo(s)
-                    );
-
-                    int semesterPos = 0;
-                    switch (schoolResult.latestSemester){
-                        case "10":
-                            semesterPos = 0;
-                            break;
-                        case "20":
-                            semesterPos = 1;
-                            break;
-                        case "11":
-                            semesterPos = 2;
-                            break;
-                    }
-
-                    coursesViewModel.getSchoolYearSelection().setValue(0);
-                    coursesViewModel.getSchoolSelection().setValue(schoolPos);
-                    coursesViewModel.getDepartmentSelection().setValue(deptPos);
-                    coursesViewModel.getSemesterSelection().setValue(semesterPos);
+                int semesterPos = 0;
+                switch (schoolResult.latestSemester){
+                    case "10":
+                        semesterPos = 0;
+                        break;
+                    case "20":
+                        semesterPos = 1;
+                        break;
+                    case "11":
+                        semesterPos = 2;
+                        break;
                 }
+
+                coursesViewModel.getSchoolYearSelection().setValue(0);
+                coursesViewModel.getSchoolSelection().setValue(schoolPos);
+                coursesViewModel.getDepartmentSelection().setValue(deptPos);
+                coursesViewModel.getSemesterSelection().setValue(semesterPos);
             }
+        }
 
-            ArrayList<String> schoolYears = new ArrayList<>();
-            for (int i = schoolResult.latestSchoolYear; i > schoolResult.latestSchoolYear - 10; i--)
-                schoolYears.add(String.valueOf(i));
-            coursesViewModel.getSchoolYears().setValue(schoolYears);
-
-            fetchCourses();
-            setTitle();
-        });
+        ArrayList<String> schoolYears = new ArrayList<>();
+        for (int i = schoolResult.latestSchoolYear; i > schoolResult.latestSchoolYear - 10; i--)
+            schoolYears.add(String.valueOf(i));
+        coursesViewModel.getSchoolYears().setValue(schoolYears);
     }
 
     public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
@@ -283,7 +254,7 @@ public class CoursesFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            CourseListFetcher.CourseInfo course = coursesViewModel.getFilteredCourses().getValue().get(position);
+            CourseListParser.CourseInfo course = coursesViewModel.getFilteredCourses().getValue().get(position);
 
             holder.name.setText(course.name);
             holder.classNumber.setText(course.classNumber + "분반");
@@ -306,7 +277,7 @@ public class CoursesFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            List<CourseListFetcher.CourseInfo> infos = coursesViewModel.getFilteredCourses().getValue();
+            List<CourseListParser.CourseInfo> infos = coursesViewModel.getFilteredCourses().getValue();
             return infos == null ? 0 : infos.size();
         }
 

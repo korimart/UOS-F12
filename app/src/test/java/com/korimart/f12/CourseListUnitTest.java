@@ -6,7 +6,7 @@ import org.w3c.dom.Document;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static com.korimart.f12.CourseListFetcher.*;
+import static com.korimart.f12.CourseListParser.*;
 
 public class CourseListUnitTest {
     TestHelper testHelper = TestHelper.INSTANCE;
@@ -17,7 +17,7 @@ public class CourseListUnitTest {
         Document doc = XMLHelper.INSTANCE.getDocument(docByte);
 
         Result result = new Result();
-        CourseListFetcher.INSTANCE.parse(doc, result);
+        CourseListParser.INSTANCE.parse(doc, result);
 
         CourseInfo info1 = new CourseInfo(){{
             name = "창의공학기초설계";
@@ -72,7 +72,7 @@ public class CourseListUnitTest {
         Document doc = XMLHelper.INSTANCE.getDocument(docByte);
 
         Result result = new Result();
-        CourseListFetcher.INSTANCE.parse(doc, result);
+        CourseListParser.INSTANCE.parse(doc, result);
 
         CourseInfo info1 = new CourseInfo(){{
             name = "공학수학Ⅱ";
