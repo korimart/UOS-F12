@@ -13,11 +13,6 @@ public enum SchoolListParser implements WiseParser {
 
     private XMLHelper xmlHelper = XMLHelper.INSTANCE;
 
-    @Override
-    public void parse(Document doc, WiseParser.Result result) {
-        parse(doc, (Result) result);
-    }
-
     public static class Result implements WiseParser.Result {
         HashMap<DeptInfo, List<DeptInfo>> schoolToDepts;
         int latestSchoolYear;
@@ -36,7 +31,10 @@ public enum SchoolListParser implements WiseParser {
         String parentCode;
     }
 
-    public void parse(Document doc, Result result){
+    @Override
+    public Result parse(Document doc){
+        Result result = new Result();
+
         Element univList = xmlHelper.getElementByName(doc, "univList");
         NodeList lists = univList.getChildNodes();
 
@@ -90,6 +88,8 @@ public enum SchoolListParser implements WiseParser {
 
         if (result.schoolToDepts.isEmpty())
             result.errorInfo = new ErrorInfo("noSchoolFound", null);
+
+        return result;
     }
 
     private boolean isSchool(Node list){

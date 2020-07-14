@@ -30,22 +30,19 @@ public class F12Parser implements WiseParser {
     }
 
     @Override
-    public void parse(Document doc, WiseParser.Result result) {
-        Result result2 = (Result) result;
-        parse(doc, noPnp, result2);
-    }
+    public Result parse(Document f12Doc){
+        Result result = new Result();
 
-    public void parse(Document f12Doc, boolean noPnp, Result result){
         result.studentInfo = xmlHelper.getContentByName(f12Doc, "strMyShreg");
         if (result.studentInfo == null){
             result.errorInfo = new ErrorInfo("noStudentInfo", null);
-            return;
+            return result;
         }
 
         result.disclosedInfo = getInfo(f12Doc);
         if (result.disclosedInfo == null){
             result.errorInfo = new ErrorInfo("noDisclosedInfo", null);
-            return;
+            return result;
         }
 
         float disclosedMarksFloat = 0;
@@ -84,14 +81,15 @@ public class F12Parser implements WiseParser {
         result.hiddenPnts = hiddenPntsInt;
         result.hiddenAvg = hiddenAvgFloat;
         result.totalAvg = totalAvgFloat;
+
+        return result;
     }
 
     public float recalculateHiddenAvg(String f12Response){
-        F12Parser.Result result = new F12Parser.Result();
         Document doc = xmlHelper.getDocument(f12Response, "euc-kr");
         if (doc == null) return 0f;
 
-        parse(doc, noPnp, result);
+        F12Parser.Result result = parse(doc);
         if (result.errorInfo != null) return 0f;
 
         return result.hiddenAvg;

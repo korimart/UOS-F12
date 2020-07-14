@@ -17,7 +17,7 @@ public enum WiseHelper {
             return false;
         }
 
-        wiseParser.parse(fetched.document, parserResultImp);
+        wiseParser.parse(fetched.document);
         mldParsed.postValue(parserResultImp);
         if (parserResultImp.getErrorInfo() != null){
             return false;

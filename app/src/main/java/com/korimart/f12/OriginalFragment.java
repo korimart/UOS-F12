@@ -36,11 +36,7 @@ public class OriginalFragment extends Fragment {
         ViewModelProvider vmp = new ViewModelProvider(getActivity(), new ViewModelProvider.NewInstanceFactory());
         F12ViewModel f12ViewModel = vmp.get(F12ViewModel.class);
         text = view.findViewById(R.id.original_text);
-
-        f12ViewModel.getF12Fetched().observe(this, fetched -> {
-            if (fetched == null) return;
-            text.setText(prettyFormat(fetched.response));
-        });
+        text.setText(prettyFormat(f12ViewModel.getF12Fetched().response));
     }
 
     // from

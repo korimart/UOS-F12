@@ -7,5 +7,5 @@ public interface WiseParser {
         ErrorInfo getErrorInfo();
     }
 
-    void parse(Document doc, WiseParser.Result result);
+    Result parse(Document doc);
 }

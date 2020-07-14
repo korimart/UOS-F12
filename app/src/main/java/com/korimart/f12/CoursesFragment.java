@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -61,34 +61,87 @@ public class CoursesFragment extends Fragment {
         title = view.findViewById(R.id.courses_title);
         systemMessage = view.findViewById(R.id.courses_system_message);
 
-        coursesViewModel.getAllFetchedAndParsed().setValue(false);
         CompletableFuture.allOf(
                 coursesViewModel.fetchAndParsePersInfo(),
                 f12ViewModel.fetchAndParse(false, false),
                 coursesViewModel.fetchAndParseSchoolList()
-                ).thenRun(() -> coursesViewModel.getAllFetchedAndParsed().postValue(true));
+                ).thenRun(() -> coursesViewModel.getCourseListFetchReady().postValue(true));
 
-        coursesViewModel.getAllFetchedAndParsed().observe(this, b -> {
+        coursesViewModel.getCourseListFetchReady().observe(this, b -> {
             if (!b) return;
 
-            onSchoolListParsed(coursesViewModel.getSchoolListParsed().getValue());
-            coursesViewModel.fetchCourses(false);
+            coursesViewModel.getCourseListReady().setValue(false);
+
+            PersonalInfoParser.Result persInfo = coursesViewModel.getPersonalInfoParsed();
+            SchoolListParser.Result schoolList = coursesViewModel.getSchoolListParsed();
+
+            if (!errorCheckFetchedParsed(
+                    coursesViewModel.getSchoolListFetched(),
+                    schoolList))
+                return;
+
+            if (!errorCheckFetchedParsed(
+                    coursesViewModel.getPersonalInfoFetched(),
+                    schoolList))
+                return;
+
+            if (!errorCheckFetchedParsed(
+                    f12ViewModel.getF12InfoFetched(),
+                    f12ViewModel.getF12InfoParsed()))
+                return;
+
+            if (!coursesViewModel.isInitialized()){
+                setupInitialYearLevel(persInfo);
+                setupInitialFilter(schoolList);
+                coursesViewModel.setInitialized(true);
+            }
+
             setTitle();
+
+            coursesViewModel.fetchCourses(coursesViewModel.isShouldFetchCourses())
+                .thenRun(() -> coursesViewModel.getCourseListReady().postValue(true));
+            coursesViewModel.setShouldFetchCourses(false);
         });
 
-        coursesViewModel.getShouldApplyFilter().observe(this, (b) -> {
-            if (b) {
-                // if fetching, don't apply filter
-                if (coursesViewModel.getFilteredCourses().getValue() != null){
-                    coursesViewModel.applyFilter();
-                    setSystemMessage();
-                }
-                setTitle();
-                coursesViewModel.getShouldApplyFilter().setValue(false);
-            }
+        coursesViewModel.getCourseListReady().observe(this, (b) -> {
+            if (!b) return;
+
+            coursesViewModel.getCourseListReady().setValue(false);
+
+            if (!errorCheckFetchedParsed(
+                    coursesViewModel.getCourseListFetched(),
+                    coursesViewModel.getCourseListParsed()))
+                return;
+
+            coursesViewModel.applyFilter();
+            setSystemMessage();
+            adapter.notifyDataSetChanged();
         });
 
         coursesViewModel.getSystemMessgae().observe(this, s -> systemMessage.setText(s));
+    }
+
+    private boolean errorCheckFetchedParsed(WiseFetcher.Result fetched, WiseParser.Result parsed){
+        if (!onFetched(fetched)) return false;
+        return onParsed(parsed);
+    }
+
+    private boolean onFetched(@NonNull WiseFetcher.Result fetched){
+        if (fetched.errorInfo != null){
+            onError(fetched.errorInfo);
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean onParsed(@NonNull WiseParser.Result parsed){
+        if (parsed.getErrorInfo() != null){
+            onError(parsed.getErrorInfo());
+            return false;
+        }
+
+        return true;
     }
 
     private void setSystemMessage(){
@@ -104,11 +157,11 @@ public class CoursesFragment extends Fragment {
 
         String title = "";
         title += coursesViewModel.getSchoolYears().getValue().get(
-                coursesViewModel.getSchoolYearSelection().getValue()
+                coursesViewModel.getSelections()[0]
         );
 
         title += "년 ";
-        switch (coursesViewModel.getSemesterSelection().getValue()){
+        switch (coursesViewModel.getSelections()[1]){
             case 0:
                 title += "1학기 ";
                 break;
@@ -122,7 +175,7 @@ public class CoursesFragment extends Fragment {
                 break;
         }
         title += coursesViewModel.getDepartments().getValue().get(
-                coursesViewModel.getDepartmentSelection().getValue()
+                coursesViewModel.getSelections()[3]
         ).s1;
 
         title += " ";
@@ -140,33 +193,24 @@ public class CoursesFragment extends Fragment {
         this.title.setText(title);
     }
 
-    private void onCoursesFetched(FragmentActivity fa) {
-        fa.runOnUiThread(() -> {
-            adapter.notifyDataSetChanged();
-            setSystemMessage();
-        });
-    }
+    private void setupInitialYearLevel(@NonNull PersonalInfoParser.Result parsed) {
+        switch (parsed.yearLevel){
+            case 1:
+                coursesViewModel.getFreshman().setValue(true);
+                break;
 
-    private void onPersonalInfoFetched(FragmentActivity fa) {
-        fa.runOnUiThread(() -> {
-            switch (coursesViewModel.getPersonalInfoParsed().getValue().yearLevel){
-                case 1:
-                    coursesViewModel.getFreshman().setValue(true);
-                    break;
+            case 2:
+                coursesViewModel.getSophomore().setValue(true);
+                break;
 
-                case 2:
-                    coursesViewModel.getSophomore().setValue(true);
-                    break;
+            case 3:
+                coursesViewModel.getJunior().setValue(true);
+                break;
 
-                case 3:
-                    coursesViewModel.getJunior().setValue(true);
-                    break;
-
-                case 4:
-                    coursesViewModel.getSenior().setValue(true);
-                    break;
-            }
-        });
+            case 4:
+                coursesViewModel.getSenior().setValue(true);
+                break;
+        }
     }
 
     private void onError(ErrorInfo errorInfo) {
@@ -186,8 +230,8 @@ public class CoursesFragment extends Fragment {
         }
     }
 
-    private void onSchoolListParsed(@NonNull SchoolListParser.Result schoolResult) {
-        F12InfoParser.Result f12Result = f12ViewModel.getF12InfoParsed().getValue();
+    private void setupInitialFilter(@NonNull SchoolListParser.Result schoolResult) {
+        F12InfoParser.Result f12Result = f12ViewModel.getF12InfoParsed();
 
         ArrayList<StringPair> al = new ArrayList<>();
         schoolResult.schoolToDepts.keySet().forEach((info) -> al.add(new StringPair(info.name, info.code)));
@@ -230,10 +274,10 @@ public class CoursesFragment extends Fragment {
                         break;
                 }
 
-                coursesViewModel.getSchoolYearSelection().setValue(0);
-                coursesViewModel.getSchoolSelection().setValue(schoolPos);
-                coursesViewModel.getDepartmentSelection().setValue(deptPos);
-                coursesViewModel.getSemesterSelection().setValue(semesterPos);
+                coursesViewModel.setSelections(0, 0);
+                coursesViewModel.setSelections(1, semesterPos);
+                coursesViewModel.setSelections(2, schoolPos);
+                coursesViewModel.setSelections(3, deptPos);
             }
         }
 
@@ -397,7 +441,10 @@ public class CoursesFragment extends Fragment {
 
             StringBuilder ret = new StringBuilder();
             for (int i = 0; i < timeGroups.size(); i++){
-                ret.append(String.format("%02d", timeGroups.get(i).start + 8))
+                ret.append(String.format(
+                        Locale.getDefault(),
+                        "%02d",
+                        timeGroups.get(i).start + 8))
                         .append("시~")
                         .append(timeGroups.get(i).end + 8)
                         .append("시50분");

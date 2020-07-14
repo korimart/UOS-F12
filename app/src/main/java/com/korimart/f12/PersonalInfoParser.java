@@ -18,15 +18,15 @@ public enum PersonalInfoParser implements WiseParser {
     }
 
     @Override
-    public void parse(Document doc, WiseParser.Result result) {
-        parse(doc, (Result) result);
-    }
+    public Result parse(Document doc){
+        Result result = new Result();
 
-    public void parse(Document doc, Result result){
         try {
             result.yearLevel = Integer.parseInt(xmlHelper.getContentByName(doc, "shyr"));
         } catch (NumberFormatException e){
             result.errorInfo = new ErrorInfo("noYearLevel", null);
         }
+
+        return result;
     }
 }

@@ -7,11 +7,6 @@ public enum F12InfoParser implements WiseParser {
 
     private XMLHelper xmlHelper = XMLHelper.INSTANCE;
 
-    @Override
-    public void parse(Document doc, WiseParser.Result result) {
-        parse(doc, (Result) result);
-    }
-
     public static class Result implements WiseParser.Result {
         int schoolYear;
         String semester;
@@ -25,12 +20,15 @@ public enum F12InfoParser implements WiseParser {
         }
     }
 
-    public void parse(Document doc, Result result){
+    @Override
+    public Result parse(Document doc){
+        Result result = new Result();
+
         try {
             result.schoolYear = Integer.parseInt(xmlHelper.getContentByName(doc, "strYear"));
         } catch (NumberFormatException e){
             result.errorInfo = new ErrorInfo("noUserInfo", null);
-            return;
+            return result;
         }
 
         result.semester = xmlHelper.getContentByName(doc, "strSmt");
@@ -39,5 +37,7 @@ public enum F12InfoParser implements WiseParser {
 
         if (result.semester == null || result.schoolCode == null || result.deptCode == null)
             result.errorInfo = new ErrorInfo("noUserInfo", null);
+
+        return result;
     }
 }

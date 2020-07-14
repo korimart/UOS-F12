@@ -13,11 +13,6 @@ public enum CourseListParser implements WiseParser {
 
     private XMLHelper xmlHelper = XMLHelper.INSTANCE;
 
-    @Override
-    public void parse(Document doc, WiseParser.Result result) {
-        parse(doc, (Result) result);
-    }
-
     public static class CourseInfo {
         String name;
         String classification;
@@ -42,7 +37,10 @@ public enum CourseListParser implements WiseParser {
         }
     }
 
-    public void parse(Document doc, Result result){
+    @Override
+    public Result parse(Document doc){
+        Result result = new Result();
+
         result.courseInfos = new ArrayList<>();
 
         NodeList lists = doc.getElementsByTagName("list");
@@ -67,5 +65,7 @@ public enum CourseListParser implements WiseParser {
 
             result.courseInfos.add(courseInfo);
         }
+
+        return result;
     }
 }

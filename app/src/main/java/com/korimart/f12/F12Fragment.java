@@ -76,13 +76,12 @@ public class F12Fragment extends Fragment {
         refreshButton.setOnClickListener((v) -> {
             refreshButton.setEnabled(false);
             systemMessage.setTextColor(0xFF000000);
-            systemMessage.setText("가져오는 중...");
-            f12ViewModel.fetchAndParse(pnpSwitch.isChecked(), true);
+            f12ViewModel.getMessage().setValue("가져오는 중...");
+            fetch(true);
         });
 
         mainViewModel.getNoPnp().observe(this, (b) -> {
             pnpSwitch.setChecked(b);
-            f12ViewModel.fetchAndParse(b, false);
         });
 
         pnpSwitch.setOnCheckedChangeListener((v, b) -> {
@@ -100,39 +99,41 @@ public class F12Fragment extends Fragment {
 
         f12ViewModel.getMessage().observe(this, (message) -> systemMessage.setText(message));
 
-        f12ViewModel.getF12InfoFetched().observe(this, fetched -> {
+        fetch(false);
+
+        f12ViewModel.getF12Ready().observe(this, (ready) -> {
+            if (!ready) return;
+
+            f12ViewModel.getF12Ready().setValue(false);
             whenDone();
-            if (fetched.errorInfo != null)
-                onError(fetched.errorInfo);
-        });
 
-        f12ViewModel.getF12InfoParsed().observe(this, parsed -> {
-            if (parsed == null) return;
-
-            whenDone();
-            if (parsed.errorInfo != null)
-                onError(parsed.errorInfo);
-        });
-
-        f12ViewModel.getF12Fetched().observe(this, fetched -> {
-            if (fetched == null) return;
-
-            whenDone();
-            if (fetched.errorInfo != null)
-                onError(fetched.errorInfo);
-        });
-
-        f12ViewModel.getF12Parsed().observe(this, parsed -> {
-            if (parsed == null) return;
-
-            whenDone();
-            if (parsed.errorInfo != null){
-                onError(parsed.errorInfo);
+            if (f12ViewModel.getF12InfoFetched().errorInfo != null){
+                onError(f12ViewModel.getF12InfoFetched().errorInfo);
                 return;
             }
 
-            onSuccess(parsed);
+            if (f12ViewModel.getF12InfoParsed().errorInfo != null){
+                onError(f12ViewModel.getF12InfoParsed().errorInfo);
+                return;
+            }
+
+            if (f12ViewModel.getF12Fetched().errorInfo != null){
+                onError(f12ViewModel.getF12Fetched().errorInfo);
+                return;
+            }
+
+            if (f12ViewModel.getF12Parsed().errorInfo != null){
+                onError(f12ViewModel.getF12Parsed().errorInfo);
+                return;
+            }
+
+            onSuccess(f12ViewModel.getF12Parsed());
         });
+    }
+
+    private void fetch(boolean refetch){
+        f12ViewModel.fetchAndParse(pnpSwitch.isChecked(), refetch)
+                .thenRun(() -> f12ViewModel.getF12Ready().postValue(true));
     }
 
     private void onSuccess(F12Parser.Result parsed) {

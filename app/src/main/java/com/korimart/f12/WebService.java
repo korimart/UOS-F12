@@ -46,8 +46,8 @@ public enum WebService {
             url = new URL(requestURL);
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(1000);
-            conn.setConnectTimeout(1000);
+            conn.setReadTimeout(10000);
+            conn.setConnectTimeout(10000);
             conn.setRequestMethod("POST");
 
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");

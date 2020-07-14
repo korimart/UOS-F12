@@ -14,11 +14,12 @@ public class F12ViewModel extends ViewModel {
     private MutableLiveData<String> message = new MutableLiveData<>();
     private MutableLiveData<Boolean> hideCourse = new MutableLiveData<>();
     private MutableLiveData<Boolean> hideStudent = new MutableLiveData<>();
+    private MutableLiveData<Boolean> f12Ready = new MutableLiveData<>();
 
-    private MutableLiveData<WiseFetcher.Result> f12InfoFetched = new MutableLiveData<>();
-    private MutableLiveData<F12InfoParser.Result> f12InfoParsed = new MutableLiveData<>();
-    private MutableLiveData<WiseFetcher.Result> f12Fetched = new MutableLiveData<>();
-    private MutableLiveData<F12Parser.Result> f12Parsed = new MutableLiveData<>();
+    private WiseFetcher.Result f12InfoFetched;
+    private F12InfoParser.Result f12InfoParsed;
+    private WiseFetcher.Result f12Fetched;
+    private F12Parser.Result f12Parsed;
 
     private CompletableFuture<Void> f12Future;
 
@@ -29,22 +30,18 @@ public class F12ViewModel extends ViewModel {
     public CompletableFuture<Void> fetchAndParse(boolean noPnp, boolean refetch){
         if (f12Future == null || refetch){
             f12Future = CompletableFuture.runAsync(() -> {
-                F12Parser.Result f12Result = new F12Parser.Result();
-                F12InfoParser.Result f12InfoResult = new F12InfoParser.Result();
-
-                if (!WiseHelper.INSTANCE.fetchAndParse(
-                        f12URL, f12InfoParams, wiseFetcher, this.f12InfoFetched,
-                        f12InfoParser, this.f12InfoParsed, f12InfoResult))
-                    return;
+                f12InfoFetched = wiseFetcher.fetch(f12URL, f12InfoParams);
+                if (f12InfoFetched.errorInfo != null) return;
+                f12InfoParsed = f12InfoParser.parse(f12InfoFetched.document);
+                if (f12InfoParsed.errorInfo != null) return;
 
                 f12Parser.setNoPnp(noPnp);
                 String f12ParamsFormatted = String.format(Locale.US,
-                        f12Params, f12InfoResult.schoolYear, f12InfoResult.semester);
+                        f12Params, f12InfoParsed.schoolYear, f12InfoParsed.semester);
 
-                if (!WiseHelper.INSTANCE.fetchAndParse(
-                        f12URL, f12ParamsFormatted, wiseFetcher, this.f12Fetched,
-                        f12Parser, this.f12Parsed, f12Result))
-                    return;
+                f12Fetched = wiseFetcher.fetch(f12URL, f12ParamsFormatted);
+                if (f12Fetched.errorInfo != null) return;
+                f12Parsed = f12Parser.parse(f12Fetched.document);
             });
         }
 
@@ -52,15 +49,11 @@ public class F12ViewModel extends ViewModel {
     }
 
     public void recalculateHiddenAvg(boolean noPnp){
-        F12Parser.Result f12Parsed = this.f12Parsed.getValue();
-        WiseFetcher.Result f12Fetched = this.f12Fetched.getValue();
-
         if (f12Parsed == null || f12Fetched == null)
             return;
 
         f12Parser.setNoPnp(noPnp);
         f12Parsed.hiddenAvg = f12Parser.recalculateHiddenAvg(f12Fetched.response);
-        this.f12Parsed.postValue(f12Parsed);
     }
 
     public MutableLiveData<String> getMessage() {
@@ -75,19 +68,23 @@ public class F12ViewModel extends ViewModel {
         return hideStudent;
     }
 
-    public MutableLiveData<F12Parser.Result> getF12Parsed() {
-        return f12Parsed;
-    }
-
-    public MutableLiveData<F12InfoParser.Result> getF12InfoParsed() {
-        return f12InfoParsed;
-    }
-
-    public MutableLiveData<WiseFetcher.Result> getF12InfoFetched() {
+    public WiseFetcher.Result getF12InfoFetched() {
         return f12InfoFetched;
     }
 
-    public MutableLiveData<WiseFetcher.Result> getF12Fetched() {
+    public F12InfoParser.Result getF12InfoParsed() {
+        return f12InfoParsed;
+    }
+
+    public WiseFetcher.Result getF12Fetched() {
         return f12Fetched;
+    }
+
+    public F12Parser.Result getF12Parsed() {
+        return f12Parsed;
+    }
+
+    public MutableLiveData<Boolean> getF12Ready() {
+        return f12Ready;
     }
 }

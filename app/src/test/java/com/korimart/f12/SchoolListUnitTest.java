@@ -20,7 +20,7 @@ public class SchoolListUnitTest {
 
         byte[] docByte = testHelper.loadDocument("collegeList.xml");
         Document doc = XMLHelper.INSTANCE.getDocument(docByte);
-        SchoolListParser.INSTANCE.parse(doc, result);
+        SchoolListParser.INSTANCE.parse(doc);
 
         HashMap<DeptInfo, List<DeptInfo>> hm = result.schoolToDepts;
         Set<DeptInfo> keys = hm.keySet();
