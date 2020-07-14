@@ -87,6 +87,7 @@ public class F12Fragment extends Fragment {
         pnpSwitch.setOnCheckedChangeListener((v, b) -> {
             f12ViewModel.recalculateHiddenAvg(b);
             mainViewModel.getNoPnp().setValue(b);
+            setHiddenAvg(f12ViewModel.getF12Parsed().hiddenAvg);
         });
 
         f12ViewModel.getHideCourse().observe(this, (b) -> hideCourse.setChecked(b));
@@ -170,13 +171,7 @@ public class F12Fragment extends Fragment {
         hiddenPnts.setText(String.valueOf(parsed.hiddenPnts));
         totalAvg.setText(String.format(Locale.US, "%.2f", parsed.totalAvg));
 
-        boolean noPnp = pnpSwitch.isChecked();
-        String avgText;
-        if (noPnp)
-            avgText = String.format(Locale.US, "%.2f", parsed.hiddenAvg);
-        else
-            avgText = String.format(Locale.US, "%.1f", parsed.hiddenAvg);
-        hiddenAvg.setText(avgText);
+        setHiddenAvg(parsed.hiddenAvg);
 
         LocalDateTime dt = LocalDateTime.now();
         f12ViewModel.getMessage().setValue(
@@ -187,6 +182,16 @@ public class F12Fragment extends Fragment {
                         dt.getDayOfMonth(), dt.getHour(),
                         dt.getMinute(), dt.getSecond())
         );
+    }
+
+    private void setHiddenAvg(float hiddenAvgFloat){
+        boolean noPnp = pnpSwitch.isChecked();
+        String avgText;
+        if (noPnp)
+            avgText = String.format(Locale.US, "%.2f", hiddenAvgFloat);
+        else
+            avgText = String.format(Locale.US, "%.1f", hiddenAvgFloat);
+        hiddenAvg.setText(avgText);
     }
 
     private void onError(ErrorInfo errorInfo){

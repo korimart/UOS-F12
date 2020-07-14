@@ -16,8 +16,7 @@ public class CourseListUnitTest {
         byte[] docByte = testHelper.loadDocument("courseList2.xml");
         Document doc = XMLHelper.INSTANCE.getDocument(docByte);
 
-        Result result = new Result();
-        CourseListParser.INSTANCE.parse(doc, result);
+        CourseListParser.Result result = CourseListParser.INSTANCE.parse(doc);
 
         CourseInfo info1 = new CourseInfo(){{
             name = "창의공학기초설계";
@@ -71,8 +70,7 @@ public class CourseListUnitTest {
         byte[] docByte = testHelper.loadDocument("courseList3.xml");
         Document doc = XMLHelper.INSTANCE.getDocument(docByte);
 
-        Result result = new Result();
-        CourseListParser.INSTANCE.parse(doc, result);
+        CourseListParser.Result result = CourseListParser.INSTANCE.parse(doc);
 
         CourseInfo info1 = new CourseInfo(){{
             name = "공학수학Ⅱ";

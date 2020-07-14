@@ -16,11 +16,9 @@ public class SchoolListUnitTest {
 
     @Test
     public void parserTest() {
-        SchoolListParser.Result result = new SchoolListParser.Result();
-
         byte[] docByte = testHelper.loadDocument("collegeList.xml");
         Document doc = XMLHelper.INSTANCE.getDocument(docByte);
-        SchoolListParser.INSTANCE.parse(doc);
+        SchoolListParser.Result result = SchoolListParser.INSTANCE.parse(doc);
 
         HashMap<DeptInfo, List<DeptInfo>> hm = result.schoolToDepts;
         Set<DeptInfo> keys = hm.keySet();

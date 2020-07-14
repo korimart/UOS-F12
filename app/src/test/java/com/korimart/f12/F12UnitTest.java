@@ -1,43 +1,25 @@
 package com.korimart.f12;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.w3c.dom.Document;
 
-import static com.korimart.f12.F12Parser.f12Params;
-import static com.korimart.f12.F12Parser.f12URL;
-import static com.korimart.f12.F12Parser.smtParams;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class F12UnitTest {
     TestHelper testHelper = TestHelper.INSTANCE;
-
-    @InjectMocks
-    F12Parser f12Parser = F12Parser.INSTANCE;
-
-    @Mock
-    WebService webService;
-
-    @Before
-    public void setup(){
-        byte[] infoResponse = testHelper.loadDocument("myInfoResponse.xml");
-        when(webService.sendPost(f12URL, smtParams)).thenReturn(infoResponse);
-    }
-
-    private void mockResponse(String doc) {
-        when(webService.sendPost(f12URL, String.format(f12Params, 2020, "10")))
-                .thenReturn(testHelper.loadDocument(doc));
-    }
+    F12Parser f12Parser = new F12Parser();
+    XMLHelper xmlHelper = XMLHelper.INSTANCE;
 
     @Test
     public void mineDoc() {
-        mockResponse("mineDoc.xml");
-        F12Parser.Result result = f12Parser.fetch(true);
+        byte[] rawXML = testHelper.loadDocument("mineDoc.xml");
+        Document doc = xmlHelper.getDocument(rawXML);
+        f12Parser.setNoPnp(true);
+        F12Parser.Result result = f12Parser.parse(doc);
+
         assertEquals(9, result.totalPnts);
         assertEquals(3, result.hiddenPnts);
         assertEquals(4f, result.hiddenAvg, 0.00001);
@@ -46,8 +28,11 @@ public class F12UnitTest {
 
     @Test
     public void nameOnlyDoc(){
-        mockResponse("nameOnlyDoc.xml");
-        F12Parser.Result result = f12Parser.fetch(true);
+        byte[] rawXML = testHelper.loadDocument("nameOnlyDoc.xml");
+        Document doc = xmlHelper.getDocument(rawXML);
+        f12Parser.setNoPnp(true);
+        F12Parser.Result result = f12Parser.parse(doc);
+
         assertEquals(6, result.totalPnts);
         assertEquals(3, result.hiddenPnts);
         assertEquals(4f, result.hiddenAvg, 0.00001);
@@ -59,8 +44,11 @@ public class F12UnitTest {
         // 과목명만 공개된 것이 한 과목
         // 0학점 패논패가 한 과목
         // 2학점짜리 과목 하나가 숨겨져 있는 상황
-        mockResponse("parkDoc.xml");
-        F12Parser.Result result = f12Parser.fetch(false);
+        byte[] rawXML = testHelper.loadDocument("parkDoc.xml");
+        Document doc = xmlHelper.getDocument(rawXML);
+        f12Parser.setNoPnp(false);
+        F12Parser.Result result = f12Parser.parse(doc);
+
         assertEquals(7, result.totalPnts);
         assertEquals(2, result.hiddenPnts);
         assertEquals(4f, result.hiddenAvg, 0.00001);
@@ -72,8 +60,11 @@ public class F12UnitTest {
         // 3학점짜리 패논패가 한 과목과
         // 3학점짜리 B+가 공개되어 있고
         // 2학점짜리 B+, 3학점짜리 A+가 숨어있는 상황
-        mockResponse("dotDoc.xml");
-        F12Parser.Result result = f12Parser.fetch(false);
+        byte[] rawXML = testHelper.loadDocument("dotDoc.xml");
+        Document doc = xmlHelper.getDocument(rawXML);
+        f12Parser.setNoPnp(false);
+        F12Parser.Result result = f12Parser.parse(doc);
+
         assertEquals(11, result.totalPnts);
         assertEquals(5, result.hiddenPnts);
         assertEquals(4.1f, result.hiddenAvg, 0.00001);
@@ -82,8 +73,11 @@ public class F12UnitTest {
 
     @Test
     public void S0pntsDoc(){
-        mockResponse("S0PntsDoc.xml");
-        F12Parser.Result result = f12Parser.fetch(false);
+        byte[] rawXML = testHelper.loadDocument("S0PntsDoc.xml");
+        Document doc = xmlHelper.getDocument(rawXML);
+        f12Parser.setNoPnp(false);
+        F12Parser.Result result = f12Parser.parse(doc);
+
         assertEquals(6, result.totalPnts);
         assertEquals(3, result.hiddenPnts);
         assertEquals(4f, result.hiddenAvg, 0.00001);
@@ -92,8 +86,11 @@ public class F12UnitTest {
 
     @Test
     public void S0pntsHiddenDoc(){
-        mockResponse("S0PntsHiddenDoc.xml");
-        F12Parser.Result result = f12Parser.fetch(false);
+        byte[] rawXML = testHelper.loadDocument("S0PntsHiddenDoc.xml");
+        Document doc = xmlHelper.getDocument(rawXML);
+        f12Parser.setNoPnp(false);
+        F12Parser.Result result = f12Parser.parse(doc);
+
         assertEquals(9, result.totalPnts);
         assertEquals(3, result.hiddenPnts);
         assertEquals(4f, result.hiddenAvg, 0.00001);
@@ -102,8 +99,11 @@ public class F12UnitTest {
 
     @Test
     public void S3pntsDoc(){
-        mockResponse("S3PntsDoc.xml");
-        F12Parser.Result result = f12Parser.fetch(false);
+        byte[] rawXML = testHelper.loadDocument("S3PntsDoc.xml");
+        Document doc = xmlHelper.getDocument(rawXML);
+        f12Parser.setNoPnp(false);
+        F12Parser.Result result = f12Parser.parse(doc);
+
         assertEquals(9, result.totalPnts);
         assertEquals(3, result.hiddenPnts);
         assertEquals(4f, result.hiddenAvg, 0.0001f);
@@ -112,8 +112,11 @@ public class F12UnitTest {
 
     @Test
     public void S3pntsHiddenDoc(){
-        mockResponse("S3PntsHiddenDoc.xml");
-        F12Parser.Result result = f12Parser.fetch(false);
+        byte[] rawXML = testHelper.loadDocument("S3PntsHiddenDoc.xml");
+        Document doc = xmlHelper.getDocument(rawXML);
+        f12Parser.setNoPnp(false);
+        F12Parser.Result result = f12Parser.parse(doc);
+
         assertEquals(12, result.totalPnts);
         assertEquals(6, result.hiddenPnts);
         assertEquals(4f, result.hiddenAvg, 0.00001);
