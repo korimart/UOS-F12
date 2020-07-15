@@ -69,7 +69,7 @@ public class CoursesFragment extends Fragment {
         view.findViewById(R.id.courses_filterButton).setOnClickListener(v ->
                 ma.goToCoursesFilterFrag(ma::goToCoursesFrag));
 
-        title = view.findViewById(R.id.courses_title);
+        title = view.findViewById(R.id.course_desc_title);
         systemMessage = view.findViewById(R.id.courses_system_message);
         refreshButton = view.findViewById(R.id.courses_refresh);
         refreshButton.setOnClickListener(v -> {

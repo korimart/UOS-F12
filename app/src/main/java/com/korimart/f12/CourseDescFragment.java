@@ -18,8 +18,6 @@ public class CourseDescFragment extends Fragment {
     private CoursesViewModel coursesViewModel;
     private int position;
 
-    private TextView test;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -35,13 +33,6 @@ public class CourseDescFragment extends Fragment {
         courseDescViewModel = vmp.get(CourseDescViewModel.class);
 
         position = getArguments().getInt("position");
-        test = view.findViewById(R.id.course_desc_test);
 
-        List<CourseListParser.CourseInfo> courses = coursesViewModel.getFilteredCourses().getValue();
-        if (courses != null){
-            test.setText(courses.get(position).name);
-        }
-
-        courseDescViewModel.fetchAndParseCourseDesc1();
     }
 }

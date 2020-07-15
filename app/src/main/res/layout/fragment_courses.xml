@@ -16,10 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:titleMargin="4dp"
-        app:titleTextAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:titleTextColor="#FFFFFF">
+        app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -29,7 +26,7 @@
             tools:layout_editor_absoluteY="40dp">
 
             <TextView
-                android:id="@+id/courses_title"
+                android:id="@+id/course_desc_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"

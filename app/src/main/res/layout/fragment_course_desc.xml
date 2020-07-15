@@ -6,13 +6,481 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/course_desc_test"
-        android:layout_width="wrap_content"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="hehe"
+        android:background="?attr/colorPrimary"
+        android:minHeight="40dp"
+        android:theme="?attr/actionBarTheme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingEnd="15dp"
+            >
+
+            <TextView
+                android:id="@+id/course_desc_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ICT 학점연계 프로젝트 인턴십 1"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/course_desc_classNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="01분반"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textAlignment="textEnd"
+                />
+
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:paddingStart="30dp"
+            android:paddingEnd="30dp"
+            android:paddingBottom="30dp"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="과목정보"
+                    android:textSize="30dp"
+                    android:textColor="#FF000000"
+                    android:paddingBottom="10dp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="강의"
+                    android:textSize="15dp"
+                    android:textColor="#FF000000"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="전공선택(전공선택)"
+                    android:textSize="15dp"
+                    android:textColor="#FF000000"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3학점(3시간)"
+                    android:textSize="15dp"
+                    android:textColor="#FF000000"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="타과허용"
+                        android:textSize="15dp"
+                        android:textColor="#1D7C1D"
+                        android:paddingEnd="20dp"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="복수전공허용"
+                        android:textSize="15dp"
+                        android:textColor="#1D7C1D"
+                        android:paddingEnd="20dp"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="부전공비허용"
+                        android:textSize="15dp"
+                        android:textColor="#FFFF0000"
+                        android:paddingEnd="20dp"
+                        />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="수요일 10시 ~ 12시    정보기술관 101호 102호"
+                    android:textSize="15dp"
+                    android:textColor="#FF000000"
+                    />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="과목개요"
+                    android:textSize="30dp"
+                    android:textColor="#FF000000"
+                    android:paddingBottom="10dp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+\n\n-3차원 렌더링 알고리즘을 이해한다.
+\n\n-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+\n\n-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다"
+                    android:textSize="15dp"
+                    android:textColor="#FF000000"
+                    />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="수업교재"
+                    android:textSize="30dp"
+                    android:textColor="#FF000000"
+                    android:paddingBottom="10dp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="[optional] “WebGL Programming Guide” (by Kouichi Matsuda and Rodger Lea)"
+                    android:textSize="15dp"
+                    android:textColor="#FF000000"
+                    />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="담당교수"
+                    android:textSize="30dp"
+                    android:textColor="#FF000000"
+                    android:paddingBottom="10dp"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="최혁"
+                        android:textSize="20dp"
+                        android:textColor="#FF000000"
+                        />
+
+                    <Space
+                        android:layout_height="match_parent"
+                        android:layout_width="5dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="컴퓨터과학부"
+                        android:textSize="15dp"
+                        android:layout_gravity="bottom"
+                        />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="010-9925-7428"
+                    android:textSize="15dp"
+                    android:textColor="#FF000000"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="chyuk@uos.ac.kr"
+                    android:textSize="15dp"
+                    android:textColor="#FF000000"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="http://www.minho-kim.com"
+                    android:textSize="15dp"
+                    android:textColor="#FF000000"
+                    />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="성적평가"
+                        android:textSize="30dp"
+                        android:textColor="#FF000000"
+                        />
+
+                    <Space
+                        android:layout_height="match_parent"
+                        android:layout_width="5dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="상대평가"
+                        android:textSize="20dp"
+                        android:layout_gravity="bottom"
+                        />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="기말과제"
+                            android:textSize="15dp"
+                            android:textColor="#FF000000"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="중간과제"
+                            android:textSize="15dp"
+                            android:textColor="#FF000000"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="수시과제"
+                            android:textSize="15dp"
+                            android:textColor="#FF000000"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="출석"
+                            android:textSize="15dp"
+                            android:textColor="#FF000000"
+                            />
+
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_height="match_parent"
+                        android:layout_width="10dp"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="40%"
+                            android:textSize="15dp"
+                            android:textColor="#FF000000"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="40%"
+                            android:textSize="15dp"
+                            android:textColor="#FF000000"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="10%"
+                            android:textSize="15dp"
+                            android:textColor="#FF000000"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="10%"
+                            android:textSize="15dp"
+                            android:textColor="#FF000000"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="수업 계획서"
+                    android:textSize="30dp"
+                    android:textColor="#FF000000"
+                    android:paddingBottom="10dp"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1주차"
+                        android:textSize="20dp"
+                        android:textColor="#FF000000"
+                        android:paddingBottom="5dp"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="introduction to JavaScript"
+                        android:textSize="15dp"
+                        android:textColor="#FF000000"
+                        android:paddingBottom="10dp"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2주차"
+                        android:textSize="20dp"
+                        android:textColor="#FF000000"
+                        android:paddingBottom="5dp"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ch01 Introduction to OpenGL)"
+                        android:textSize="15dp"
+                        android:textColor="#FF000000"
+                        android:paddingBottom="10dp"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
