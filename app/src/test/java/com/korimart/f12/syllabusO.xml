@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<root xmlns="">
+    <overviewlist>
+        <list>
+            <lrn_otcm_items_seq>2</lrn_otcm_items_seq>
+            <lrn_otcm_nm><![CDATA[2.(분석실험)데이터를 분석하고 주어진 사실이나 가설을 실험을 통하여 확인할 수 있는 능력]]></lrn_otcm_nm>
+            <exec_criteria_cont><![CDATA[OpenGL 관련 자료를 이해하고 분석하여 프로젝트에 적용할 수 있는가?]]></exec_criteria_cont>
+            <curi_est_meth><![CDATA[과제평가]]></curi_est_meth>
+            <sch_year><![CDATA[2019]]></sch_year>
+            <smt_cd><![CDATA[20]]></smt_cd>
+            <curi_no><![CDATA[71033]]></curi_no>
+            <class_no><![CDATA[01]]></class_no>
+            <pgm_cd><![CDATA[005]]></pgm_cd>
+            <cmp_div_nm><![CDATA[전공선택(전공선택)]]></cmp_div_nm>
+            <curi_class_no><![CDATA[71033(01)]]></curi_class_no>
+            <curi_nm><![CDATA[컴퓨터그래픽스(Computer Graphics)]]></curi_nm>
+            <pnt><![CDATA[3학점(3시간)]]></pnt>
+            <lec_prac_div_nm><![CDATA[강의]]></lec_prac_div_nm>
+            <time_table><![CDATA[월05,06/19-112/113, 화08/19-112/113]]></time_table>
+            <sust_section_cd_nm><![CDATA[컴퓨터과학부]]></sust_section_cd_nm>
+            <kor_nm><![CDATA[김민호]]></kor_nm>
+            <chag_prof_cont_point><![CDATA[6490-2453]]></chag_prof_cont_point>
+            <email><![CDATA[minhokim@uos.ac.kr]]></email>
+            <chag_prof_homepage><![CDATA[http://www.minho-kim.com]]></chag_prof_homepage>
+            <chag_prof_counsel_time><![CDATA[]]></chag_prof_counsel_time>
+            <chag_assit><![CDATA[]]></chag_assit>
+            <cmp_shyr><![CDATA[4학년]]></cmp_shyr>
+            <aply_sust_nm><![CDATA[]]></aply_sust_nm>
+            <lead_curi><![CDATA[]]></lead_curi>
+            <follow_curi><![CDATA[]]></follow_curi>
+            <cert_curi_area><![CDATA[전공]]></cert_curi_area>
+            <drawing_pnt><![CDATA[]]></drawing_pnt>
+            <otcm_est_meth_nm><![CDATA[상대평가]]></otcm_est_meth_nm>
+            <attend_rate><![CDATA[□ 출석 (10)%]]></attend_rate>
+            <stud_portfolio_rate><![CDATA[□ 학생포트폴리오 (0)%]]></stud_portfolio_rate>
+            <share_rate><![CDATA[□ 참여도 (0)%]]></share_rate>
+            <temp_prjt_rate><![CDATA[□ 수시과제 (10)%]]></temp_prjt_rate>
+            <temp_test_rate><![CDATA[□ 수시시험 (0)%]]></temp_test_rate>
+            <mid_prjt_rate><![CDATA[□ 중간과제 (40)%]]></mid_prjt_rate>
+            <mid_test_rate><![CDATA[□ 중간시험 (0)%]]></mid_test_rate>
+            <end_term_prjt_rate><![CDATA[□ 기말과제 (40)%]]></end_term_prjt_rate>
+            <end_term_test_rate><![CDATA[□ 기말시험 (0)%]]></end_term_test_rate>
+            <etc_est_rate><![CDATA[□ 기타 (0)%]]></etc_est_rate>
+            <drawing_rate><![CDATA[□ 설계평가 (0)%]]></drawing_rate>
+            <lec_type><![CDATA[   ]]></lec_type>
+            <lec_meth><![CDATA[01˛02˛05˛09]]></lec_meth>
+            <real_file_nm><![CDATA[]]></real_file_nm>
+            <file_path_nm><![CDATA[]]></file_path_nm>
+            <file_flag><![CDATA[]]></file_flag>
+            <lec_meth_nm1><![CDATA[▣ 강의]]></lec_meth_nm1>
+            <lec_meth_nm2><![CDATA[▣ 발표]]></lec_meth_nm2>
+            <lec_meth_nm3><![CDATA[□ 토론]]></lec_meth_nm3>
+            <lec_meth_nm4><![CDATA[□ 실험]]></lec_meth_nm4>
+            <lec_meth_nm5><![CDATA[▣ 실습]]></lec_meth_nm5>
+            <lec_meth_nm6><![CDATA[□ 실기]]></lec_meth_nm6>
+            <lec_meth_nm7><![CDATA[□ 설계]]></lec_meth_nm7>
+            <lec_meth_nm8><![CDATA[□ 견학]]></lec_meth_nm8>
+            <lec_meth_nm9><![CDATA[▣ 프로젝트]]></lec_meth_nm9>
+            <lec_meth_nm10><![CDATA[□ 이러닝(e-learning)]]></lec_meth_nm10>
+        </list>
+        <list>
+            <lrn_otcm_items_seq>3</lrn_otcm_items_seq>
+            <lrn_otcm_nm><![CDATA[3.(문제정의)공학문제를 정의하고 공식화할 수 있는 능력]]></lrn_otcm_nm>
+            <exec_criteria_cont><![CDATA[3차원 그래픽스의 이론을 이해하고 OpenGL을 이용하여 실시간 그래픽스 어플리케이션을 구현할 수 있는가?]]></exec_criteria_cont>
+            <curi_est_meth><![CDATA[과제평가]]></curi_est_meth>
+            <sch_year><![CDATA[2019]]></sch_year>
+            <smt_cd><![CDATA[20]]></smt_cd>
+            <curi_no><![CDATA[71033]]></curi_no>
+            <class_no><![CDATA[01]]></class_no>
+            <pgm_cd><![CDATA[005]]></pgm_cd>
+            <cmp_div_nm><![CDATA[전공선택(전공선택)]]></cmp_div_nm>
+            <curi_class_no><![CDATA[71033(01)]]></curi_class_no>
+            <curi_nm><![CDATA[컴퓨터그래픽스(Computer Graphics)]]></curi_nm>
+            <pnt><![CDATA[3학점(3시간)]]></pnt>
+            <lec_prac_div_nm><![CDATA[강의]]></lec_prac_div_nm>
+            <time_table><![CDATA[월05,06/19-112/113, 화08/19-112/113]]></time_table>
+            <sust_section_cd_nm><![CDATA[컴퓨터과학부]]></sust_section_cd_nm>
+            <kor_nm><![CDATA[김민호]]></kor_nm>
+            <chag_prof_cont_point><![CDATA[6490-2453]]></chag_prof_cont_point>
+            <email><![CDATA[minhokim@uos.ac.kr]]></email>
+            <chag_prof_homepage><![CDATA[http://www.minho-kim.com]]></chag_prof_homepage>
+            <chag_prof_counsel_time><![CDATA[]]></chag_prof_counsel_time>
+            <chag_assit><![CDATA[]]></chag_assit>
+            <cmp_shyr><![CDATA[4학년]]></cmp_shyr>
+            <aply_sust_nm><![CDATA[]]></aply_sust_nm>
+            <lead_curi><![CDATA[]]></lead_curi>
+            <follow_curi><![CDATA[]]></follow_curi>
+            <cert_curi_area><![CDATA[전공]]></cert_curi_area>
+            <drawing_pnt><![CDATA[]]></drawing_pnt>
+            <otcm_est_meth_nm><![CDATA[상대평가]]></otcm_est_meth_nm>
+            <attend_rate><![CDATA[□ 출석 (10)%]]></attend_rate>
+            <stud_portfolio_rate><![CDATA[□ 학생포트폴리오 (0)%]]></stud_portfolio_rate>
+            <share_rate><![CDATA[□ 참여도 (0)%]]></share_rate>
+            <temp_prjt_rate><![CDATA[□ 수시과제 (10)%]]></temp_prjt_rate>
+            <temp_test_rate><![CDATA[□ 수시시험 (0)%]]></temp_test_rate>
+            <mid_prjt_rate><![CDATA[□ 중간과제 (40)%]]></mid_prjt_rate>
+            <mid_test_rate><![CDATA[□ 중간시험 (0)%]]></mid_test_rate>
+            <end_term_prjt_rate><![CDATA[□ 기말과제 (40)%]]></end_term_prjt_rate>
+            <end_term_test_rate><![CDATA[□ 기말시험 (0)%]]></end_term_test_rate>
+            <etc_est_rate><![CDATA[□ 기타 (0)%]]></etc_est_rate>
+            <drawing_rate><![CDATA[□ 설계평가 (0)%]]></drawing_rate>
+            <lec_type><![CDATA[   ]]></lec_type>
+            <lec_meth><![CDATA[01˛02˛05˛09]]></lec_meth>
+            <real_file_nm><![CDATA[]]></real_file_nm>
+            <file_path_nm><![CDATA[]]></file_path_nm>
+            <file_flag><![CDATA[]]></file_flag>
+            <lec_meth_nm1><![CDATA[▣ 강의]]></lec_meth_nm1>
+            <lec_meth_nm2><![CDATA[▣ 발표]]></lec_meth_nm2>
+            <lec_meth_nm3><![CDATA[□ 토론]]></lec_meth_nm3>
+            <lec_meth_nm4><![CDATA[□ 실험]]></lec_meth_nm4>
+            <lec_meth_nm5><![CDATA[▣ 실습]]></lec_meth_nm5>
+            <lec_meth_nm6><![CDATA[□ 실기]]></lec_meth_nm6>
+            <lec_meth_nm7><![CDATA[□ 설계]]></lec_meth_nm7>
+            <lec_meth_nm8><![CDATA[□ 견학]]></lec_meth_nm8>
+            <lec_meth_nm9><![CDATA[▣ 프로젝트]]></lec_meth_nm9>
+            <lec_meth_nm10><![CDATA[□ 이러닝(e-learning)]]></lec_meth_nm10>
+        </list>
+        <list>
+            <lrn_otcm_items_seq>4</lrn_otcm_items_seq>
+            <lrn_otcm_nm><![CDATA[4.(자원활용)공학문제를 해결하기 위해 최신 정보, 연구 결과, 적절한 도구를 활용할 수 있는 능력]]></lrn_otcm_nm>
+            <exec_criteria_cont><![CDATA[OpenGL 및 각종 3차원 그래픽스 관련 도구들을 사용할 수 있는가?]]></exec_criteria_cont>
+            <curi_est_meth><![CDATA[과제평가]]></curi_est_meth>
+            <sch_year><![CDATA[2019]]></sch_year>
+            <smt_cd><![CDATA[20]]></smt_cd>
+            <curi_no><![CDATA[71033]]></curi_no>
+            <class_no><![CDATA[01]]></class_no>
+            <pgm_cd><![CDATA[005]]></pgm_cd>
+            <cmp_div_nm><![CDATA[전공선택(전공선택)]]></cmp_div_nm>
+            <curi_class_no><![CDATA[71033(01)]]></curi_class_no>
+            <curi_nm><![CDATA[컴퓨터그래픽스(Computer Graphics)]]></curi_nm>
+            <pnt><![CDATA[3학점(3시간)]]></pnt>
+            <lec_prac_div_nm><![CDATA[강의]]></lec_prac_div_nm>
+            <time_table><![CDATA[월05,06/19-112/113, 화08/19-112/113]]></time_table>
+            <sust_section_cd_nm><![CDATA[컴퓨터과학부]]></sust_section_cd_nm>
+            <kor_nm><![CDATA[김민호]]></kor_nm>
+            <chag_prof_cont_point><![CDATA[6490-2453]]></chag_prof_cont_point>
+            <email><![CDATA[minhokim@uos.ac.kr]]></email>
+            <chag_prof_homepage><![CDATA[http://www.minho-kim.com]]></chag_prof_homepage>
+            <chag_prof_counsel_time><![CDATA[]]></chag_prof_counsel_time>
+            <chag_assit><![CDATA[]]></chag_assit>
+            <cmp_shyr><![CDATA[4학년]]></cmp_shyr>
+            <aply_sust_nm><![CDATA[]]></aply_sust_nm>
+            <lead_curi><![CDATA[]]></lead_curi>
+            <follow_curi><![CDATA[]]></follow_curi>
+            <cert_curi_area><![CDATA[전공]]></cert_curi_area>
+            <drawing_pnt><![CDATA[]]></drawing_pnt>
+            <otcm_est_meth_nm><![CDATA[상대평가]]></otcm_est_meth_nm>
+            <attend_rate><![CDATA[□ 출석 (10)%]]></attend_rate>
+            <stud_portfolio_rate><![CDATA[□ 학생포트폴리오 (0)%]]></stud_portfolio_rate>
+            <share_rate><![CDATA[□ 참여도 (0)%]]></share_rate>
+            <temp_prjt_rate><![CDATA[□ 수시과제 (10)%]]></temp_prjt_rate>
+            <temp_test_rate><![CDATA[□ 수시시험 (0)%]]></temp_test_rate>
+            <mid_prjt_rate><![CDATA[□ 중간과제 (40)%]]></mid_prjt_rate>
+            <mid_test_rate><![CDATA[□ 중간시험 (0)%]]></mid_test_rate>
+            <end_term_prjt_rate><![CDATA[□ 기말과제 (40)%]]></end_term_prjt_rate>
+            <end_term_test_rate><![CDATA[□ 기말시험 (0)%]]></end_term_test_rate>
+            <etc_est_rate><![CDATA[□ 기타 (0)%]]></etc_est_rate>
+            <drawing_rate><![CDATA[□ 설계평가 (0)%]]></drawing_rate>
+            <lec_type><![CDATA[   ]]></lec_type>
+            <lec_meth><![CDATA[01˛02˛05˛09]]></lec_meth>
+            <real_file_nm><![CDATA[]]></real_file_nm>
+            <file_path_nm><![CDATA[]]></file_path_nm>
+            <file_flag><![CDATA[]]></file_flag>
+            <lec_meth_nm1><![CDATA[▣ 강의]]></lec_meth_nm1>
+            <lec_meth_nm2><![CDATA[▣ 발표]]></lec_meth_nm2>
+            <lec_meth_nm3><![CDATA[□ 토론]]></lec_meth_nm3>
+            <lec_meth_nm4><![CDATA[□ 실험]]></lec_meth_nm4>
+            <lec_meth_nm5><![CDATA[▣ 실습]]></lec_meth_nm5>
+            <lec_meth_nm6><![CDATA[□ 실기]]></lec_meth_nm6>
+            <lec_meth_nm7><![CDATA[□ 설계]]></lec_meth_nm7>
+            <lec_meth_nm8><![CDATA[□ 견학]]></lec_meth_nm8>
+            <lec_meth_nm9><![CDATA[▣ 프로젝트]]></lec_meth_nm9>
+            <lec_meth_nm10><![CDATA[□ 이러닝(e-learning)]]></lec_meth_nm10>
+        </list>
+        <list>
+            <lrn_otcm_items_seq>5</lrn_otcm_items_seq>
+            <lrn_otcm_nm><![CDATA[5.(설계능력)현실적 제한조건을 고려하여 시스템, 요소, 공정 등을 설계할 수 있는 능력]]></lrn_otcm_nm>
+            <exec_criteria_cont><![CDATA[수시과제 및 기말프로젝트에서 주어진 제한요건을 만족하면서 3차원 그래픽스 결과물을 구현할 수 있는가?]]></exec_criteria_cont>
+            <curi_est_meth><![CDATA[과제평가]]></curi_est_meth>
+            <sch_year><![CDATA[2019]]></sch_year>
+            <smt_cd><![CDATA[20]]></smt_cd>
+            <curi_no><![CDATA[71033]]></curi_no>
+            <class_no><![CDATA[01]]></class_no>
+            <pgm_cd><![CDATA[005]]></pgm_cd>
+            <cmp_div_nm><![CDATA[전공선택(전공선택)]]></cmp_div_nm>
+            <curi_class_no><![CDATA[71033(01)]]></curi_class_no>
+            <curi_nm><![CDATA[컴퓨터그래픽스(Computer Graphics)]]></curi_nm>
+            <pnt><![CDATA[3학점(3시간)]]></pnt>
+            <lec_prac_div_nm><![CDATA[강의]]></lec_prac_div_nm>
+            <time_table><![CDATA[월05,06/19-112/113, 화08/19-112/113]]></time_table>
+            <sust_section_cd_nm><![CDATA[컴퓨터과학부]]></sust_section_cd_nm>
+            <kor_nm><![CDATA[김민호]]></kor_nm>
+            <chag_prof_cont_point><![CDATA[6490-2453]]></chag_prof_cont_point>
+            <email><![CDATA[minhokim@uos.ac.kr]]></email>
+            <chag_prof_homepage><![CDATA[http://www.minho-kim.com]]></chag_prof_homepage>
+            <chag_prof_counsel_time><![CDATA[]]></chag_prof_counsel_time>
+            <chag_assit><![CDATA[]]></chag_assit>
+            <cmp_shyr><![CDATA[4학년]]></cmp_shyr>
+            <aply_sust_nm><![CDATA[]]></aply_sust_nm>
+            <lead_curi><![CDATA[]]></lead_curi>
+            <follow_curi><![CDATA[]]></follow_curi>
+            <cert_curi_area><![CDATA[전공]]></cert_curi_area>
+            <drawing_pnt><![CDATA[]]></drawing_pnt>
+            <otcm_est_meth_nm><![CDATA[상대평가]]></otcm_est_meth_nm>
+            <attend_rate><![CDATA[□ 출석 (10)%]]></attend_rate>
+            <stud_portfolio_rate><![CDATA[□ 학생포트폴리오 (0)%]]></stud_portfolio_rate>
+            <share_rate><![CDATA[□ 참여도 (0)%]]></share_rate>
+            <temp_prjt_rate><![CDATA[□ 수시과제 (10)%]]></temp_prjt_rate>
+            <temp_test_rate><![CDATA[□ 수시시험 (0)%]]></temp_test_rate>
+            <mid_prjt_rate><![CDATA[□ 중간과제 (40)%]]></mid_prjt_rate>
+            <mid_test_rate><![CDATA[□ 중간시험 (0)%]]></mid_test_rate>
+            <end_term_prjt_rate><![CDATA[□ 기말과제 (40)%]]></end_term_prjt_rate>
+            <end_term_test_rate><![CDATA[□ 기말시험 (0)%]]></end_term_test_rate>
+            <etc_est_rate><![CDATA[□ 기타 (0)%]]></etc_est_rate>
+            <drawing_rate><![CDATA[□ 설계평가 (0)%]]></drawing_rate>
+            <lec_type><![CDATA[   ]]></lec_type>
+            <lec_meth><![CDATA[01˛02˛05˛09]]></lec_meth>
+            <real_file_nm><![CDATA[]]></real_file_nm>
+            <file_path_nm><![CDATA[]]></file_path_nm>
+            <file_flag><![CDATA[]]></file_flag>
+            <lec_meth_nm1><![CDATA[▣ 강의]]></lec_meth_nm1>
+            <lec_meth_nm2><![CDATA[▣ 발표]]></lec_meth_nm2>
+            <lec_meth_nm3><![CDATA[□ 토론]]></lec_meth_nm3>
+            <lec_meth_nm4><![CDATA[□ 실험]]></lec_meth_nm4>
+            <lec_meth_nm5><![CDATA[▣ 실습]]></lec_meth_nm5>
+            <lec_meth_nm6><![CDATA[□ 실기]]></lec_meth_nm6>
+            <lec_meth_nm7><![CDATA[□ 설계]]></lec_meth_nm7>
+            <lec_meth_nm8><![CDATA[□ 견학]]></lec_meth_nm8>
+            <lec_meth_nm9><![CDATA[▣ 프로젝트]]></lec_meth_nm9>
+            <lec_meth_nm10><![CDATA[□ 이러닝(e-learning)]]></lec_meth_nm10>
+        </list>
+    </overviewlist>
+</root>
+

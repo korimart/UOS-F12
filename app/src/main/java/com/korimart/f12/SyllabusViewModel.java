@@ -12,17 +12,26 @@ public class SyllabusViewModel extends ViewModel {
 
     private WiseFetcher wiseFetcher = WiseFetcher.INSTNACE;
 
-    public CompletableFuture<Void> fetchAndParseCourseDesc1(String schoolYear, String semester,
+    public CompletableFuture<Void> fetchAndParseSyllabus(String schoolYear, String semester,
                                                             String curriNumber, String classNumber){
         return CompletableFuture.runAsync(() -> {
-            WiseFetcher.Result fetched = wiseFetcher.fetch(url, buildParams(
+            WiseFetcher.Result Ofetched = wiseFetcher.fetch(url, buildParams(
                     schoolYear,
                     semester,
                     curriNumber,
                     classNumber,
                     "O"));
 
-            if (fetched.errorInfo != null) return;
+            if (Ofetched.errorInfo != null) return;
+
+            WiseFetcher.Result Wfetched = wiseFetcher.fetch(url, buildParams(
+                    schoolYear,
+                    semester,
+                    curriNumber,
+                    classNumber,
+                    "W"));
+
+            if (Wfetched.errorInfo != null) return;
         });
     }
 

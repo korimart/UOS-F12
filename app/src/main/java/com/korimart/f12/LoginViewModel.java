@@ -38,12 +38,12 @@ public class LoginViewModel extends ViewModel {
         return CompletableFuture.runAsync(() -> {
             String response = WebService.INSTANCE.sendPost(loginURL, String.format(loginParams, id, password), "euc-kr");
             if (response.isEmpty()){
-                errorInfo = new ErrorInfo("timeout", null);
+                errorInfo = new ErrorInfo(ErrorInfo.ErrorType.timeout);
                 return;
             }
 
             if (response.contains("전산실 요청에 의해 제거함")){
-                errorInfo = new ErrorInfo("loginFailed", null);
+                errorInfo = new ErrorInfo(ErrorInfo.ErrorType.loginFailed);
                 return;
             }
         });
@@ -61,9 +61,9 @@ public class LoginViewModel extends ViewModel {
                     id = br.readLine();
                     password = br.readLine();
                 } catch (FileNotFoundException e) {
-                    errorInfo = new ErrorInfo("noLoginInfo", null);
+                    errorInfo = new ErrorInfo(ErrorInfo.ErrorType.noLoginFile);
                 } catch (IOException e) {
-                    errorInfo = new ErrorInfo("unknownError", buildStackTraceString(e));
+                    errorInfo = new ErrorInfo(e);
                 }
             });
         }
@@ -83,21 +83,9 @@ public class LoginViewModel extends ViewModel {
                 osw.flush();
                 osw.close();
             } catch (IOException e) {
-                errorInfo = new ErrorInfo("unknownError", buildStackTraceString(e));
+                errorInfo = new ErrorInfo(e);
             }
         });
-    }
-
-    private String buildStackTraceString(Exception e){
-        StackTraceElement[] stes = e.getStackTrace();
-        StringBuilder sb = new StringBuilder();
-        sb.append(e.toString()).append("\n");
-        for (StackTraceElement ste : stes) {
-            sb.append(ste.toString());
-            sb.append('\n');
-        }
-
-        return sb.toString();
     }
 
     public String getId() {

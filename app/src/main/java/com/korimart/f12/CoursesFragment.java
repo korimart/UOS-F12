@@ -231,21 +231,24 @@ public class CoursesFragment extends Fragment {
     }
 
     private void onError(ErrorInfo errorInfo) {
-        switch (errorInfo.errorType){
-            case "sessionExpired":
+        if (errorInfo.exception != null)
+            ErrorReporter.INSTANCE.reportError(errorInfo.exception);
+
+        switch (errorInfo.type){
+            case sessionExpired:
                 MainActivity ma = (MainActivity) getActivity();
                 ma.goToLoginFrag(1);
                 break;
 
-            case "timeout":
-            case "responseFailed":
+            case timeout:
+            case responseFailed:
                 systemMessage.setText("불러오기 실패");
                 refreshButton.setVisibility(View.VISIBLE);
                 adapter.notifyDataSetChanged();
                 break;
 
             default:
-                ((MainActivity) getActivity()).goToErrorFrag(errorInfo.callStack);
+                ((MainActivity) getActivity()).goToErrorFrag();
                 break;
         }
     }

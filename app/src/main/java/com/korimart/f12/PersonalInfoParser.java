@@ -24,7 +24,7 @@ public enum PersonalInfoParser implements WiseParser {
         try {
             result.yearLevel = Integer.parseInt(xmlHelper.getContentByName(doc, "shyr"));
         } catch (NumberFormatException e){
-            result.errorInfo = new ErrorInfo("noYearLevel", null);
+            result.errorInfo = new ErrorInfo(ErrorInfo.ErrorType.parseFailed, new Exception("no year level"));
         }
 
         return result;

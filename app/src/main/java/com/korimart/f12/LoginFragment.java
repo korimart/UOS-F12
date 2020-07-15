@@ -116,22 +116,25 @@ public class LoginFragment extends Fragment {
     }
 
     private void onError(@NonNull ErrorInfo errorInfo) {
+        if (errorInfo.exception != null)
+            ErrorReporter.INSTANCE.reportError(errorInfo.exception);
+
         loginViewModel.getMessageColor().setValue(0xFFFF0000);
-        switch (errorInfo.errorType){
-            case "timeout":
-            case "responseFailed":
+        switch (errorInfo.type){
+            case timeout:
+            case responseFailed:
                 loginViewModel.getMessage().setValue("포털 연결 실패");
                 break;
 
-            case "loginFailed":
+            case loginFailed:
                 loginViewModel.getMessage().setValue("로그인 실패");
                 break;
 
-            case "noLoginInfo":
+            case noLoginFile:
                 break;
 
             default:
-                ((MainActivity) getActivity()).goToErrorFrag(errorInfo.callStack);
+                ((MainActivity) getActivity()).goToErrorFrag();
                 break;
         }
     }

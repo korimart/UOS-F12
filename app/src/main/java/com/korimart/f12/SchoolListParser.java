@@ -82,12 +82,12 @@ public enum SchoolListParser implements WiseParser {
         try {
             result.latestSchoolYear = Integer.parseInt(xmlHelper.getContentByName(doc, "strSchYear"));
         } catch (NumberFormatException e){
-            result.latestSchoolYear = -1;
+            result.errorInfo = new ErrorInfo(ErrorInfo.ErrorType.parseFailed, e);
         }
         result.latestSemester = xmlHelper.getContentByName(doc, "strSmtCd");
 
         if (result.schoolToDepts.isEmpty())
-            result.errorInfo = new ErrorInfo("noSchoolFound", null);
+            result.errorInfo = new ErrorInfo(ErrorInfo.ErrorType.parseFailed, new Exception("no school found"));
 
         return result;
     }

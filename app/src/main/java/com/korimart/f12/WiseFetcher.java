@@ -23,30 +23,23 @@ public enum WiseFetcher {
         try {
             fetchResponse(result, url, params);
             if (result.response.isEmpty()){
-                result.errorInfo = new ErrorInfo("timeout", null);
+                result.errorInfo = new ErrorInfo(ErrorInfo.ErrorType.timeout);
                 return result;
             }
 
             if (result.response.contains("세션타임")) {
-                result.errorInfo = new ErrorInfo("sessionExpired", null);
+                result.errorInfo = new ErrorInfo(ErrorInfo.ErrorType.sessionExpired);
                 return result;
             }
 
             result.document = xmlHelper.getDocument(result.byteResponse);
             if (result.document == null) {
-                result.errorInfo = new ErrorInfo("responseFailed", null);
+                result.errorInfo = new ErrorInfo(ErrorInfo.ErrorType.responseFailed);
                 return result;
             }
 
         } catch (Exception e) {
-            StackTraceElement[] stes = e.getStackTrace();
-            StringBuilder sb = new StringBuilder();
-            sb.append(e.toString() + "\n");
-            for (StackTraceElement ste : stes) {
-                sb.append(ste.toString());
-                sb.append('\n');
-            }
-            result.errorInfo = new ErrorInfo("unknownError", sb.toString());
+            result.errorInfo = new ErrorInfo(e);
         }
 
         return result;

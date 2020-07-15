@@ -27,7 +27,7 @@ public enum F12InfoParser implements WiseParser {
         try {
             result.schoolYear = Integer.parseInt(xmlHelper.getContentByName(doc, "strYear"));
         } catch (NumberFormatException e){
-            result.errorInfo = new ErrorInfo("noUserInfo", null);
+            result.errorInfo = new ErrorInfo(ErrorInfo.ErrorType.parseFailed, e);
             return result;
         }
 
@@ -36,7 +36,7 @@ public enum F12InfoParser implements WiseParser {
         result.deptCode = xmlHelper.getLastContentByName(doc, "dept_cd");
 
         if (result.semester == null || result.schoolCode == null || result.deptCode == null)
-            result.errorInfo = new ErrorInfo("noUserInfo", null);
+            result.errorInfo = new ErrorInfo(ErrorInfo.ErrorType.parseFailed, new Exception("no user info"));
 
         return result;
     }

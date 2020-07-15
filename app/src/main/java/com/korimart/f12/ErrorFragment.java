@@ -11,20 +11,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class ErrorFragment extends Fragment {
-    private TextView text;
-    private String errorString;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_error, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        errorString = getArguments().getString("errorString");
-        text = view.findViewById(R.id.error_text);
-        text.setText(errorString);
     }
 }

@@ -35,13 +35,13 @@ public class F12Parser implements WiseParser {
 
         result.studentInfo = xmlHelper.getContentByName(f12Doc, "strMyShreg");
         if (result.studentInfo == null){
-            result.errorInfo = new ErrorInfo("noStudentInfo", null);
+            result.errorInfo = new ErrorInfo(ErrorInfo.ErrorType.parseFailed, new Exception("no student info"));
             return result;
         }
 
         result.disclosedInfo = getInfo(f12Doc);
         if (result.disclosedInfo == null){
-            result.errorInfo = new ErrorInfo("noDisclosedInfo", null);
+            result.errorInfo = new ErrorInfo(ErrorInfo.ErrorType.noOneDisclosedGrade);
             return result;
         }
 

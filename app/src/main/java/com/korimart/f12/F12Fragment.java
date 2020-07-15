@@ -196,32 +196,35 @@ public class F12Fragment extends Fragment {
     }
 
     private void onError(ErrorInfo errorInfo){
-        switch (errorInfo.errorType){
-            case "sessionExpired":
+        if (errorInfo.exception != null)
+            ErrorReporter.INSTANCE.reportError(errorInfo.exception);
+
+        switch (errorInfo.type){
+            case sessionExpired:
                 ((MainActivity) getActivity()).goToLoginFrag(0);
                 break;
 
-            case "timeout":
-            case "responseFailed":
+            case timeout:
+            case responseFailed:
                 f12ViewModel.getMessage().setValue("성적 불러오기 실패");
                 systemMessage.setTextColor(0xFFFF0000);
                 refreshButton.setEnabled(true);
                 break;
 
-            case "noStudentInfo":
+            case parseFailed:
                 f12ViewModel.getMessage().setValue("와이즈 시스템 방식이 변경된 듯 (F12가 막혔을 수 있음)");
                 systemMessage.setTextColor(0xFFFF0000);
                 refreshButton.setEnabled(true);
                 break;
 
-            case "noDisclosedInfo":
+            case noOneDisclosedGrade:
                 f12ViewModel.getMessage().setValue("성적이 하나도 안 떠서 볼 수가 없음");
                 systemMessage.setTextColor(0xFFFF0000);
                 refreshButton.setEnabled(true);
                 break;
 
             default:
-                ((MainActivity) getActivity()).goToErrorFrag(errorInfo.callStack);
+                ((MainActivity) getActivity()).goToErrorFrag();
                 break;
         }
     }

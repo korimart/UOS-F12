@@ -86,16 +86,12 @@ public class MainActivity extends AppCompatActivity
                 .commit();
     }
 
-    public void goToErrorFrag(String errorString) {
+    public void goToErrorFrag() {
         fragStack.clear();
-        ErrorFragment ef = new ErrorFragment();
-        Bundle args = new Bundle();
-        args.putString("errorString", errorString);
-        ef.setArguments(args);
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frag, ef)
+                .replace(R.id.frag, new ErrorFragment())
                 .commit();
     }
 
