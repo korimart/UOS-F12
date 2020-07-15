@@ -8,9 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class F12Parser implements WiseParser {
-    public static final String f12URL = "https://wise.uos.ac.kr/uosdoc/ugd.UgdOtcmInq.do";
-    public static final String smtParams = "_dept_authDept=auth&_code_smtList=CMN31&&_COMMAND_=onload&&_XML_=XML&_strMenuId=stud00320&";
-    public static final String f12Params = "strSchYear=%d&strSmtCd=%s&strStudId=123123&strDiv=2&&_COMMAND_=list&&_XML_=XML&_strMenuId=stud00320&";
     private XMLHelper xmlHelper = XMLHelper.INSTANCE;
     private boolean noPnp = false;
 

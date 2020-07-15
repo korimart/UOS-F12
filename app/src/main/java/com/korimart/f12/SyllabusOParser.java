@@ -61,6 +61,8 @@ public enum SyllabusOParser implements WiseParser {
         }
 
         for (Field field : result.getClass().getDeclaredFields()){
+            if (field.getName().equals("errorInfo")) continue;
+
             try {
                 if (field.get(result) == null){
                     result.errorInfo = new ErrorInfo(ErrorInfo.ErrorType.parseFailed,
