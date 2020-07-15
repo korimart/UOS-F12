@@ -24,9 +24,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 public class CoursesFragment extends Fragment {
+    private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
     private CoursesViewModel coursesViewModel;
     private F12ViewModel f12ViewModel;
@@ -44,11 +44,20 @@ public class CoursesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        initMembers(view);
+        coursesViewModel.getCourseListFetchReady().observe(this, this::onCourseListFetchReady);
+        coursesViewModel.getCourseListReady().observe(this, this::onCourseListReady);
+        fetch(false);
+    }
+
+    private void initMembers(View view){
         ViewModelProvider vmp = new ViewModelProvider(getActivity(), new ViewModelProvider.NewInstanceFactory());
         coursesViewModel = vmp.get(CoursesViewModel.class);
         f12ViewModel = vmp.get(F12ViewModel.class);
 
-        RecyclerView recyclerView = view.findViewById(R.id.courses_recyclerView);
+        coursesViewModel.getFilteredCourses().setValue(null);
+
+        recyclerView = view.findViewById(R.id.courses_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new RecyclerViewAdapter();
         recyclerView.setAdapter(adapter);
@@ -67,71 +76,65 @@ public class CoursesFragment extends Fragment {
             fetch(true);
             refreshButton.setVisibility(View.INVISIBLE);
         });
+    }
 
-        fetch(false);
+    private void onCourseListFetchReady(Boolean ready){
+        if (ready == null || !ready) return;
 
-        coursesViewModel.getCourseListFetchReady().observe(this, b -> {
-            if (!b) return;
+        coursesViewModel.getCourseListFetchReady().setValue(false);
 
-            coursesViewModel.getCourseListFetchReady().setValue(false);
+        PersonalInfoParser.Result persInfo = coursesViewModel.getPersonalInfoParsed();
+        SchoolListParser.Result schoolList = coursesViewModel.getSchoolListParsed();
 
-            PersonalInfoParser.Result persInfo = coursesViewModel.getPersonalInfoParsed();
-            SchoolListParser.Result schoolList = coursesViewModel.getSchoolListParsed();
+        if (!errorCheckFetchedParsed(
+                coursesViewModel.getSchoolListFetched(),
+                schoolList))
+            return;
 
-            if (!errorCheckFetchedParsed(
-                    coursesViewModel.getSchoolListFetched(),
-                    schoolList))
-                return;
+        if (!errorCheckFetchedParsed(
+                coursesViewModel.getPersonalInfoFetched(),
+                schoolList))
+            return;
 
-            if (!errorCheckFetchedParsed(
-                    coursesViewModel.getPersonalInfoFetched(),
-                    schoolList))
-                return;
+        if (!errorCheckFetchedParsed(
+                f12ViewModel.getF12InfoFetched(),
+                f12ViewModel.getF12InfoParsed()))
+            return;
 
-            if (!errorCheckFetchedParsed(
-                    f12ViewModel.getF12InfoFetched(),
-                    f12ViewModel.getF12InfoParsed()))
-                return;
+        if (!coursesViewModel.isInitialized()){
+            setupInitialYearLevel(persInfo);
+            setupInitialFilter(schoolList);
+            coursesViewModel.setInitialized(true);
+        }
 
-            if (!coursesViewModel.isInitialized()){
-                setupInitialYearLevel(persInfo);
-                setupInitialFilter(schoolList);
-                coursesViewModel.setInitialized(true);
-            }
+        setTitle();
 
-            setTitle();
-
-            coursesViewModel.fetchCourses(coursesViewModel.isShouldFetchCourses())
+        coursesViewModel.fetchCourses(coursesViewModel.isShouldFetchCourses())
                 .thenRun(() -> coursesViewModel.getCourseListReady().postValue(true));
-            coursesViewModel.setShouldFetchCourses(false);
-        });
+        coursesViewModel.setShouldFetchCourses(false);
+    }
 
-        coursesViewModel.getCourseListReady().observe(this, (b) -> {
-            if (!b) return;
+    private void onCourseListReady(Boolean ready){
+        if (ready == null || !ready) return;
 
-            coursesViewModel.getCourseListReady().setValue(false);
+        coursesViewModel.getCourseListReady().setValue(false);
 
-            if (!errorCheckFetchedParsed(
-                    coursesViewModel.getCourseListFetched(),
-                    coursesViewModel.getCourseListParsed()))
-                return;
+        if (!errorCheckFetchedParsed(
+                coursesViewModel.getCourseListFetched(),
+                coursesViewModel.getCourseListParsed()))
+            return;
 
-            coursesViewModel.applyFilter();
-            setSystemMessage();
-            adapter.notifyDataSetChanged();
-        });
+        coursesViewModel.applyFilter();
+        setSystemMessage();
+        adapter.notifyDataSetChanged();
     }
 
     private void fetch(boolean refetch) {
         systemMessage.setText("가져오는 중...");
 
-        if (refetch)
-            coursesViewModel.setShouldFetchCourses(refetch);
-
-        CompletableFuture.allOf(
-                coursesViewModel.fetchAndParsePersInfo(refetch),
+        coursesViewModel.prepare(
                 f12ViewModel.fetchAndParse(false, refetch),
-                coursesViewModel.fetchAndParseSchoolList(refetch)
+                refetch
         ).thenRun(() -> coursesViewModel.getCourseListFetchReady().postValue(true));
     }
 
@@ -310,6 +313,15 @@ public class CoursesFragment extends Fragment {
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(CoursesFragment.this.getContext())
                     .inflate(R.layout.item_course_desc, parent, false);
+            view.setOnClickListener(v -> {
+                RecyclerView.ViewHolder viewHolder = recyclerView.getChildViewHolder(v);
+                int position = viewHolder.getAdapterPosition();
+
+                MainActivity ma = (MainActivity) getActivity();
+                if (ma == null) return;
+
+                ma.goToCourseDescFrag(ma::goToCoursesFrag, position);
+            });
             return new ViewHolder(view);
         }
 

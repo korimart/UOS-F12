@@ -145,6 +145,19 @@ public class MainActivity extends AppCompatActivity
                 .commit();
     }
 
+    public void goToCourseDescFrag(Runnable howToGoBack, int position) {
+        fragStack.add(howToGoBack);
+        CourseDescFragment cdf = new CourseDescFragment();
+        Bundle args = new Bundle();
+        args.putInt("position", position);
+        cdf.setArguments(args);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frag, cdf)
+                .commit();
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         fragStack.clear();

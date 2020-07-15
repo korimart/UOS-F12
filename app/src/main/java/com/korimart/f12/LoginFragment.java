@@ -2,7 +2,6 @@ package com.korimart.f12;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -157,11 +156,11 @@ public class LoginFragment extends Fragment {
         mainActivity.getBottomNav().setVisibility(View.VISIBLE);
         switch (nextFrag){
             case 0:
-            mainActivity.goToF12Frag();
+            mainActivity.getBottomNav().setSelectedItemId(R.id.bottomNav_F12);
             break;
 
             case 1:
-            mainActivity.goToCoursesFrag();
+            mainActivity.getBottomNav().setSelectedItemId(R.id.bottomNav_courses);
             break;
         }
     }

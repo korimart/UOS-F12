@@ -46,6 +46,7 @@ public class CoursesViewModel extends ViewModel {
     private CompletableFuture<Void> schoolListFuture;
     private CompletableFuture<Void> personalInfoFuture;
     private CompletableFuture<Void> coursesFuture;
+    private CompletableFuture<Void> prepareFuture;
 
     private WiseFetcher wiseFetcher = WiseFetcher.INSTNACE;
     private SchoolListParser schoolListParser = SchoolListParser.INSTANCE;
@@ -59,6 +60,20 @@ public class CoursesViewModel extends ViewModel {
         junior.setValue(false);
         senior.setValue(false);
         courseListFetchReady.setValue(false);
+    }
+
+    public CompletableFuture<Void> prepare(CompletableFuture<Void> f12, boolean refetch){
+        if (refetch || prepareFuture == null){
+            if (refetch)
+                setShouldFetchCourses(refetch);
+
+            prepareFuture = CompletableFuture.allOf(
+                    fetchAndParsePersInfo(refetch),
+                    f12,
+                    fetchAndParseSchoolList(refetch));
+        }
+
+        return prepareFuture;
     }
 
     public CompletableFuture<Void> fetchAndParseSchoolList(boolean refetch){
@@ -87,8 +102,6 @@ public class CoursesViewModel extends ViewModel {
 
     public CompletableFuture<Void> fetchCourses(boolean refetch){
         if (coursesFuture == null || refetch){
-            getFilteredCourses().setValue(null);
-
             coursesFuture = CompletableFuture.runAsync(() -> {
                 String formattedParams = String.format(
                         Locale.US,

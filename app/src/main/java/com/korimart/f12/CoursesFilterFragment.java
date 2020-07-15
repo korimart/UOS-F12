@@ -56,6 +56,10 @@ public class CoursesFilterFragment extends Fragment {
         StringPairAdapter schoolAdapter = setSpinnerAdapter(school);
         StringPairAdapter deptAdapter = setSpinnerAdapter(department);
 
+        semesterAdapter.add(new StringPair("1학기", "10"));
+        semesterAdapter.add(new StringPair("2학기", "20"));
+        semesterAdapter.add(new StringPair("계절학기", "11"));
+
         schoolYear.setSelection(coursesViewModel.getSelections()[0]);
         semester.setSelection(coursesViewModel.getSelections()[1]);
         school.setSelection(coursesViewModel.getSelections()[2]);
@@ -87,10 +91,6 @@ public class CoursesFilterFragment extends Fragment {
             for (String year : list)
                 schoolYearAdapter.add(new StringPair(year, null));
         });
-
-        semesterAdapter.add(new StringPair("1학기", "10"));
-        semesterAdapter.add(new StringPair("2학기", "20"));
-        semesterAdapter.add(new StringPair("계절학기", "11"));
 
         coursesViewModel.getSchools().observe(this, schools -> {
             schoolAdapter.clear();
