@@ -391,15 +391,20 @@ public class CoursesFragment extends Fragment {
             String ret = "";
             int index = buildings.indexOf(buildingAndRoom[0]) + 1;
             if (index == 0)
-                ret += "모르는건물";
+                ret += buildingAndRoom[0];
             else
                 ret += buildings.get(index);
 
             ret += "    ";
 
-            String[] rooms = buildingAndRoom[1].split("/");
-            for (String room : rooms)
-                ret += room + "호 ";
+            // 강의실 없이 건물만 있는 경우가 있음
+            // 예시) 수02,03/실외 테니스장
+            if (buildingAndRoom.length > 1){
+                String[] rooms = buildingAndRoom[1].split("/");
+
+                for (String room : rooms)
+                    ret += room + "호 ";
+            }
 
             return ret;
         }
