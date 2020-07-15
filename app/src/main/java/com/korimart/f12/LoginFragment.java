@@ -119,6 +119,7 @@ public class LoginFragment extends Fragment {
     private void onError(@NonNull ErrorInfo errorInfo) {
         loginViewModel.getMessageColor().setValue(0xFFFF0000);
         switch (errorInfo.errorType){
+            case "timeout":
             case "responseFailed":
                 loginViewModel.getMessage().setValue("포털 연결 실패");
                 break;

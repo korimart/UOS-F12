@@ -22,6 +22,11 @@ public enum WiseFetcher {
 
         try {
             fetchResponse(result, url, params);
+            if (result.response.isEmpty()){
+                result.errorInfo = new ErrorInfo("timeout", null);
+                return result;
+            }
+
             if (result.response.contains("세션타임")) {
                 result.errorInfo = new ErrorInfo("sessionExpired", null);
                 return result;

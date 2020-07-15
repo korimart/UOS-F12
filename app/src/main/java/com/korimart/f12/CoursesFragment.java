@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ public class CoursesFragment extends Fragment {
     private F12ViewModel f12ViewModel;
     private TextView title;
     private TextView systemMessage;
+    private Button refreshButton;
 
     @Nullable
     @Override
@@ -60,17 +62,18 @@ public class CoursesFragment extends Fragment {
 
         title = view.findViewById(R.id.courses_title);
         systemMessage = view.findViewById(R.id.courses_system_message);
+        refreshButton = view.findViewById(R.id.courses_refresh);
+        refreshButton.setOnClickListener(v -> {
+            fetch(true);
+            refreshButton.setVisibility(View.INVISIBLE);
+        });
 
-        CompletableFuture.allOf(
-                coursesViewModel.fetchAndParsePersInfo(),
-                f12ViewModel.fetchAndParse(false, false),
-                coursesViewModel.fetchAndParseSchoolList()
-                ).thenRun(() -> coursesViewModel.getCourseListFetchReady().postValue(true));
+        fetch(false);
 
         coursesViewModel.getCourseListFetchReady().observe(this, b -> {
             if (!b) return;
 
-            coursesViewModel.getCourseListReady().setValue(false);
+            coursesViewModel.getCourseListFetchReady().setValue(false);
 
             PersonalInfoParser.Result persInfo = coursesViewModel.getPersonalInfoParsed();
             SchoolListParser.Result schoolList = coursesViewModel.getSchoolListParsed();
@@ -117,8 +120,19 @@ public class CoursesFragment extends Fragment {
             setSystemMessage();
             adapter.notifyDataSetChanged();
         });
+    }
 
-        coursesViewModel.getSystemMessgae().observe(this, s -> systemMessage.setText(s));
+    private void fetch(boolean refetch) {
+        systemMessage.setText("가져오는 중...");
+
+        if (refetch)
+            coursesViewModel.setShouldFetchCourses(refetch);
+
+        CompletableFuture.allOf(
+                coursesViewModel.fetchAndParsePersInfo(refetch),
+                f12ViewModel.fetchAndParse(false, refetch),
+                coursesViewModel.fetchAndParseSchoolList(refetch)
+        ).thenRun(() -> coursesViewModel.getCourseListFetchReady().postValue(true));
     }
 
     private boolean errorCheckFetchedParsed(WiseFetcher.Result fetched, WiseParser.Result parsed){
@@ -146,9 +160,9 @@ public class CoursesFragment extends Fragment {
 
     private void setSystemMessage(){
         if (coursesViewModel.getFilteredCourses().getValue().size() == 0)
-            coursesViewModel.getSystemMessgae().setValue("검색 결과가 없습니다.");
+            systemMessage.setText("검색 결과가 없습니다.");
         else
-            coursesViewModel.getSystemMessgae().setValue("");
+            systemMessage.setText("");
     }
 
     private void setTitle() {
@@ -220,8 +234,11 @@ public class CoursesFragment extends Fragment {
                 ma.goToLoginFrag(1);
                 break;
 
+            case "timeout":
             case "responseFailed":
-                coursesViewModel.getSystemMessgae().setValue("불러오기 실패");
+                systemMessage.setText("불러오기 실패");
+                refreshButton.setVisibility(View.VISIBLE);
+                adapter.notifyDataSetChanged();
                 break;
 
             default:

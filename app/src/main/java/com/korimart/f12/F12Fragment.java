@@ -202,6 +202,7 @@ public class F12Fragment extends Fragment {
                 ((MainActivity) getActivity()).goToLoginFrag(0);
                 break;
 
+            case "timeout":
             case "responseFailed":
                 f12ViewModel.getMessage().setValue("성적 불러오기 실패");
                 systemMessage.setTextColor(0xFFFF0000);

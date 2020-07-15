@@ -30,7 +30,6 @@ public class CoursesViewModel extends ViewModel {
     private MutableLiveData<Boolean> sophomore = new MutableLiveData<>();
     private MutableLiveData<Boolean> junior = new MutableLiveData<>();
     private MutableLiveData<Boolean> senior = new MutableLiveData<>();
-    private MutableLiveData<String> systemMessgae = new MutableLiveData<>();
     private MutableLiveData<Boolean> courseListReady = new MutableLiveData<>();
     private MutableLiveData<Boolean> courseListFetchReady = new MutableLiveData();
 
@@ -62,8 +61,8 @@ public class CoursesViewModel extends ViewModel {
         courseListFetchReady.setValue(false);
     }
 
-    public CompletableFuture<Void> fetchAndParseSchoolList(){
-        if (schoolListFuture == null){
+    public CompletableFuture<Void> fetchAndParseSchoolList(boolean refetch){
+        if (refetch || schoolListFuture == null){
             schoolListFuture = CompletableFuture.runAsync(() -> {
                 schoolListFetched = wiseFetcher.fetch(schoolListUrl, schoolListParams);
                 if (schoolListFetched.errorInfo != null) return;
@@ -74,8 +73,8 @@ public class CoursesViewModel extends ViewModel {
         return schoolListFuture;
     }
 
-    public CompletableFuture<Void> fetchAndParsePersInfo(){
-        if (personalInfoFuture == null){
+    public CompletableFuture<Void> fetchAndParsePersInfo(boolean refetch){
+        if (refetch || personalInfoFuture == null){
             personalInfoFuture = CompletableFuture.runAsync(() -> {
                 personalInfoFetched = wiseFetcher.fetch(persInfoUrl, persInfoParams);
                 if (personalInfoFetched.errorInfo != null) return;
@@ -100,7 +99,7 @@ public class CoursesViewModel extends ViewModel {
                         departments.getValue().get(selections[3]).s2);
 
                 courseListFetched = wiseFetcher.fetch(courseListUrl, formattedParams);
-                if (personalInfoFetched.errorInfo != null) return;
+                if (courseListFetched.errorInfo != null) return;
                 courseListParsed = courseListParser.parse(courseListFetched.document);
 
                 List<CourseListParser.CourseInfo> filteredCourses = new ArrayList<>(courseListParsed.courseInfos);
@@ -195,10 +194,6 @@ public class CoursesViewModel extends ViewModel {
 
     public MutableLiveData<Boolean> getCourseListReady() {
         return courseListReady;
-    }
-
-    public MutableLiveData<String> getSystemMessgae() {
-        return systemMessgae;
     }
 
     public MutableLiveData<Boolean> getCourseListFetchReady() {
