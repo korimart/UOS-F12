@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity
 
     public void goToCourseDescFrag(Runnable howToGoBack, int position) {
         fragStack.add(howToGoBack);
-        CourseDescFragment cdf = new CourseDescFragment();
+        SyllabusFragment cdf = new SyllabusFragment();
         Bundle args = new Bundle();
         args.putInt("position", position);
         cdf.setArguments(args);

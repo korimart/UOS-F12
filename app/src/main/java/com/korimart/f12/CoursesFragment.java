@@ -312,7 +312,7 @@ public class CoursesFragment extends Fragment {
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(CoursesFragment.this.getContext())
-                    .inflate(R.layout.item_course_desc, parent, false);
+                    .inflate(R.layout.item_course, parent, false);
             view.setOnClickListener(v -> {
                 RecyclerView.ViewHolder viewHolder = recyclerView.getChildViewHolder(v);
                 int position = viewHolder.getAdapterPosition();

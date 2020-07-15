@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
-public class CourseDescViewModel extends ViewModel {
+public class SyllabusViewModel extends ViewModel {
     public static final String url = "https://wise.uos.ac.kr/uosdoc/uab.UabCoursePlanView.serv";
     public static final String params = "strSchYear=%s&strSmtCd=%s&strCuriNo=%s&strClassNo=%s&" +
             "strCuriNm=%s&strSmtNm=%s&strPgmCd=%s&strViewDiv=%s&&_COMMAND_=list&&_XML_=XML&_strMenuId=stud00180&";
