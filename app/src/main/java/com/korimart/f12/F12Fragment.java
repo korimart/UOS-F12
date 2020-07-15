@@ -87,7 +87,9 @@ public class F12Fragment extends Fragment {
         pnpSwitch.setOnCheckedChangeListener((v, b) -> {
             f12ViewModel.recalculateHiddenAvg(b);
             mainViewModel.getNoPnp().setValue(b);
-            setHiddenAvg(f12ViewModel.getF12Parsed().hiddenAvg);
+
+            if (f12ViewModel.getF12Parsed() != null)
+                setHiddenAvg(f12ViewModel.getF12Parsed().hiddenAvg);
         });
 
         f12ViewModel.getHideCourse().observe(this, (b) -> hideCourse.setChecked(b));
