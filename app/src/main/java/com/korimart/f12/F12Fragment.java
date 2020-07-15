@@ -65,6 +65,7 @@ public class F12Fragment extends Fragment {
         hideStudent = view.findViewById(R.id.f12_hideStudent);
 
         setViewListeners();
+        fetch(false);
     }
 
     private void setViewListeners() {
@@ -80,9 +81,7 @@ public class F12Fragment extends Fragment {
             fetch(true);
         });
 
-        mainViewModel.getNoPnp().observe(this, (b) -> {
-            pnpSwitch.setChecked(b);
-        });
+        mainViewModel.getNoPnp().observe(this, (b) -> pnpSwitch.setChecked(b));
 
         pnpSwitch.setOnCheckedChangeListener((v, b) -> {
             f12ViewModel.recalculateHiddenAvg(b);
@@ -102,36 +101,36 @@ public class F12Fragment extends Fragment {
 
         f12ViewModel.getMessage().observe(this, (message) -> systemMessage.setText(message));
 
-        fetch(false);
+        f12ViewModel.getF12Ready().observe(this, this::onF12Ready);
+    }
 
-        f12ViewModel.getF12Ready().observe(this, (ready) -> {
-            if (!ready) return;
+    private void onF12Ready(Boolean ready){
+        if (ready == null || !ready) return;
 
-            f12ViewModel.getF12Ready().setValue(false);
-            whenDone();
+        f12ViewModel.getF12Ready().setValue(false);
+        whenDone();
 
-            if (f12ViewModel.getF12InfoFetched().errorInfo != null){
-                onError(f12ViewModel.getF12InfoFetched().errorInfo);
-                return;
-            }
+        if (f12ViewModel.getF12InfoFetched().errorInfo != null){
+            onError(f12ViewModel.getF12InfoFetched().errorInfo);
+            return;
+        }
 
-            if (f12ViewModel.getF12InfoParsed().errorInfo != null){
-                onError(f12ViewModel.getF12InfoParsed().errorInfo);
-                return;
-            }
+        if (f12ViewModel.getF12InfoParsed().errorInfo != null){
+            onError(f12ViewModel.getF12InfoParsed().errorInfo);
+            return;
+        }
 
-            if (f12ViewModel.getF12Fetched().errorInfo != null){
-                onError(f12ViewModel.getF12Fetched().errorInfo);
-                return;
-            }
+        if (f12ViewModel.getF12Fetched().errorInfo != null){
+            onError(f12ViewModel.getF12Fetched().errorInfo);
+            return;
+        }
 
-            if (f12ViewModel.getF12Parsed().errorInfo != null){
-                onError(f12ViewModel.getF12Parsed().errorInfo);
-                return;
-            }
+        if (f12ViewModel.getF12Parsed().errorInfo != null){
+            onError(f12ViewModel.getF12Parsed().errorInfo);
+            return;
+        }
 
-            onSuccess(f12ViewModel.getF12Parsed());
-        });
+        onSuccess(f12ViewModel.getF12Parsed());
     }
 
     private void fetch(boolean refetch){
