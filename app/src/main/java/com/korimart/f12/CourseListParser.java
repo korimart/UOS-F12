@@ -14,6 +14,8 @@ public enum CourseListParser implements WiseParser {
     private XMLHelper xmlHelper = XMLHelper.INSTANCE;
 
     public static class CourseInfo {
+        String schoolYear;
+        String semester;
         String name;
         String classification;
         String classNumber;
@@ -25,6 +27,8 @@ public enum CourseListParser implements WiseParser {
         boolean doubleMajor;
         boolean minor;
         boolean nonKorean;
+        String curriNumber;
+        String programCode;
     }
 
     public static class Result implements WiseParser.Result {
@@ -51,6 +55,8 @@ public enum CourseListParser implements WiseParser {
 
             Element listEl = (Element) list;
             CourseInfo courseInfo = new CourseInfo();
+            courseInfo.schoolYear = xmlHelper.getContentByName(listEl, "sch_year");
+            courseInfo.semester = xmlHelper.getContentByName(listEl, "smt_cd");
             courseInfo.name = xmlHelper.getContentByName(listEl, "curi_nm");
             courseInfo.classification = xmlHelper.getContentByName(listEl, "cmp_div_nm");
             courseInfo.classNumber = xmlHelper.getContentByName(listEl, "class_no");
@@ -62,6 +68,8 @@ public enum CourseListParser implements WiseParser {
             courseInfo.doubleMajor = xmlHelper.getContentByName(listEl, "sec_sect_permit_yn").equals("Y");
             courseInfo.minor = xmlHelper.getContentByName(listEl, "minor_sect_permit_yn").equals("Y");
             courseInfo.nonKorean = xmlHelper.getContentByName(listEl, "lsn_type_cd2").equals("외국어강의");
+            courseInfo.curriNumber = xmlHelper.getContentByName(listEl, "curi_no");
+            courseInfo.programCode = xmlHelper.getContentByName(listEl, "pgm_cd");
 
             result.courseInfos.add(courseInfo);
         }

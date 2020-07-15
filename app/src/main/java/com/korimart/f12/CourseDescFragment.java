@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import java.util.List;
 
 public class CourseDescFragment extends Fragment {
+    private CourseDescViewModel courseDescViewModel;
     private CoursesViewModel coursesViewModel;
     private int position;
 
@@ -31,6 +32,8 @@ public class CourseDescFragment extends Fragment {
 
         ViewModelProvider vmp = new ViewModelProvider(getActivity(), new ViewModelProvider.NewInstanceFactory());
         coursesViewModel = vmp.get(CoursesViewModel.class);
+        courseDescViewModel = vmp.get(CourseDescViewModel.class);
+
         position = getArguments().getInt("position");
         test = view.findViewById(R.id.course_desc_test);
 
@@ -39,5 +42,6 @@ public class CourseDescFragment extends Fragment {
             test.setText(courses.get(position).name);
         }
 
+        courseDescViewModel.fetchAndParseCourseDesc1();
     }
 }

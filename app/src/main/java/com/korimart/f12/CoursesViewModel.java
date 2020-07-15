@@ -100,7 +100,7 @@ public class CoursesViewModel extends ViewModel {
         return personalInfoFuture;
     }
 
-    public CompletableFuture<Void> fetchCourses(boolean refetch){
+    public CompletableFuture<Void> fetchAndParseCourses(boolean refetch){
         if (coursesFuture == null || refetch){
             coursesFuture = CompletableFuture.runAsync(() -> {
                 String formattedParams = String.format(

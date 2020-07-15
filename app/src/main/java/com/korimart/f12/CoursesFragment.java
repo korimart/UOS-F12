@@ -109,7 +109,7 @@ public class CoursesFragment extends Fragment {
 
         setTitle();
 
-        coursesViewModel.fetchCourses(coursesViewModel.isShouldFetchCourses())
+        coursesViewModel.fetchAndParseCourses(coursesViewModel.isShouldFetchCourses())
                 .thenRun(() -> coursesViewModel.getCourseListReady().postValue(true));
         coursesViewModel.setShouldFetchCourses(false);
     }

@@ -19,6 +19,8 @@ public class CourseListUnitTest {
         CourseListParser.Result result = CourseListParser.INSTANCE.parse(doc);
 
         CourseInfo info1 = new CourseInfo(){{
+            schoolYear = "2019";
+            semester = "20";
             name = "창의공학기초설계";
             classification = "전공필수";
             classNumber = "02";
@@ -30,9 +32,13 @@ public class CourseListUnitTest {
             doubleMajor = true;
             minor = false;
             nonKorean = false;
+            curriNumber = "30000";
+            programCode = "005";
         }};
 
         CourseInfo info2 = new CourseInfo(){{
+            schoolYear = "2019";
+            semester = "20";
             name = "창의공학기초설계";
             classification = "전공필수";
             classNumber = "03";
@@ -44,9 +50,13 @@ public class CourseListUnitTest {
             doubleMajor = true;
             minor = false;
             nonKorean = false;
+            curriNumber = "30000";
+            programCode = "005";
         }};
 
         CourseInfo info3 = new CourseInfo(){{
+            schoolYear = "2019";
+            semester = "20";
             name = "학업설계상담 Ⅱ";
             classification = "전공필수";
             classNumber = "01";
@@ -58,6 +68,8 @@ public class CourseListUnitTest {
             doubleMajor = false;
             minor = false;
             nonKorean = false;
+            curriNumber = "71072";
+            programCode = "";
         }};
 
         assertHasEntry(result.courseInfos, info1);
@@ -73,6 +85,8 @@ public class CourseListUnitTest {
         CourseListParser.Result result = CourseListParser.INSTANCE.parse(doc);
 
         CourseInfo info1 = new CourseInfo(){{
+            schoolYear = "2019";
+            semester = "20";
             name = "공학수학Ⅱ";
             classification = "전공필수";
             classNumber = "02";
@@ -84,9 +98,13 @@ public class CourseListUnitTest {
             doubleMajor = true;
             minor = false;
             nonKorean = true;
+            curriNumber = "30010";
+            programCode = "";
         }};
 
         CourseInfo info2 = new CourseInfo(){{
+            schoolYear = "2019";
+            semester = "20";
             name = "알고리듬";
             classification = "전공선택";
             classNumber = "01";
@@ -98,6 +116,8 @@ public class CourseListUnitTest {
             doubleMajor = true;
             minor = false;
             nonKorean = false;
+            curriNumber = "30034";
+            programCode = "";
         }};
 
         assertHasEntry(result.courseInfos, info1);
@@ -107,7 +127,7 @@ public class CourseListUnitTest {
     private void assertHasEntry(List<CourseInfo> infos, CourseInfo info){
         CourseInfo infoReal1 = findEntryByNameNumber(infos, info.name, info.classNumber);
         assertNotNull(infoReal1);
-        assertCourseInfoSame(infoReal1, info);
+        assertCourseInfoSame(info, infoReal1);
     }
 
     private CourseInfo findEntryByNameNumber(List<CourseInfo> infos, String name, String classNo){
@@ -130,5 +150,6 @@ public class CourseListUnitTest {
        assertEquals(info1.doubleMajor, info2.doubleMajor);
        assertEquals(info1.minor, info2.minor);
        assertEquals(info1.nonKorean, info2.nonKorean);
+       assertEquals(info1.curriNumber, info2.curriNumber);
     }
 }
