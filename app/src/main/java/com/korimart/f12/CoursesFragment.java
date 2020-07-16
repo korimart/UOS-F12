@@ -102,13 +102,19 @@ public class CoursesFragment extends Fragment {
                 f12ViewModel.getF12InfoParsed()))
             return;
 
+        boolean departmentNotFound = false;
         if (!coursesViewModel.isInitialized()){
             setupInitialYearLevel(persInfo);
-            setupInitialFilter(schoolList);
+            departmentNotFound = setupInitialFilter(schoolList);
             coursesViewModel.setInitialized(true);
         }
 
-        setTitle();
+        if (departmentNotFound){
+            this.title.setText("기본 필터를 가져오는데 실패했습니다.\n대학원생이신가요?");
+            ErrorReporter.INSTANCE.reportError(new Exception("department not found"));
+        }
+        else
+            setTitle();
 
         coursesViewModel.fetchAndParseCourses(coursesViewModel.isShouldFetchCourses())
                 .thenRun(() -> coursesViewModel.getCourseListReady().postValue(true));
@@ -192,6 +198,7 @@ public class CoursesFragment extends Fragment {
                 title += "계절학기 ";
                 break;
         }
+
         title += coursesViewModel.getDepartments().getValue().get(
                 coursesViewModel.getSelections()[3]
         ).s1;
@@ -254,7 +261,12 @@ public class CoursesFragment extends Fragment {
         }
     }
 
-    private void setupInitialFilter(@NonNull SchoolListParser.Result schoolResult) {
+    private boolean setupInitialFilter(@NonNull SchoolListParser.Result schoolResult) {
+        ArrayList<String> schoolYears = new ArrayList<>();
+        for (int i = schoolResult.latestSchoolYear; i > schoolResult.latestSchoolYear - 10; i--)
+            schoolYears.add(String.valueOf(i));
+        coursesViewModel.getSchoolYears().setValue(schoolYears);
+
         F12InfoParser.Result f12Result = f12ViewModel.getF12InfoParsed();
 
         ArrayList<StringPair> al = new ArrayList<>();
@@ -263,8 +275,12 @@ public class CoursesFragment extends Fragment {
         coursesViewModel.getSchools().setValue(al);
 
         List<StringPair> schools = coursesViewModel.getSchools().getValue();
+        List<DeptInfo> defaultDepartments = null;
 
         for (Map.Entry<DeptInfo, List<DeptInfo>> e : schoolResult.schoolToDepts.entrySet()){
+            if (e.getKey().code.equals(al.get(0).s2))
+                defaultDepartments = e.getValue();
+
             if (!e.getKey().code.equals(f12Result.schoolCode)) continue;
 
             for (DeptInfo dept : e.getValue()){
@@ -305,10 +321,17 @@ public class CoursesFragment extends Fragment {
             }
         }
 
-        ArrayList<String> schoolYears = new ArrayList<>();
-        for (int i = schoolResult.latestSchoolYear; i > schoolResult.latestSchoolYear - 10; i--)
-            schoolYears.add(String.valueOf(i));
-        coursesViewModel.getSchoolYears().setValue(schoolYears);
+        // department not found; probably graduate student
+        if (coursesViewModel.getDepartments().getValue() == null){
+            coursesViewModel.setDepartments(defaultDepartments);
+            coursesViewModel.setSelections(0, 0);
+            coursesViewModel.setSelections(1, 0);
+            coursesViewModel.setSelections(2, 0);
+            coursesViewModel.setSelections(3, 0);
+            return true;
+        }
+
+        return false;
     }
 
     public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {

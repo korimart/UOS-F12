@@ -83,6 +83,7 @@ public enum SchoolListParser implements WiseParser {
             result.latestSchoolYear = Integer.parseInt(xmlHelper.getContentByName(doc, "strSchYear"));
         } catch (NumberFormatException e){
             result.errorInfo = new ErrorInfo(ErrorInfo.ErrorType.parseFailed, e);
+            return result;
         }
         result.latestSemester = xmlHelper.getContentByName(doc, "strSmtCd");
 

@@ -114,6 +114,7 @@ public class CoursesViewModel extends ViewModel {
                 courseListFetched = wiseFetcher.fetch(courseListUrl, formattedParams);
                 if (courseListFetched.errorInfo != null) return;
                 courseListParsed = courseListParser.parse(courseListFetched.document);
+                if (courseListParsed.errorInfo != null) return;
 
                 List<CourseListParser.CourseInfo> filteredCourses = new ArrayList<>(courseListParsed.courseInfos);
                 filterCourses(filteredCourses);
