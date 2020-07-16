@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.StringJoiner;
 
 public class SyllabusFragment extends Fragment {
@@ -27,6 +28,8 @@ public class SyllabusFragment extends Fragment {
     private TextView title;
     private TextView titleClassNumber;
     private LinearLayout courseInfo;
+    private TextView TOYear;
+    private TextView TOAll;
     private TextView summary;
     private TextView textbook;
     private TextView professor;
@@ -54,6 +57,8 @@ public class SyllabusFragment extends Fragment {
         position = getArguments().getInt("position");
         timePlace = getArguments().getString("timePlace");
 
+        TOYear = view.findViewById(R.id.syllabus_TO_year);
+        TOAll = view.findViewById(R.id.syllabus_TO_all);
         title = view.findViewById(R.id.syllabus_title);
         titleClassNumber = view.findViewById(R.id.syllabus_classNumber);
         courseInfo = view.findViewById(R.id.syllabus_course_info);
@@ -142,6 +147,11 @@ public class SyllabusFragment extends Fragment {
         }
 
         textbook = textbook.replace("\n", "\n\n");
+
+        this.TOYear.setText(String.format(
+                Locale.getDefault(), "%s/%s", courseParsed.TOYear, courseParsed.TOYearMax));
+        this.TOAll.setText(String.format(
+                Locale.getDefault(), "%s/%s", courseParsed.TOAll, courseParsed.TOAllMax));
 
         LayoutInflater li = LayoutInflater.from(getContext());
 

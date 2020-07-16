@@ -83,6 +83,49 @@
                     />
 
                 <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="학년별 수강인원"
+                        android:textColor="#000000"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/syllabus_TO_year"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="NA"
+                        android:textColor="#000000"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="전체 수강인원"
+                        android:textColor="#000000"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/syllabus_TO_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="NA"
+                        android:textColor="#000000"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/syllabus_course_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
