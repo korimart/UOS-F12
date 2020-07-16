@@ -32,6 +32,10 @@ public enum CourseListParser implements WiseParser {
         String programCode;
         boolean uab;
         String certDivCode;
+        String TOYear;
+        String TOYearMax;
+        String TOAll;
+        String TOAllMax;
     }
 
     public static class Result implements WiseParser.Result {
@@ -63,6 +67,7 @@ public enum CourseListParser implements WiseParser {
                 result.courseInfos.add(courseInfo);
             } catch (Exception e) {
                 result.errorInfo = new ErrorInfo(ErrorInfo.ErrorType.parseFailed, e);
+                return result;
             }
         }
 
@@ -88,6 +93,10 @@ public enum CourseListParser implements WiseParser {
         courseInfo.programCode = xmlHelper.getContentByName(listEl, "pgm_cd");
         courseInfo.uab = xmlHelper.getContentByName(listEl, "uab_yn").equals("Y");
         courseInfo.certDivCode = xmlHelper.getContentByName(listEl, "cert_div_cd");
+        courseInfo.TOYear = xmlHelper.getContentByName(listEl, "tlsn_count");
+        courseInfo.TOYearMax = xmlHelper.getContentByName(listEl, "tlsn_limit_count");
+        courseInfo.TOAll = xmlHelper.getContentByName(listEl, "tlsn_psn_cnt");
+        courseInfo.TOAllMax = xmlHelper.getContentByName(listEl, "tlsn_aply_limit_psn_cnt");
 
         for (Field field : courseInfo.getClass().getDeclaredFields()){
             if (field.get(courseInfo) == null)

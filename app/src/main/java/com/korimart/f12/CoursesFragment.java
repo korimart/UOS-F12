@@ -377,7 +377,8 @@ public class CoursesFragment extends Fragment {
             for (String s : timePlaces){
                 if (s == null) continue;
 
-                TextView timePlaceChild = new TextView(getContext());
+                TextView timePlaceChild = (TextView) LayoutInflater.from(getContext())
+                        .inflate(R.layout.item_course_small_text, holder.timePlace, false);
                 timePlaceChild.setText(s.isEmpty() ? "강의실 정보 없음" : s);
                 holder.timePlace.addView(timePlaceChild);
             }
@@ -534,6 +535,8 @@ public class CoursesFragment extends Fragment {
             public TextView points;
             public TextView nonKorean;
             public LinearLayout timePlace;
+            public TextView TOYear;
+            public TextView TOAll;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -545,6 +548,8 @@ public class CoursesFragment extends Fragment {
                 points = itemView.findViewById(R.id.item_course_points);
                 nonKorean = itemView.findViewById(R.id.item_course_nonKorean);
                 timePlace = itemView.findViewById(R.id.item_course_time_place);
+                TOYear = itemView.findViewById(R.id.item_course_TO_year);
+                TOAll = itemView.findViewById(R.id.item_course_TO_all);
             }
         }
     }

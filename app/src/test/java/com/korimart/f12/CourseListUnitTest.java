@@ -13,6 +13,7 @@ public class CourseListUnitTest {
 
     @Test
     public void parserTest(){
+        // 2019년 2학기 컴퓨터과학부
         byte[] docByte = testHelper.loadDocument("courseList2.xml");
         Document doc = XMLHelper.INSTANCE.getDocument(docByte);
 
@@ -34,6 +35,10 @@ public class CourseListUnitTest {
             nonKorean = false;
             curriNumber = "30000";
             programCode = "005";
+            TOYear = "31";
+            TOYearMax = "40";
+            TOAll = "31";
+            TOAllMax = "40";
         }};
 
         CourseInfo info2 = new CourseInfo(){{
@@ -52,6 +57,10 @@ public class CourseListUnitTest {
             nonKorean = false;
             curriNumber = "30000";
             programCode = "005";
+            TOYear = "40";
+            TOYearMax = "40";
+            TOAll = "40";
+            TOAllMax = "40";
         }};
 
         CourseInfo info3 = new CourseInfo(){{
@@ -70,7 +79,13 @@ public class CourseListUnitTest {
             nonKorean = false;
             curriNumber = "71072";
             programCode = "";
+            TOYear = "10";
+            TOYearMax = "10";
+            TOAll = "10";
+            TOAllMax = "10";
         }};
+
+        assertNull(result.errorInfo);
 
         assertHasEntry(result.courseInfos, info1);
         assertHasEntry(result.courseInfos, info2);
@@ -79,6 +94,7 @@ public class CourseListUnitTest {
 
     @Test
     public void parserTest2(){
+        // 2019년 2학기 전전컴
         byte[] docByte = testHelper.loadDocument("courseList3.xml");
         Document doc = XMLHelper.INSTANCE.getDocument(docByte);
 
@@ -100,6 +116,10 @@ public class CourseListUnitTest {
             nonKorean = true;
             curriNumber = "30010";
             programCode = "";
+            TOYear = "111";
+            TOYearMax = "115";
+            TOAll = "111";
+            TOAllMax = "115";
         }};
 
         CourseInfo info2 = new CourseInfo(){{
@@ -118,10 +138,39 @@ public class CourseListUnitTest {
             nonKorean = false;
             curriNumber = "30034";
             programCode = "";
+            TOYear = "18";
+            TOYearMax = "40";
+            TOAll = "18";
+            TOAllMax = "40";
         }};
+
+        CourseInfo info3 = new CourseInfo(){{
+            schoolYear = "2019";
+            semester = "20";
+            name = "선형대수학";
+            classification = "전공선택";
+            classNumber = "01";
+            yearLevel = "1";
+            points = 3;
+            timePlace = "Tue 01,02,03/19-B114/115";
+            professor = "이준화";
+            outsider = false;
+            doubleMajor = false;
+            minor = false;
+            nonKorean = false;
+            curriNumber = "30042";
+            programCode = "";
+            TOYear = "0";
+            TOYearMax = "0";
+            TOAll = "108";
+            TOAllMax = "115";
+        }};
+
+        assertNull(result.errorInfo);
 
         assertHasEntry(result.courseInfos, info1);
         assertHasEntry(result.courseInfos, info2);
+        assertHasEntry(result.courseInfos, info3);
     }
 
     private void assertHasEntry(List<CourseInfo> infos, CourseInfo info){
@@ -151,5 +200,9 @@ public class CourseListUnitTest {
        assertEquals(info1.minor, info2.minor);
        assertEquals(info1.nonKorean, info2.nonKorean);
        assertEquals(info1.curriNumber, info2.curriNumber);
+       assertEquals(info1.TOYear, info2.TOYear);
+       assertEquals(info1.TOYearMax, info2.TOYearMax);
+       assertEquals(info1.TOAll, info2.TOAll);
+       assertEquals(info1.TOAllMax, info2.TOAllMax);
     }
 }
