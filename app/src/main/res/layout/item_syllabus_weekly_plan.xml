@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="10dp"
-    android:paddingTop="10dp"
+    android:paddingBottom="15dp"
+    android:paddingTop="15dp"
     >
 
     <TextView
@@ -15,7 +15,7 @@
         android:text="1주차"
         android:textSize="20dp"
         android:textColor="#FF000000"
-        android:paddingBottom="5dp"
+        android:paddingBottom="10dp"
         />
 
     <TextView

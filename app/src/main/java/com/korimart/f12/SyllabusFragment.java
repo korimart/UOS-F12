@@ -9,13 +9,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class SyllabusFragment extends Fragment {
     private SyllabusViewModel syllabusViewModel;
@@ -143,10 +143,17 @@ public class SyllabusFragment extends Fragment {
 
         LayoutInflater li = LayoutInflater.from(getContext());
 
-        addTextToLinLay(li, courseInfo, yearLevel);
-        addTextToLinLay(li, courseInfo, lecPrac);
-        addTextToLinLay(li, courseInfo, classification);
-        addTextToLinLay(li, courseInfo, pointsTime);
+        StringJoiner sj = new StringJoiner(", ");
+        if (!yearLevel.isEmpty())
+            sj.add(yearLevel);
+        if (!lecPrac.isEmpty())
+            sj.add(lecPrac);
+        if (!classification.isEmpty())
+            sj.add(classification);
+        if (!pointsTime.isEmpty())
+            sj.add(pointsTime);
+
+        addTextToLinLay(li, courseInfo, sj.toString());
         addPermissions(li);
         addTextToLinLay(li, courseInfo, timePlace);
 
