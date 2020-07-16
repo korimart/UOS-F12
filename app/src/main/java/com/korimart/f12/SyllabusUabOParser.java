@@ -14,7 +14,7 @@ public enum SyllabusUabOParser implements WiseParser {
     INSTANCE;
 
     private XMLHelper xmlHelper = XMLHelper.INSTANCE;
-    private Pattern ratePattern = Pattern.compile("\\((\\d+)\\)%");
+    private Pattern ratePattern = Pattern.compile("\\((\\d+)\\)%|\\((\\d+)%\\)");
 
     public static class Result implements WiseParser.Result {
         public String lecPrac;
@@ -57,7 +57,7 @@ public enum SyllabusUabOParser implements WiseParser {
         try {
             result.rubrics = getNonZeroRubrics(doc);
         } catch (Exception e) {
-            result.errorInfo = new ErrorInfo(e);
+            result.errorInfo = new ErrorInfo(ErrorInfo.ErrorType.parseFailed, e);
             return result;
         }
 
@@ -103,11 +103,11 @@ public enum SyllabusUabOParser implements WiseParser {
 
             String[] nameAndRate = content.split(" ");
             if (nameAndRate.length < 3)
-                throw new Exception("input doesn't have 3 parts");
+                throw new Exception(content + " doesn't have 3 parts");
 
-            Matcher m = ratePattern.matcher(nameAndRate[2]);
+            Matcher m = ratePattern.matcher(nameAndRate[nameAndRate.length - 1]);
             if (!m.find())
-                throw new Exception("could not match regex");
+                throw new Exception(nameAndRate[nameAndRate.length - 1] + " could not match regex");
 
             if (!m.group(1).equals("0")){
                 Pair<String, Integer> pair = new Pair<>(nameAndRate[1], Integer.parseInt(m.group(1)));
