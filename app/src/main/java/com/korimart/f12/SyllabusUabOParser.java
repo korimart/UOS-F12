@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public enum SyllabusOParser implements WiseParser {
+public enum SyllabusUabOParser implements WiseParser {
     INSTANCE;
 
     private XMLHelper xmlHelper = XMLHelper.INSTANCE;

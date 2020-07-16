@@ -8,7 +8,7 @@ import org.w3c.dom.NodeList;
 import java.util.ArrayList;
 import java.util.List;
 
-public enum SyllabusWParser implements WiseParser {
+public enum SyllabusUabWParser implements WiseParser {
     INSTANCE;
 
     private XMLHelper xmlHelper = XMLHelper.INSTANCE;

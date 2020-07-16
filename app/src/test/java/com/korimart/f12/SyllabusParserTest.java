@@ -6,17 +6,17 @@ import org.w3c.dom.Document;
 import static org.junit.Assert.*;
 
 public class SyllabusParserTest {
-    SyllabusOParser OParser = SyllabusOParser.INSTANCE;
-    SyllabusWParser WParser = SyllabusWParser.INSTANCE;
+    SyllabusUabOParser OParser = SyllabusUabOParser.INSTANCE;
+    SyllabusUabWParser WParser = SyllabusUabWParser.INSTANCE;
     TestHelper testHelper = TestHelper.INSTANCE;
     XMLHelper xmlHelper = XMLHelper.INSTANCE;
 
     @Test
     public void testOParser(){
-        byte[] rawDoc = testHelper.loadDocument("syllabusO.xml");
+        byte[] rawDoc = testHelper.loadDocument("syllabusUabO.xml");
         Document doc = xmlHelper.getDocument(rawDoc);
 
-        SyllabusOParser.Result result = OParser.parse(doc);
+        SyllabusUabOParser.Result result = OParser.parse(doc);
 
         assertNull(result.errorInfo);
         assertEquals("강의", result.lecPrac);
@@ -46,10 +46,10 @@ public class SyllabusParserTest {
 
     @Test
     public void testWParser(){
-        byte[] rawDoc = testHelper.loadDocument("syllabusW.xml");
+        byte[] rawDoc = testHelper.loadDocument("syllabusUabW.xml");
         Document doc = xmlHelper.getDocument(rawDoc);
 
-        SyllabusWParser.Result result = WParser.parse(doc);
+        SyllabusUabWParser.Result result = WParser.parse(doc);
 
         assertNull(result.errorInfo);
         assertEquals(
@@ -67,5 +67,21 @@ public class SyllabusParserTest {
         assertEquals("보강주간", result.weeklyPlans.get(11));
         assertEquals("OpenGL ES & WebGL", result.weeklyPlans.get(13));
         assertEquals("Final presentations", result.weeklyPlans.get(15));
+    }
+
+    @Test
+    public void testWParser2(){
+        // 2019년 2학기 철학과 논리학
+        byte[] rawDoc = testHelper.loadDocument("syllabusW.xml");
+        Document doc = xmlHelper.getDocument(rawDoc);
+
+        SyllabusUabWParser.Result result = WParser.parse(doc);
+
+        assertNull(result.errorInfo);
+
+        assertEquals(16, result.weeklyPlans.size());
+        assertEquals(
+                "과목소개 및 기본개념\n연역적 타당성과 건전성",
+                result.weeklyPlans.get(0));
     }
 }

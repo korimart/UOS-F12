@@ -69,9 +69,6 @@ public class SyllabusFragment extends Fragment {
 
         courseParsed = coursesViewModel.getFilteredCourses().getValue().get(position);
 
-        title.setText(courseParsed.name);
-        titleClassNumber.setText(courseParsed.classNumber + "분반");
-
         syllabusViewModel.getOwReady().observe(this, this::onOwReady);
         fetch();
     }
@@ -106,8 +103,11 @@ public class SyllabusFragment extends Fragment {
     }
 
     private void onSuccess() {
-        SyllabusOParser.Result oParsed = syllabusViewModel.getoParsed();
-        SyllabusWParser.Result wParsed = syllabusViewModel.getwParsed();
+        title.setText(courseParsed.name);
+        titleClassNumber.setText(courseParsed.classNumber + "분반");
+
+        SyllabusUabOParser.Result oParsed = syllabusViewModel.getoParsed();
+        SyllabusUabWParser.Result wParsed = syllabusViewModel.getwParsed();
 
         LayoutInflater li = LayoutInflater.from(getContext());
 
@@ -190,6 +190,25 @@ public class SyllabusFragment extends Fragment {
     private void onError(@NonNull ErrorInfo errorInfo) {
         if (errorInfo.exception != null)
             ErrorReporter.INSTANCE.reportError(errorInfo.exception);
+
+        switch (errorInfo.type){
+            case sessionExpired:
+                ((MainActivity) getActivity()).goToLoginFrag(1);
+                break;
+
+            case timeout:
+            case responseFailed:
+                title.setText("연결 실패 - 인터넷 연결을 확인 후 앱을 재실행 해보세요");
+                break;
+
+            case parseFailed:
+                title.setText("정보추출 실패 - 개발자에게 문의하세요");
+                break;
+
+            default:
+                ((MainActivity) getActivity()).goToErrorFrag();
+                break;
+        }
     }
 
     private boolean checkError(ErrorInfo errorInfo){
@@ -228,6 +247,8 @@ public class SyllabusFragment extends Fragment {
     }
 
     private void clearDummy(){
+        title.setText("가져오는 중...");
+        titleClassNumber.setText("");
         courseInfo.removeAllViews();
         summary.setText("");
         textbook.setText("");

@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<root xmlns="">
+    <weeklist>
+        <list>
+            <week_seq><![CDATA[1]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[introduction to JavaScript]]></lec_descr>
+            <lsn_meth_descr><![CDATA[강의 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[교재 및 강의자료]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[[optional] “WebGL Programming Guide” (by Kouichi Matsuda and Rodger Lea)
+]]></lec_shbk_descr>
+            <curi_no><![CDATA[71033]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[2]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[Ch01 Introduction to OpenGL)]]></lec_descr>
+            <lsn_meth_descr><![CDATA[강의 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[교재 및 강의자료]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[[optional] “WebGL Programming Guide” (by Kouichi Matsuda and Rodger Lea)
+]]></lec_shbk_descr>
+            <curi_no><![CDATA[71033]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[3]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[Ch02 Shader Fundamentals]]></lec_descr>
+            <lsn_meth_descr><![CDATA[강의 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[교재 및 강의자료]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[[optional] “WebGL Programming Guide” (by Kouichi Matsuda and Rodger Lea)
+]]></lec_shbk_descr>
+            <curi_no><![CDATA[71033]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[4]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[Ch03 Drawing w2ith OpenGL (1/2)]]></lec_descr>
+            <lsn_meth_descr><![CDATA[강의 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[교재 및 강의자료]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[[optional] “WebGL Programming Guide” (by Kouichi Matsuda and Rodger Lea)
+]]></lec_shbk_descr>
+            <curi_no><![CDATA[71033]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[5]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[Ch03 Drawing w2ith OpenGL (2/2)]]></lec_descr>
+            <lsn_meth_descr><![CDATA[강의 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[교재 및 강의자료]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[[optional] “WebGL Programming Guide” (by Kouichi Matsuda and Rodger Lea)
+]]></lec_shbk_descr>
+            <curi_no><![CDATA[71033]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[6]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[Ch04 Color, Pixels, and Framebuffers]]></lec_descr>
+            <lsn_meth_descr><![CDATA[강의 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[[optional] “WebGL Programming Guide” (by Kouichi Matsuda and Rodger Lea)
+]]></lec_shbk_descr>
+            <curi_no><![CDATA[71033]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[7]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[Ch05 Viewing Transformations, Clipping, and Feedback	]]></lec_descr>
+            <lsn_meth_descr><![CDATA[강의 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[교재 및 강의자료]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[[optional] “WebGL Programming Guide” (by Kouichi Matsuda and Rodger Lea)
+]]></lec_shbk_descr>
+            <curi_no><![CDATA[71033]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[8]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[Ch06 Textures]]></lec_descr>
+            <lsn_meth_descr><![CDATA[강의 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[[optional] “WebGL Programming Guide” (by Kouichi Matsuda and Rodger Lea)
+]]></lec_shbk_descr>
+            <curi_no><![CDATA[71033]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[9]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[Ch07 Light and Shadow]]></lec_descr>
+            <lsn_meth_descr><![CDATA[강의 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[교재 및 강의자료]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[[optional] “WebGL Programming Guide” (by Kouichi Matsuda and Rodger Lea)
+]]></lec_shbk_descr>
+            <curi_no><![CDATA[71033]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[10]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[Ch08 Procedural Texturing]]></lec_descr>
+            <lsn_meth_descr><![CDATA[강의 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[교재 및 강의자료]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[[optional] “WebGL Programming Guide” (by Kouichi Matsuda and Rodger Lea)
+]]></lec_shbk_descr>
+            <curi_no><![CDATA[71033]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[11]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[Ch09 Tessellation Shaders
+Ch10 Geometry Shaders]]></lec_descr>
+            <lsn_meth_descr><![CDATA[강의 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[교재 및 강의자료]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[[optional] “WebGL Programming Guide” (by Kouichi Matsuda and Rodger Lea)
+]]></lec_shbk_descr>
+            <curi_no><![CDATA[71033]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[12]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[보강주간]]></lec_descr>
+            <lsn_meth_descr><![CDATA[강의 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[[optional] “WebGL Programming Guide” (by Kouichi Matsuda and Rodger Lea)
+]]></lec_shbk_descr>
+            <curi_no><![CDATA[71033]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[13]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[Ch11 Memory
+Ch12 Compute Shaders]]></lec_descr>
+            <lsn_meth_descr><![CDATA[강의 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[교재 및 강의자료]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[[optional] “WebGL Programming Guide” (by Kouichi Matsuda and Rodger Lea)
+]]></lec_shbk_descr>
+            <curi_no><![CDATA[71033]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[14]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[OpenGL ES & WebGL]]></lec_descr>
+            <lsn_meth_descr><![CDATA[강의 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[교재 및 강의자료]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[[optional] “WebGL Programming Guide” (by Kouichi Matsuda and Rodger Lea)
+]]></lec_shbk_descr>
+            <curi_no><![CDATA[71033]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[15]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[More on Computer Graphics]]></lec_descr>
+            <lsn_meth_descr><![CDATA[강의 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[교재 및 강의자료]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[[optional] “WebGL Programming Guide” (by Kouichi Matsuda and Rodger Lea)
+]]></lec_shbk_descr>
+            <curi_no><![CDATA[71033]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[16]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[Final presentations]]></lec_descr>
+            <lsn_meth_descr><![CDATA[강의 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[-Shading language에 기초한 modern OpenGL을 이해하고 이를 사용하여 실시간 3차원 그래픽스 어플리케이션을 구현한다.
+-3차원 렌더링 알고리즘을 이해한다.
+-그래픽스 렌더링 파이프라인의 작동원리를 이해한다.
+-각종 3차원 그래픽스 관련 도구들의 사용법을 익힌다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[[optional] “WebGL Programming Guide” (by Kouichi Matsuda and Rodger Lea)
+]]></lec_shbk_descr>
+            <curi_no><![CDATA[71033]]></curi_no>
+        </list>
+    </weeklist>
+</root>
+
