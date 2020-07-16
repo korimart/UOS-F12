@@ -107,8 +107,9 @@ public enum SyllabusOParser implements WiseParser {
             if (!m.find())
                 throw new Exception(nameAndRate[nameAndRate.length - 1] + " could not match regex");
 
-            if (!m.group(1).equals("0")){
-                Pair<String, Integer> pair = new Pair<>(nameAndRate[1], Integer.parseInt(m.group(1)));
+            String match = m.group(1) == null ? m.group(2) : m.group(1);
+            if (!match.equals("0")){
+                Pair<String, Integer> pair = new Pair<>(nameAndRate[1], Integer.parseInt(match));
                 if (pair.second == null)
                     throw new NullPointerException();
                 ret.add(pair);
