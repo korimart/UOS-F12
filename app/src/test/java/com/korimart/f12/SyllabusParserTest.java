@@ -47,6 +47,16 @@ public class SyllabusParserTest {
     }
 
     @Test
+    public void testUabOParser2(){
+        byte[] rawDoc = testHelper.loadDocument("syllabusUabO2.xml");
+        Document doc = xmlHelper.getDocument(rawDoc);
+
+        SyllabusUabOParser.Result result = uabOParser.parse(doc);
+
+        assertNull(result.errorInfo);
+    }
+
+    @Test
     public void testUabWParser(){
         byte[] rawDoc = testHelper.loadDocument("syllabusUabW.xml");
         Document doc = xmlHelper.getDocument(rawDoc);
@@ -69,6 +79,16 @@ public class SyllabusParserTest {
         assertEquals("보강주간", result.weeklyPlans.get(11));
         assertEquals("OpenGL ES & WebGL", result.weeklyPlans.get(13));
         assertEquals("Final presentations", result.weeklyPlans.get(15));
+    }
+
+    @Test
+    public void testUabWParser2(){
+        byte[] rawDoc = testHelper.loadDocument("syllabusUabW2.xml");
+        Document doc = xmlHelper.getDocument(rawDoc);
+
+        SyllabusUabWParser.Result result = uabWParser.parse(doc);
+
+        assertNull(result.errorInfo);
     }
 
     @Test

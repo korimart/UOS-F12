@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<root xmlns="">
+    <weeklist>
+        <list>
+            <week_seq><![CDATA[1]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[마이크로프로세서 개요]]></lec_descr>
+            <lsn_meth_descr><![CDATA[강의]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[강의 교재 (PowerPoint)
+하드웨어 실습 Kit]]></lec_shbk_descr>
+            <curi_no><![CDATA[71076]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[2]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[마이크로프로세서 기초 이론 1 및 실습]]></lec_descr>
+            <lsn_meth_descr><![CDATA[강의 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[강의 교재 (PowerPoint)
+하드웨어 실습 Kit]]></lec_shbk_descr>
+            <curi_no><![CDATA[71076]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[3]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[마이크로프로세서 기초 이론 2 및 실습]]></lec_descr>
+            <lsn_meth_descr><![CDATA[강의 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[강의 교재 (PowerPoint)
+하드웨어 실습 Kit]]></lec_shbk_descr>
+            <curi_no><![CDATA[71076]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[4]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[마이크로프로세서 기초 이론 3 및 실습]]></lec_descr>
+            <lsn_meth_descr><![CDATA[강의 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[강의 교재 (PowerPoint)
+하드웨어 실습 Kit]]></lec_shbk_descr>
+            <curi_no><![CDATA[71076]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[5]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[마이크로프로세서 응용 1 및 실습]]></lec_descr>
+            <lsn_meth_descr><![CDATA[강의 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[강의 교재 (PowerPoint)
+하드웨어 실습 Kit]]></lec_shbk_descr>
+            <curi_no><![CDATA[71076]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[6]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[마이크로프로세서 응용 2 및 실습]]></lec_descr>
+            <lsn_meth_descr><![CDATA[강의 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[강의 교재 (PowerPoint)
+하드웨어 실습 Kit]]></lec_shbk_descr>
+            <curi_no><![CDATA[71076]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[7]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[마이크로프로세서 응용 3 및 실습]]></lec_descr>
+            <lsn_meth_descr><![CDATA[강의 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[강의 교재 (PowerPoint)
+하드웨어 실습 Kit]]></lec_shbk_descr>
+            <curi_no><![CDATA[71076]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[8]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[중간고사]]></lec_descr>
+            <lsn_meth_descr><![CDATA[시험]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[ ]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[강의 교재 (PowerPoint)
+하드웨어 실습 Kit]]></lec_shbk_descr>
+            <curi_no><![CDATA[71076]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[9]]></week_seq>
+            <drawing_pnt_yn><![CDATA[Y]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[시스템 설계 및 실습]]></lec_descr>
+            <lsn_meth_descr><![CDATA[설계 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[강의 교재 (PowerPoint)
+하드웨어 실습 Kit]]></lec_shbk_descr>
+            <curi_no><![CDATA[71076]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[10]]></week_seq>
+            <drawing_pnt_yn><![CDATA[Y]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[시스템 설계 및 실습]]></lec_descr>
+            <lsn_meth_descr><![CDATA[설계 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[강의 교재 (PowerPoint)
+하드웨어 실습 Kit]]></lec_shbk_descr>
+            <curi_no><![CDATA[71076]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[11]]></week_seq>
+            <drawing_pnt_yn><![CDATA[Y]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[시스템 설계 및 실습]]></lec_descr>
+            <lsn_meth_descr><![CDATA[설계 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[강의 교재 (PowerPoint)
+하드웨어 실습 Kit]]></lec_shbk_descr>
+            <curi_no><![CDATA[71076]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[12]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[ ]]></week_title>
+            <lec_descr><![CDATA[보강주간]]></lec_descr>
+            <lsn_meth_descr><![CDATA[ ]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[ ]]></shbk_descr>
+            <prjt_descr><![CDATA[ ]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[강의 교재 (PowerPoint)
+하드웨어 실습 Kit]]></lec_shbk_descr>
+            <curi_no><![CDATA[71076]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[13]]></week_seq>
+            <drawing_pnt_yn><![CDATA[Y]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[Term Project 수행]]></lec_descr>
+            <lsn_meth_descr><![CDATA[설계 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[강의 교재 (PowerPoint)
+하드웨어 실습 Kit]]></lec_shbk_descr>
+            <curi_no><![CDATA[71076]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[14]]></week_seq>
+            <drawing_pnt_yn><![CDATA[Y]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[Term Project 수행]]></lec_descr>
+            <lsn_meth_descr><![CDATA[설계 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[강의 교재 (PowerPoint)
+하드웨어 실습 Kit]]></lec_shbk_descr>
+            <curi_no><![CDATA[71076]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[15]]></week_seq>
+            <drawing_pnt_yn><![CDATA[Y]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[Term Project 수행]]></lec_descr>
+            <lsn_meth_descr><![CDATA[설계 및 실습]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[강의 교재 (PowerPoint)
+하드웨어 실습 Kit]]></lec_shbk_descr>
+            <curi_no><![CDATA[71076]]></curi_no>
+        </list>
+        <list>
+            <week_seq><![CDATA[16]]></week_seq>
+            <drawing_pnt_yn><![CDATA[]]></drawing_pnt_yn>
+            <week_title><![CDATA[]]></week_title>
+            <lec_descr><![CDATA[Term Project 발표]]></lec_descr>
+            <lsn_meth_descr><![CDATA[발표]]></lsn_meth_descr>
+            <shbk_descr><![CDATA[]]></shbk_descr>
+            <prjt_descr><![CDATA[]]></prjt_descr>
+            <dept_goal1><![CDATA[(공과대학) :독창성이 있고, 응용력이 풍부한 생산적 기술인]]></dept_goal1>
+            <dept_goal2><![CDATA[(공과대학) :협동 봉사하는 마음과 인성을 겸비한 인격적 기술인]]></dept_goal2>
+            <dept_goal3><![CDATA[(공과대학) :세계화 시대에 선도적 기술을 갖춘 미래지향적 기술인]]></dept_goal3>
+            <pgm_goal1><![CDATA[(컴퓨터과학) : 이론과 실무능력을 겸비한 창의적인 컴퓨터 전문 인재 양성 ]]></pgm_goal1>
+            <pgm_goal2><![CDATA[(컴퓨터과학) : 공학윤리의식과 원활한 소통능력을 갖춘 리더형 인재 양성 ]]></pgm_goal2>
+            <pgm_goal3><![CDATA[(컴퓨터과학) : 지속적인 자기계발을 통하여 미래 정보화 사회 발전에 공헌하는 글로벌 인재 양성 ]]></pgm_goal3>
+            <curi_goal1><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></curi_goal1>
+            <curi_goal2><![CDATA[]]></curi_goal2>
+            <curi_goal3><![CDATA[]]></curi_goal3>
+            <lec_goal_descr><![CDATA[본 강좌에서는 마이크로프로세서의 기본 구조 및 원리를 학습하며 프로그램 및 컴파일러 등을 배우고 주변기기와의 정보 전달방식을 공부한다. 특히 마이크로컨트롤러 칩을 기반으로 한 하드웨어 실습을 통해 마이크로프로세서에 대한 경험 및 이해를 키우고, 특정 기능을 구현하는 마이크로프로세서 시스템을 설계및 구현하여 하드웨어 실무 능력을 키운다.]]></lec_goal_descr>
+            <lec_shbk_descr><![CDATA[강의 교재 (PowerPoint)
+하드웨어 실습 Kit]]></lec_shbk_descr>
+            <curi_no><![CDATA[71076]]></curi_no>
+        </list>
+    </weeklist>
+</root>
+

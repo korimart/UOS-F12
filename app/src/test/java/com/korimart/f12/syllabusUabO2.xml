@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<root xmlns="">
+    <overviewlist>
+        <list>
+            <lrn_otcm_items_seq>2</lrn_otcm_items_seq>
+            <lrn_otcm_nm><![CDATA[2.(분석실험)데이터를 분석하고 주어진 사실이나 가설을 실험을 통하여 확인할 수 있는 능력]]></lrn_otcm_nm>
+            <exec_criteria_cont><![CDATA[하드웨어 제작에 필요한 기본적인 이론을 공부하고 도구 사용법 및 하드웨어 기본 동작에 대해 이해한다.]]></exec_criteria_cont>
+            <curi_est_meth><![CDATA[실습 및 시험]]></curi_est_meth>
+            <sch_year><![CDATA[2020]]></sch_year>
+            <smt_cd><![CDATA[20]]></smt_cd>
+            <curi_no><![CDATA[71076]]></curi_no>
+            <class_no><![CDATA[01]]></class_no>
+            <pgm_cd><![CDATA[005]]></pgm_cd>
+            <cmp_div_nm><![CDATA[전공선택(전공선택)]]></cmp_div_nm>
+            <curi_class_no><![CDATA[71076(01)]]></curi_class_no>
+            <curi_nm><![CDATA[마이크로프로세서설계및실습(Microprocessor Design and Experiment)]]></curi_nm>
+            <pnt><![CDATA[3학점(4시간)]]></pnt>
+            <lec_prac_div_nm><![CDATA[강의+실험·실습]]></lec_prac_div_nm>
+            <time_table><![CDATA[수06,07/19-112/113, 수08,09/19-319/320]]></time_table>
+            <sust_section_cd_nm><![CDATA[컴퓨터과학부]]></sust_section_cd_nm>
+            <kor_nm><![CDATA[최혁]]></kor_nm>
+            <chag_prof_cont_point><![CDATA[010-9925-7428]]></chag_prof_cont_point>
+            <email><![CDATA[chyuk@uos.ac.kr]]></email>
+            <chag_prof_homepage><![CDATA[http://club.uos.ac.kr]]></chag_prof_homepage>
+            <chag_prof_counsel_time><![CDATA[]]></chag_prof_counsel_time>
+            <chag_assit><![CDATA[]]></chag_assit>
+            <cmp_shyr><![CDATA[3학년]]></cmp_shyr>
+            <aply_sust_nm><![CDATA[]]></aply_sust_nm>
+            <lead_curi><![CDATA[]]></lead_curi>
+            <follow_curi><![CDATA[]]></follow_curi>
+            <cert_curi_area><![CDATA[전공]]></cert_curi_area>
+            <drawing_pnt><![CDATA[1학점(5주)]]></drawing_pnt>
+            <otcm_est_meth_nm><![CDATA[상대평가]]></otcm_est_meth_nm>
+            <attend_rate><![CDATA[□ 출석 (10)%]]></attend_rate>
+            <stud_portfolio_rate><![CDATA[□ 학생포트폴리오 (0)%]]></stud_portfolio_rate>
+            <share_rate><![CDATA[□ 참여도 (0)%]]></share_rate>
+            <temp_prjt_rate><![CDATA[□ 수시과제 (0)%]]></temp_prjt_rate>
+            <temp_test_rate><![CDATA[□ 수시시험 (0)%]]></temp_test_rate>
+            <mid_prjt_rate><![CDATA[□ 중간과제 (0)%]]></mid_prjt_rate>
+            <mid_test_rate><![CDATA[□ 중간시험 (37)%]]></mid_test_rate>
+            <end_term_prjt_rate><![CDATA[□ 기말과제 (0)%]]></end_term_prjt_rate>
+            <end_term_test_rate><![CDATA[□ 기말시험 (0)%]]></end_term_test_rate>
+            <etc_est_rate><![CDATA[□ 실습 평가 (20)%]]></etc_est_rate>
+            <drawing_rate><![CDATA[□ 설계평가 (33)%]]></drawing_rate>
+            <lec_type><![CDATA[   ]]></lec_type>
+            <lec_meth><![CDATA[01˛02˛05˛07˛09]]></lec_meth>
+            <real_file_nm><![CDATA[]]></real_file_nm>
+            <file_path_nm><![CDATA[]]></file_path_nm>
+            <file_flag><![CDATA[]]></file_flag>
+            <lec_meth_nm1><![CDATA[▣ 강의]]></lec_meth_nm1>
+            <lec_meth_nm2><![CDATA[▣ 발표]]></lec_meth_nm2>
+            <lec_meth_nm3><![CDATA[□ 토론]]></lec_meth_nm3>
+            <lec_meth_nm4><![CDATA[□ 실험]]></lec_meth_nm4>
+            <lec_meth_nm5><![CDATA[▣ 실습]]></lec_meth_nm5>
+            <lec_meth_nm6><![CDATA[□ 실기]]></lec_meth_nm6>
+            <lec_meth_nm7><![CDATA[▣ 설계]]></lec_meth_nm7>
+            <lec_meth_nm8><![CDATA[□ 견학]]></lec_meth_nm8>
+            <lec_meth_nm9><![CDATA[▣ 프로젝트]]></lec_meth_nm9>
+            <lec_meth_nm10><![CDATA[□ 이러닝(e-learning)]]></lec_meth_nm10>
+        </list>
+        <list>
+            <lrn_otcm_items_seq>4</lrn_otcm_items_seq>
+            <lrn_otcm_nm><![CDATA[4.(자원활용)공학문제를 해결하기 위해 최신 정보, 연구 결과, 적절한 도구를 활용할 수 있는 능력]]></lrn_otcm_nm>
+            <exec_criteria_cont><![CDATA[실제 시스템을 제작 및 구현하여 실무 능력을 키우며 다양한 마이크로 프로세서 시스템 활용 방법에 대해 살펴본다.]]></exec_criteria_cont>
+            <curi_est_meth><![CDATA[실습 및 과제]]></curi_est_meth>
+            <sch_year><![CDATA[2020]]></sch_year>
+            <smt_cd><![CDATA[20]]></smt_cd>
+            <curi_no><![CDATA[71076]]></curi_no>
+            <class_no><![CDATA[01]]></class_no>
+            <pgm_cd><![CDATA[005]]></pgm_cd>
+            <cmp_div_nm><![CDATA[전공선택(전공선택)]]></cmp_div_nm>
+            <curi_class_no><![CDATA[71076(01)]]></curi_class_no>
+            <curi_nm><![CDATA[마이크로프로세서설계및실습(Microprocessor Design and Experiment)]]></curi_nm>
+            <pnt><![CDATA[3학점(4시간)]]></pnt>
+            <lec_prac_div_nm><![CDATA[강의+실험·실습]]></lec_prac_div_nm>
+            <time_table><![CDATA[수06,07/19-112/113, 수08,09/19-319/320]]></time_table>
+            <sust_section_cd_nm><![CDATA[컴퓨터과학부]]></sust_section_cd_nm>
+            <kor_nm><![CDATA[최혁]]></kor_nm>
+            <chag_prof_cont_point><![CDATA[010-9925-7428]]></chag_prof_cont_point>
+            <email><![CDATA[chyuk@uos.ac.kr]]></email>
+            <chag_prof_homepage><![CDATA[http://club.uos.ac.kr]]></chag_prof_homepage>
+            <chag_prof_counsel_time><![CDATA[]]></chag_prof_counsel_time>
+            <chag_assit><![CDATA[]]></chag_assit>
+            <cmp_shyr><![CDATA[3학년]]></cmp_shyr>
+            <aply_sust_nm><![CDATA[]]></aply_sust_nm>
+            <lead_curi><![CDATA[]]></lead_curi>
+            <follow_curi><![CDATA[]]></follow_curi>
+            <cert_curi_area><![CDATA[전공]]></cert_curi_area>
+            <drawing_pnt><![CDATA[1학점(5주)]]></drawing_pnt>
+            <otcm_est_meth_nm><![CDATA[상대평가]]></otcm_est_meth_nm>
+            <attend_rate><![CDATA[□ 출석 (10)%]]></attend_rate>
+            <stud_portfolio_rate><![CDATA[□ 학생포트폴리오 (0)%]]></stud_portfolio_rate>
+            <share_rate><![CDATA[□ 참여도 (0)%]]></share_rate>
+            <temp_prjt_rate><![CDATA[□ 수시과제 (0)%]]></temp_prjt_rate>
+            <temp_test_rate><![CDATA[□ 수시시험 (0)%]]></temp_test_rate>
+            <mid_prjt_rate><![CDATA[□ 중간과제 (0)%]]></mid_prjt_rate>
+            <mid_test_rate><![CDATA[□ 중간시험 (37)%]]></mid_test_rate>
+            <end_term_prjt_rate><![CDATA[□ 기말과제 (0)%]]></end_term_prjt_rate>
+            <end_term_test_rate><![CDATA[□ 기말시험 (0)%]]></end_term_test_rate>
+            <etc_est_rate><![CDATA[□ 실습 평가 (20)%]]></etc_est_rate>
+            <drawing_rate><![CDATA[□ 설계평가 (33)%]]></drawing_rate>
+            <lec_type><![CDATA[   ]]></lec_type>
+            <lec_meth><![CDATA[01˛02˛05˛07˛09]]></lec_meth>
+            <real_file_nm><![CDATA[]]></real_file_nm>
+            <file_path_nm><![CDATA[]]></file_path_nm>
+            <file_flag><![CDATA[]]></file_flag>
+            <lec_meth_nm1><![CDATA[▣ 강의]]></lec_meth_nm1>
+            <lec_meth_nm2><![CDATA[▣ 발표]]></lec_meth_nm2>
+            <lec_meth_nm3><![CDATA[□ 토론]]></lec_meth_nm3>
+            <lec_meth_nm4><![CDATA[□ 실험]]></lec_meth_nm4>
+            <lec_meth_nm5><![CDATA[▣ 실습]]></lec_meth_nm5>
+            <lec_meth_nm6><![CDATA[□ 실기]]></lec_meth_nm6>
+            <lec_meth_nm7><![CDATA[▣ 설계]]></lec_meth_nm7>
+            <lec_meth_nm8><![CDATA[□ 견학]]></lec_meth_nm8>
+            <lec_meth_nm9><![CDATA[▣ 프로젝트]]></lec_meth_nm9>
+            <lec_meth_nm10><![CDATA[□ 이러닝(e-learning)]]></lec_meth_nm10>
+        </list>
+        <list>
+            <lrn_otcm_items_seq>5</lrn_otcm_items_seq>
+            <lrn_otcm_nm><![CDATA[5.(설계능력)현실적 제한조건을 고려하여 시스템, 요소, 공정 등을 설계할 수 있는 능력]]></lrn_otcm_nm>
+            <exec_criteria_cont><![CDATA[현실적 제한조건을 고려하면서 목표 시스템을 설계할 수 있는 능력을 키운다.]]></exec_criteria_cont>
+            <curi_est_meth><![CDATA[실습 및 과제]]></curi_est_meth>
+            <sch_year><![CDATA[2020]]></sch_year>
+            <smt_cd><![CDATA[20]]></smt_cd>
+            <curi_no><![CDATA[71076]]></curi_no>
+            <class_no><![CDATA[01]]></class_no>
+            <pgm_cd><![CDATA[005]]></pgm_cd>
+            <cmp_div_nm><![CDATA[전공선택(전공선택)]]></cmp_div_nm>
+            <curi_class_no><![CDATA[71076(01)]]></curi_class_no>
+            <curi_nm><![CDATA[마이크로프로세서설계및실습(Microprocessor Design and Experiment)]]></curi_nm>
+            <pnt><![CDATA[3학점(4시간)]]></pnt>
+            <lec_prac_div_nm><![CDATA[강의+실험·실습]]></lec_prac_div_nm>
+            <time_table><![CDATA[수06,07/19-112/113, 수08,09/19-319/320]]></time_table>
+            <sust_section_cd_nm><![CDATA[컴퓨터과학부]]></sust_section_cd_nm>
+            <kor_nm><![CDATA[최혁]]></kor_nm>
+            <chag_prof_cont_point><![CDATA[010-9925-7428]]></chag_prof_cont_point>
+            <email><![CDATA[chyuk@uos.ac.kr]]></email>
+            <chag_prof_homepage><![CDATA[http://club.uos.ac.kr]]></chag_prof_homepage>
+            <chag_prof_counsel_time><![CDATA[]]></chag_prof_counsel_time>
+            <chag_assit><![CDATA[]]></chag_assit>
+            <cmp_shyr><![CDATA[3학년]]></cmp_shyr>
+            <aply_sust_nm><![CDATA[]]></aply_sust_nm>
+            <lead_curi><![CDATA[]]></lead_curi>
+            <follow_curi><![CDATA[]]></follow_curi>
+            <cert_curi_area><![CDATA[전공]]></cert_curi_area>
+            <drawing_pnt><![CDATA[1학점(5주)]]></drawing_pnt>
+            <otcm_est_meth_nm><![CDATA[상대평가]]></otcm_est_meth_nm>
+            <attend_rate><![CDATA[□ 출석 (10)%]]></attend_rate>
+            <stud_portfolio_rate><![CDATA[□ 학생포트폴리오 (0)%]]></stud_portfolio_rate>
+            <share_rate><![CDATA[□ 참여도 (0)%]]></share_rate>
+            <temp_prjt_rate><![CDATA[□ 수시과제 (0)%]]></temp_prjt_rate>
+            <temp_test_rate><![CDATA[□ 수시시험 (0)%]]></temp_test_rate>
+            <mid_prjt_rate><![CDATA[□ 중간과제 (0)%]]></mid_prjt_rate>
+            <mid_test_rate><![CDATA[□ 중간시험 (37)%]]></mid_test_rate>
+            <end_term_prjt_rate><![CDATA[□ 기말과제 (0)%]]></end_term_prjt_rate>
+            <end_term_test_rate><![CDATA[□ 기말시험 (0)%]]></end_term_test_rate>
+            <etc_est_rate><![CDATA[□ 실습 평가 (20)%]]></etc_est_rate>
+            <drawing_rate><![CDATA[□ 설계평가 (33)%]]></drawing_rate>
+            <lec_type><![CDATA[   ]]></lec_type>
+            <lec_meth><![CDATA[01˛02˛05˛07˛09]]></lec_meth>
+            <real_file_nm><![CDATA[]]></real_file_nm>
+            <file_path_nm><![CDATA[]]></file_path_nm>
+            <file_flag><![CDATA[]]></file_flag>
+            <lec_meth_nm1><![CDATA[▣ 강의]]></lec_meth_nm1>
+            <lec_meth_nm2><![CDATA[▣ 발표]]></lec_meth_nm2>
+            <lec_meth_nm3><![CDATA[□ 토론]]></lec_meth_nm3>
+            <lec_meth_nm4><![CDATA[□ 실험]]></lec_meth_nm4>
+            <lec_meth_nm5><![CDATA[▣ 실습]]></lec_meth_nm5>
+            <lec_meth_nm6><![CDATA[□ 실기]]></lec_meth_nm6>
+            <lec_meth_nm7><![CDATA[▣ 설계]]></lec_meth_nm7>
+            <lec_meth_nm8><![CDATA[□ 견학]]></lec_meth_nm8>
+            <lec_meth_nm9><![CDATA[▣ 프로젝트]]></lec_meth_nm9>
+            <lec_meth_nm10><![CDATA[□ 이러닝(e-learning)]]></lec_meth_nm10>
+        </list>
+    </overviewlist>
+</root>
+
