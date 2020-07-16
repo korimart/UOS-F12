@@ -382,6 +382,9 @@ public class CoursesFragment extends Fragment {
                 timePlaceChild.setText(s.isEmpty() ? "강의실 정보 없음" : s);
                 holder.timePlace.addView(timePlaceChild);
             }
+
+            holder.TOYear.setText(String.format(Locale.getDefault(), "%s/%s", course.TOYear, course.TOYearMax));
+            holder.TOAll.setText(String.format(Locale.getDefault(), "%s/%s", course.TOAll, course.TOAllMax));
         }
 
         @Override
