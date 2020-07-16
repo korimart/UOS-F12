@@ -59,7 +59,7 @@ public class HelpFragment extends Fragment {
         try {
             PackageInfo pInfo = getContext().getPackageManager()
                     .getPackageInfo(getContext().getPackageName(), 0);
-            version.setText(String.valueOf(pInfo.versionCode));
+            version.setText(pInfo.versionName);
         } catch (PackageManager.NameNotFoundException ignored) {
         }
     }
