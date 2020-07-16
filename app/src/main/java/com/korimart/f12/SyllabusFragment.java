@@ -9,11 +9,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Collections;
+import java.util.List;
 
 public class SyllabusFragment extends Fragment {
     private SyllabusViewModel syllabusViewModel;
@@ -78,7 +80,9 @@ public class SyllabusFragment extends Fragment {
                 courseParsed.schoolYear,
                 courseParsed.semester,
                 courseParsed.curriNumber,
-                courseParsed.classNumber)
+                courseParsed.classNumber,
+                courseParsed.uab,
+                courseParsed.certDivCode)
                 .thenRun(() -> syllabusViewModel.getOwReady().postValue(true));
     }
 
@@ -90,13 +94,13 @@ public class SyllabusFragment extends Fragment {
         if (!checkError(syllabusViewModel.getoFetched().errorInfo))
             return;
 
-        if (!checkError(syllabusViewModel.getoParsed().errorInfo))
+        if (!checkError(syllabusViewModel.getoParsed().getErrorInfo()))
             return;
 
         if (!checkError(syllabusViewModel.getwFetched().errorInfo))
             return;
 
-        if (!checkError(syllabusViewModel.getwParsed().errorInfo))
+        if (!checkError(syllabusViewModel.getwParsed().getErrorInfo()))
             return;
 
         onSuccess();
@@ -106,55 +110,86 @@ public class SyllabusFragment extends Fragment {
         title.setText(courseParsed.name);
         titleClassNumber.setText(courseParsed.classNumber + "분반");
 
-        SyllabusUabOParser.Result oParsed = syllabusViewModel.getoParsed();
-        SyllabusUabWParser.Result wParsed = syllabusViewModel.getwParsed();
+        SyllabusUabOParser.Result oParsed = (SyllabusUabOParser.Result) syllabusViewModel.getoParsed();
+        WiseParser.Result wParsed = syllabusViewModel.getwParsed();
+
+        String lecPrac = oParsed.lecPrac;
+        String yearLevel = oParsed.yearLevel;
+        String classification = oParsed.classification;
+        String pointsTime = oParsed.pointsTime;
+        String professor = oParsed.professor;
+        String professorDept = oParsed.professorDept;
+        String professorPhone = oParsed.professorPhone;
+        String professorEmail = oParsed.professorEmail;
+        String professorWeb = oParsed.professorWeb;
+        String counseling = oParsed.counseling;
+        String rubricsType = oParsed.rubricsType;
+        List<Pair<String, Integer>> rubrics = oParsed.rubrics;
+
+        String summary;
+        String textbook;
+        List<String> weeklyPlans;
+
+        if (oParsed instanceof SyllabusOParser.Result){
+            summary = ((SyllabusOParser.Result) oParsed).summary;
+            textbook = ((SyllabusOParser.Result) oParsed).textbook;
+            weeklyPlans = ((SyllabusWParser.Result) wParsed).weeklyPlans;
+        }
+        else {
+            summary = ((SyllabusUabWParser.Result) wParsed).summary;
+            textbook = ((SyllabusUabWParser.Result) wParsed).textbook;
+            weeklyPlans = ((SyllabusUabWParser.Result) wParsed).weeklyPlans;
+        }
 
         LayoutInflater li = LayoutInflater.from(getContext());
 
-        addTextToLinLay(li, courseInfo, oParsed.lecPrac);
-        addTextToLinLay(li, courseInfo, oParsed.classification);
-        addTextToLinLay(li, courseInfo, oParsed.pointsTime);
+        addTextToLinLay(li, courseInfo, yearLevel);
+        addTextToLinLay(li, courseInfo, lecPrac);
+        addTextToLinLay(li, courseInfo, classification);
+        addTextToLinLay(li, courseInfo, pointsTime);
         addPermissions(li);
         addTextToLinLay(li, courseInfo, timePlace);
 
-        if (wParsed.summary.isEmpty()){
+        if (summary.isEmpty()){
             this.summary.setText("미입력");
+            this.summary.setTextColor(0xFF757575);
         } else {
-            this.summary.setText(wParsed.summary);
+            this.summary.setText(summary);
         }
 
-        if (wParsed.textbook.isEmpty()){
-            textbook.setText("미입력");
+        if (textbook.isEmpty()){
+            this.textbook.setText("미입력");
+            this.textbook.setTextColor(0xFF757575);
         } else {
-            textbook.setText(wParsed.textbook);
+            this.textbook.setText(textbook);
         }
 
-        if (oParsed.professor.isEmpty()){
-            professor.setText("TBA");
+        if (professor.isEmpty()){
+            this.professor.setText("TBA");
         } else {
-            professor.setText(oParsed.professor);
-            professorDept.setText(oParsed.professorDept);
+            this.professor.setText(professor);
+            this.professorDept.setText(professorDept);
         }
 
-        addTextToLinLay(li, professorInfo, oParsed.professorPhone);
-        addTextToLinLay(li, professorInfo, oParsed.professorEmail);
-        addTextToLinLay(li, professorInfo, oParsed.professorWeb);
-        addTextToLinLay(li, professorInfo, oParsed.counseling);
+        addTextToLinLay(li, professorInfo, professorPhone);
+        addTextToLinLay(li, professorInfo, professorEmail);
+        addTextToLinLay(li, professorInfo, professorWeb);
+        addTextToLinLay(li, professorInfo, counseling);
 
-        rubricsType.setText(oParsed.rubricsType);
+        this.rubricsType.setText(rubricsType);
         Collections.sort(oParsed.rubrics,
                 Collections.reverseOrder((o1, o2) -> o1.second.compareTo(o2.second)));
 
-        for (Pair<String, Integer> pair : oParsed.rubrics){
+        for (Pair<String, Integer> pair : rubrics){
             addTextToLinLay(li, rubricsKeys, pair.first);
             addTextToLinLay(li, rubricsValues, pair.second + "%");
         }
 
-        if (oParsed.rubrics.isEmpty())
-            addTextToLinLay(li, rubricsKeys, "미입력");
+        if (rubrics.isEmpty())
+            addTextToLinLay(li, rubricsKeys, "미입력", 0xFF757575);
 
-        for (int i = 0; i < wParsed.weeklyPlans.size(); i++)
-            addWeeklyPlan(li, i + 1, wParsed.weeklyPlans.get(i));
+        for (int i = 0; i < weeklyPlans.size(); i++)
+            addWeeklyPlan(li, i + 1, weeklyPlans.get(i));
     }
 
     private void addPermissions(LayoutInflater li) {
@@ -221,10 +256,18 @@ public class SyllabusFragment extends Fragment {
     }
 
     private void addTextToLinLay(LayoutInflater li, LinearLayout parent, String childString){
+        addTextToLinLay(li, parent, childString, null);
+    }
+
+    private void addTextToLinLay(LayoutInflater li, LinearLayout parent, String childString, Integer color){
         if (!childString.isEmpty()){
             TextView child = (TextView) li.inflate(R.layout.item_syllabus_text, parent, false);
 
             child.setText(childString);
+
+            if (color != null)
+                child.setTextColor(color);
+
             parent.addView(child);
         }
     }
@@ -238,8 +281,10 @@ public class SyllabusFragment extends Fragment {
 
         week.setText(weekInt + "주차");
 
-        if (plan.isEmpty())
+        if (plan.isEmpty()){
             text.setText("미입력");
+            text.setTextColor(0xFF757575);
+        }
         else
             text.setText(plan);
 

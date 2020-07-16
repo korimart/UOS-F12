@@ -8,7 +8,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class SyllabusViewModel extends ViewModel {
     public static final String uabUrl = "https://wise.uos.ac.kr/uosdoc/uab.UabCoursePlanView.serv";
-    public static final String notUabUrl = "https://wise.uos.ac.kr/uosdoc/ucs.UcsCoursePlanViewPopup.serv";
+    public static final String nonUabUrl = "https://wise.uos.ac.kr/uosdoc/ucs.UcsCoursePlanViewPopup.serv";
     public static final String params = "strSchYear=%s&strSmtCd=%s&strCuriNo=%s&strClassNo=%s&" +
             "strCuriNm=%s&strSmtNm=%s&strPgmCd=%s&strViewDiv=%s&&_COMMAND_=list&&_XML_=XML&_strMenuId=stud00180&";
 
@@ -22,6 +22,8 @@ public class SyllabusViewModel extends ViewModel {
     private WiseFetcher wiseFetcher = WiseFetcher.INSTNACE;
     private SyllabusUabOParser uabOParser = SyllabusUabOParser.INSTANCE;
     private SyllabusUabWParser uabWParser = SyllabusUabWParser.INSTANCE;
+    private SyllabusOParser nonUabOParser = SyllabusOParser.INSTANCE;
+    private SyllabusWParser nonUabWParser = SyllabusWParser.INSTANCE;
 
     public CompletableFuture<Void> fetchAndParseSyllabus(String schoolYear, String semester,
                                                         String curriNumber, String classNumber,
@@ -83,9 +85,9 @@ public class SyllabusViewModel extends ViewModel {
             wParser = uabWParser;
         }
         else {
-            url = uabUrl;
-            oParser = uabOParser;
-            wParser = uabWParser;
+            url = nonUabUrl;
+            oParser = nonUabOParser;
+            wParser = nonUabWParser;
         }
 
         return CompletableFuture.runAsync(() -> {

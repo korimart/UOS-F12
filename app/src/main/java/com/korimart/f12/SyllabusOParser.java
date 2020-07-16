@@ -10,25 +10,17 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public enum SyllabusUabOParser implements WiseParser {
+public enum SyllabusOParser implements WiseParser {
     INSTANCE;
 
     private XMLHelper xmlHelper = XMLHelper.INSTANCE;
-    private Pattern ratePattern = Pattern.compile("\\((\\d+)\\)%");
+    private Pattern ratePattern = Pattern.compile("\\((\\d+)%\\)");
 
-    public static class Result implements WiseParser.Result {
-        public String lecPrac;
-        public String yearLevel;
-        public String classification;
-        public String pointsTime;
-        public String professor;
-        public String professorDept;
-        public String professorPhone;
-        public String professorEmail;
-        public String professorWeb;
-        public String counseling;
-        public String rubricsType;
-        public List<Pair<String, Integer>> rubrics;
+    public static class Result extends SyllabusUabOParser.Result {
+        public String summary;
+        public String textbook;
+        public String fileName;
+        public String filePath;
 
         public ErrorInfo errorInfo;
 
@@ -47,12 +39,20 @@ public enum SyllabusUabOParser implements WiseParser {
         result.classification = xmlHelper.getContentByName(doc, "cmp_div_nm");
         result.pointsTime = xmlHelper.getContentByName(doc, "pnt");
         result.professor = xmlHelper.getContentByName(doc, "kor_nm");
-        result.professorDept = xmlHelper.getContentByName(doc, "sust_section_cd_nm");
+        result.professorDept = xmlHelper.getContentByName(doc, "sust_section_nm");
         result.professorPhone = xmlHelper.getContentByName(doc, "chag_prof_cont_point");
         result.professorEmail = xmlHelper.getContentByName(doc, "email");
         result.professorWeb = xmlHelper.getContentByName(doc, "chag_prof_homepage");
         result.counseling = xmlHelper.getContentByName(doc, "chag_prof_counsel_time");
         result.rubricsType = xmlHelper.getContentByName(doc, "otcm_est_meth_nm");
+        result.summary = xmlHelper.getContentByName(doc, "lec_goal_descr");
+        result.textbook = xmlHelper.getContentByName(doc, "shbk_descr");
+        result.fileName = xmlHelper.getContentByName(doc, "file_nm");
+        result.filePath = xmlHelper.getContentByName(doc, "file_path");
+
+        if (result.filePath != null){
+            result.filePath = "https://wise.uos.ac.kr/uosdoc/pf_upload/" + result.filePath;
+        }
 
         try {
             result.rubrics = getNonZeroRubrics(doc);
@@ -61,7 +61,7 @@ public enum SyllabusUabOParser implements WiseParser {
             return result;
         }
 
-        for (Field field : result.getClass().getDeclaredFields()){
+        for (Field field : result.getClass().getFields()){
             if (field.getName().equals("errorInfo")) continue;
 
             try {
@@ -83,17 +83,15 @@ public enum SyllabusUabOParser implements WiseParser {
         List<Pair<String, Integer>> ret = new ArrayList<>();
 
         final String[] tags = {
-                "attend_rate",
-                "stud_portfolio_rate",
-                "share_rate",
-                "temp_prjt_rate",
-                "temp_test_rate",
-                "mid_prjt_rate",
-                "mid_test_rate",
-                "end_term_prjt_rate",
-                "end_term_test_rate",
-                "etc_est_rate",
-                "drawing_rate"
+                "attend_rate_nm",
+                "stud_portfolio_rate_nm",
+                "share_rate_nm",
+                "temp_prjt_rate_nm",
+                "temp_test_rate_nm",
+                "mid_prjt_rate_nm",
+                "mid_test_rate_nm",
+                "end_term_prjt_rate_nm",
+                "end_term_test_rate_nm"
         };
 
         for (String tag : tags){

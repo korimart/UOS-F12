@@ -6,17 +6,19 @@ import org.w3c.dom.Document;
 import static org.junit.Assert.*;
 
 public class SyllabusParserTest {
-    SyllabusUabOParser OParser = SyllabusUabOParser.INSTANCE;
-    SyllabusUabWParser WParser = SyllabusUabWParser.INSTANCE;
+    SyllabusUabOParser uabOParser = SyllabusUabOParser.INSTANCE;
+    SyllabusUabWParser uabWParser = SyllabusUabWParser.INSTANCE;
+    SyllabusOParser oParser = SyllabusOParser.INSTANCE;
+    SyllabusWParser wParser = SyllabusWParser.INSTANCE;
     TestHelper testHelper = TestHelper.INSTANCE;
     XMLHelper xmlHelper = XMLHelper.INSTANCE;
 
     @Test
-    public void testOParser(){
+    public void testUabOParser(){
         byte[] rawDoc = testHelper.loadDocument("syllabusUabO.xml");
         Document doc = xmlHelper.getDocument(rawDoc);
 
-        SyllabusUabOParser.Result result = OParser.parse(doc);
+        SyllabusUabOParser.Result result = uabOParser.parse(doc);
 
         assertNull(result.errorInfo);
         assertEquals("강의", result.lecPrac);
@@ -45,11 +47,11 @@ public class SyllabusParserTest {
     }
 
     @Test
-    public void testWParser(){
+    public void testUabWParser(){
         byte[] rawDoc = testHelper.loadDocument("syllabusUabW.xml");
         Document doc = xmlHelper.getDocument(rawDoc);
 
-        SyllabusUabWParser.Result result = WParser.parse(doc);
+        SyllabusUabWParser.Result result = uabWParser.parse(doc);
 
         assertNull(result.errorInfo);
         assertEquals(
@@ -70,12 +72,23 @@ public class SyllabusParserTest {
     }
 
     @Test
-    public void testWParser2(){
+    public void testOParser(){
+        // 2019년 2학기 경영학부 회계원리
+        byte[] rawDoc = testHelper.loadDocument("syllabusO.xml");
+        Document doc = xmlHelper.getDocument(rawDoc);
+
+        SyllabusOParser.Result result = oParser.parse(doc);
+
+        assertNull(result.errorInfo);
+    }
+
+    @Test
+    public void testWParser(){
         // 2019년 2학기 철학과 논리학
         byte[] rawDoc = testHelper.loadDocument("syllabusW.xml");
         Document doc = xmlHelper.getDocument(rawDoc);
 
-        SyllabusUabWParser.Result result = WParser.parse(doc);
+        SyllabusWParser.Result result = wParser.parse(doc);
 
         assertNull(result.errorInfo);
 
