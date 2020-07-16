@@ -141,6 +141,8 @@ public class SyllabusFragment extends Fragment {
             weeklyPlans = ((SyllabusUabWParser.Result) wParsed).weeklyPlans;
         }
 
+        textbook = textbook.replace("\n", "\n\n");
+
         LayoutInflater li = LayoutInflater.from(getContext());
 
         StringJoiner sj = new StringJoiner(", ");
