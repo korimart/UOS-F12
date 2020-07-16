@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.StringJoiner;
 
 public class CoursesFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -318,12 +319,20 @@ public class CoursesFragment extends Fragment {
                     .inflate(R.layout.item_course, parent, false);
             view.setOnClickListener(v -> {
                 RecyclerView.ViewHolder viewHolder = recyclerView.getChildViewHolder(v);
+
                 int position = viewHolder.getAdapterPosition();
+
+                StringJoiner sj = new StringJoiner("\n");
+                LinearLayout timePlaces = ((RecyclerViewAdapter.ViewHolder) viewHolder).timePlace;
+                for (int i = 0; i < timePlaces.getChildCount(); i++){
+                    TextView child = (TextView) timePlaces.getChildAt(i);
+                    sj.add(child.getText());
+                }
 
                 MainActivity ma = (MainActivity) getActivity();
                 if (ma == null) return;
 
-                ma.goToCourseDescFrag(ma::goToCoursesFrag, position);
+                ma.goToCourseDescFrag(ma::goToCoursesFrag, position, sj.toString());
             });
             return new ViewHolder(view);
         }

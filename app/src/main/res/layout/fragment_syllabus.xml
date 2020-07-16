@@ -68,7 +68,6 @@
             >
 
             <LinearLayout
-                android:id="@+id/syllabus_course_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -83,70 +82,79 @@
                     android:paddingBottom="10dp"
                     />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="강의"
-                    android:textSize="15dp"
-                    android:textColor="#FF000000"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="전공선택(전공선택)"
-                    android:textSize="15dp"
-                    android:textColor="#FF000000"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="3학점(3시간)"
-                    android:textSize="15dp"
-                    android:textColor="#FF000000"
-                    />
-
                 <LinearLayout
+                    android:id="@+id/syllabus_course_info"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="타과허용"
+                        android:text="강의"
                         android:textSize="15dp"
-                        android:textColor="#1D7C1D"
-                        android:paddingEnd="20dp"
+                        android:textColor="#FF000000"
                         />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="복수전공허용"
+                        android:text="전공선택(전공선택)"
                         android:textSize="15dp"
-                        android:textColor="#1D7C1D"
-                        android:paddingEnd="20dp"
+                        android:textColor="#FF000000"
                         />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="부전공비허용"
+                        android:text="3학점(3시간)"
                         android:textSize="15dp"
-                        android:textColor="#FFFF0000"
-                        android:paddingEnd="20dp"
+                        android:textColor="#FF000000"
+                        />
+
+                    <LinearLayout
+                        android:id="@+id/syllabus_permissions"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="타과허용"
+                            android:textSize="15dp"
+                            android:textColor="#1D7C1D"
+                            android:paddingEnd="20dp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="복수전공허용"
+                            android:textSize="15dp"
+                            android:textColor="#1D7C1D"
+                            android:paddingEnd="20dp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="부전공비허용"
+                            android:textSize="15dp"
+                            android:textColor="#FFFF0000"
+                            android:paddingEnd="20dp"
+                            />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="수요일 10시 ~ 12시    정보기술관 101호 102호"
+                        android:textSize="15dp"
+                        android:textColor="#FF000000"
                         />
 
                 </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="수요일 10시 ~ 12시    정보기술관 101호 102호"
-                    android:textSize="15dp"
-                    android:textColor="#FF000000"
-                    />
 
             </LinearLayout>
 
@@ -216,7 +224,6 @@
                 android:layout_height="30dp"/>
 
             <LinearLayout
-                android:id="@+id/syllabus_professor_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -261,30 +268,39 @@
 
                 </LinearLayout>
 
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/syllabus_professor_info"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="010-9925-7428"
-                    android:textSize="15dp"
-                    android:textColor="#FF000000"
-                    />
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="chyuk@uos.ac.kr"
-                    android:textSize="15dp"
-                    android:textColor="#FF000000"
-                    />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="http://www.minho-kim.com"
-                    android:textSize="15dp"
-                    android:textColor="#FF000000"
-                    />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="010-9925-7428"
+                        android:textSize="15dp"
+                        android:textColor="#FF000000"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="chyuk@uos.ac.kr"
+                        android:textSize="15dp"
+                        android:textColor="#FF000000"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="http://www.minho-kim.com"
+                        android:textSize="15dp"
+                        android:textColor="#FF000000"
+                        />
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -442,9 +458,12 @@
                     />
 
                 <LinearLayout
+                    android:id="@+id/syllabus_plans"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:divider="?android:dividerHorizontal"
+                    android:showDividers="middle"
                     >
 
                     <LinearLayout

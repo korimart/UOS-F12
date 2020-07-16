@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/syllabus_outsider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="타과허용"
+        android:textSize="15dp"
+        android:textColor="#1D7C1D"
+        android:paddingEnd="20dp"
+        />
+
+    <TextView
+        android:id="@+id/syllabus_doubleMajor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="복수전공허용"
+        android:textSize="15dp"
+        android:textColor="#1D7C1D"
+        android:paddingEnd="20dp"
+        />
+
+    <TextView
+        android:id="@+id/syllabus_minor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="부전공비허용"
+        android:textSize="15dp"
+        android:textColor="#FFFF0000"
+        android:paddingEnd="20dp"
+        />
+</LinearLayout>

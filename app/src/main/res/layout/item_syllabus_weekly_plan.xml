@@ -5,10 +5,11 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingBottom="10dp"
+    android:paddingTop="10dp"
     >
 
     <TextView
-        android:id="@+id/course_desc_plan_week"
+        android:id="@+id/syllabus_plan_week"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="1주차"
@@ -18,12 +19,11 @@
         />
 
     <TextView
-        android:id="@+id/course_desc_plan_text"
+        android:id="@+id/syllabus_plan_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="introduction to JavaScript"
         android:textSize="15dp"
         android:textColor="#FF000000"
         />
-
 </LinearLayout>

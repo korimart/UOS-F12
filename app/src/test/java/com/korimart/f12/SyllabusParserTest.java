@@ -38,10 +38,10 @@ public class SyllabusParserTest {
         assertEquals("중간과제", result.rubrics.get(2).first);
         assertEquals("기말과제", result.rubrics.get(3).first);
 
-        assertEquals("10", result.rubrics.get(0).second);
-        assertEquals("10", result.rubrics.get(1).second);
-        assertEquals("40", result.rubrics.get(2).second);
-        assertEquals("40", result.rubrics.get(3).second);
+        assertEquals(10, (int) result.rubrics.get(0).second);
+        assertEquals(10, (int) result.rubrics.get(1).second);
+        assertEquals(40, (int) result.rubrics.get(2).second);
+        assertEquals(40, (int) result.rubrics.get(3).second);
     }
 
     @Test

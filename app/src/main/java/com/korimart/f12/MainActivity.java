@@ -141,11 +141,12 @@ public class MainActivity extends AppCompatActivity
                 .commit();
     }
 
-    public void goToCourseDescFrag(Runnable howToGoBack, int position) {
+    public void goToCourseDescFrag(Runnable howToGoBack, int position, String timePlace) {
         fragStack.add(howToGoBack);
         SyllabusFragment cdf = new SyllabusFragment();
         Bundle args = new Bundle();
         args.putInt("position", position);
+        args.putString("timePlace", timePlace);
         cdf.setArguments(args);
 
         getSupportFragmentManager()

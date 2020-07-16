@@ -28,7 +28,7 @@ public enum SyllabusOParser implements WiseParser {
         public String professorWeb;
         public String counseling;
         public String rubricsType;
-        public List<Pair<String, String>> rubrics;
+        public List<Pair<String, Integer>> rubrics;
 
         public ErrorInfo errorInfo;
 
@@ -76,8 +76,8 @@ public enum SyllabusOParser implements WiseParser {
         return result;
     }
 
-    public List<Pair<String, String>> getNonZeroRubrics(Document doc) throws Exception {
-        List<Pair<String, String>> ret = new ArrayList<>();
+    public List<Pair<String, Integer>> getNonZeroRubrics(Document doc) throws Exception {
+        List<Pair<String, Integer>> ret = new ArrayList<>();
 
         final String[] tags = {
                 "attend_rate",
@@ -107,7 +107,9 @@ public enum SyllabusOParser implements WiseParser {
                 throw new Exception("could not match regex");
 
             if (!m.group(1).equals("0")){
-                Pair<String, String> pair = new Pair<>(nameAndRate[1], m.group(1));
+                Pair<String, Integer> pair = new Pair<>(nameAndRate[1], Integer.parseInt(m.group(1)));
+                if (pair.second == null)
+                    throw new NullPointerException();
                 ret.add(pair);
             }
         }
