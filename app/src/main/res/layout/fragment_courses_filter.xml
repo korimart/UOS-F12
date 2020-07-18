@@ -52,6 +52,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="0"
                     android:dropDownWidth="match_parent"
+                    android:spinnerMode="dialog"
                     tools:listitem="@layout/item_courses_filter" />
             </LinearLayout>
 
@@ -90,6 +91,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="0"
                     android:dropDownWidth="match_parent"
+                    android:spinnerMode="dialog"
                     tools:listitem="@layout/item_courses_filter" />
             </LinearLayout>
 
@@ -128,6 +130,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="0"
                     android:dropDownWidth="match_parent"
+                    android:spinnerMode="dialog"
                     tools:listitem="@layout/item_courses_filter" />
             </LinearLayout>
 
@@ -166,6 +169,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="0"
                     android:dropDownWidth="match_parent"
+                    android:spinnerMode="dialog"
                     tools:listitem="@layout/item_courses_filter" />
             </LinearLayout>
 

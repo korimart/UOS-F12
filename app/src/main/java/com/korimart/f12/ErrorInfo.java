@@ -1,6 +1,6 @@
 package com.korimart.f12;
 
-public class ErrorInfo {
+public class ErrorInfo extends Throwable {
     public enum ErrorType {
         parseFailed,
         responseFailed,
@@ -13,20 +13,20 @@ public class ErrorInfo {
     }
 
     public ErrorType type;
-    public Exception exception;
+    public Throwable throwable;
 
-    public ErrorInfo(Exception e){
+    public ErrorInfo(Throwable e){
         this.type = ErrorType.unknown;
-        this.exception = e;
+        this.throwable = e;
     }
 
     public ErrorInfo(ErrorType type){
         this.type = type;
-        this.exception = null;
+        this.throwable = null;
     }
 
-    public ErrorInfo(ErrorType type, Exception e){
+    public ErrorInfo(ErrorType type, Throwable e){
         this.type = type;
-        this.exception = e;
+        this.throwable = e;
     }
 }

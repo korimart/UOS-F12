@@ -5,7 +5,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 public enum ErrorReporter {
     INSTANCE;
 
-    public void reportError(Exception e){
+    public void reportError(Throwable e){
         FirebaseCrashlytics.getInstance().recordException(e);
     }
 }

@@ -116,8 +116,8 @@ public class LoginFragment extends Fragment {
     }
 
     private void onError(@NonNull ErrorInfo errorInfo) {
-        if (errorInfo.exception != null)
-            ErrorReporter.INSTANCE.reportError(errorInfo.exception);
+        if (errorInfo.throwable != null)
+            ErrorReporter.INSTANCE.reportError(errorInfo.throwable);
 
         loginViewModel.getMessageColor().setValue(0xFFFF0000);
         switch (errorInfo.type){

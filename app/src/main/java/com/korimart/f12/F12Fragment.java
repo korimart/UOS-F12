@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import java.time.LocalDateTime;
 import java.util.Locale;
+import java.util.function.Function;
 
 public class F12Fragment extends Fragment {
     private MainViewModel mainViewModel;
@@ -86,9 +87,6 @@ public class F12Fragment extends Fragment {
         pnpSwitch.setOnCheckedChangeListener((v, b) -> {
             f12ViewModel.recalculateHiddenAvg(b);
             mainViewModel.getNoPnp().setValue(b);
-
-            if (f12ViewModel.getF12Parsed() != null)
-                setHiddenAvg(f12ViewModel.getF12Parsed().hiddenAvg);
         });
 
         f12ViewModel.getHideCourse().observe(this, (b) -> hideCourse.setChecked(b));
@@ -101,44 +99,25 @@ public class F12Fragment extends Fragment {
 
         f12ViewModel.getMessage().observe(this, (message) -> systemMessage.setText(message));
 
-        f12ViewModel.getF12Ready().observe(this, this::onF12Ready);
-    }
+        f12ViewModel.getF12Parsed().observe(this, wiseParsed -> {
+            if (wiseParsed == null) return;
 
-    private void onF12Ready(Boolean ready){
-        if (ready == null || !ready) return;
-
-        f12ViewModel.getF12Ready().setValue(false);
-        whenDone();
-
-        if (f12ViewModel.getF12InfoFetched().errorInfo != null){
-            onError(f12ViewModel.getF12InfoFetched().errorInfo);
-            return;
-        }
-
-        if (f12ViewModel.getF12InfoParsed().errorInfo != null){
-            onError(f12ViewModel.getF12InfoParsed().errorInfo);
-            return;
-        }
-
-        if (f12ViewModel.getF12Fetched().errorInfo != null){
-            onError(f12ViewModel.getF12Fetched().errorInfo);
-            return;
-        }
-
-        if (f12ViewModel.getF12Parsed().errorInfo != null){
-            onError(f12ViewModel.getF12Parsed().errorInfo);
-            return;
-        }
-
-        onSuccess(f12ViewModel.getF12Parsed());
+            F12Parser.Result parsed = (F12Parser.Result) wiseParsed;
+            onSuccess(parsed);
+        });
     }
 
     private void fetch(boolean refetch){
-        f12ViewModel.fetchAndParse(pnpSwitch.isChecked(), refetch)
-                .thenRun(() -> f12ViewModel.getF12Ready().postValue(true));
+        f12ViewModel.fetchAndParseF12(refetch, refetch)
+        .exceptionally(throwable -> {
+            f12ViewModel.errorHandler(throwable, this::onError);
+            return null;
+        });
     }
 
     private void onSuccess(F12Parser.Result parsed) {
+        whenDone();
+
         // 2 = 1 (description) + 1 (space)
         courseNames.removeViews(2, courseNames.getChildCount() - 2);
         letterGrades.removeViews(2, letterGrades.getChildCount() - 2);
@@ -196,9 +175,7 @@ public class F12Fragment extends Fragment {
     }
 
     private void onError(ErrorInfo errorInfo){
-        if (errorInfo.exception != null)
-            ErrorReporter.INSTANCE.reportError(errorInfo.exception);
-
+        whenDone();
         switch (errorInfo.type){
             case sessionExpired:
                 ((MainActivity) getActivity()).goToLoginFrag(0);

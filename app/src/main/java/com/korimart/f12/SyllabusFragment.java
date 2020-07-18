@@ -242,8 +242,8 @@ public class SyllabusFragment extends Fragment {
     }
 
     private void onError(@NonNull ErrorInfo errorInfo) {
-        if (errorInfo.exception != null)
-            ErrorReporter.INSTANCE.reportError(errorInfo.exception);
+        if (errorInfo.throwable != null)
+            ErrorReporter.INSTANCE.reportError(errorInfo.throwable);
 
         switch (errorInfo.type){
             case sessionExpired:
