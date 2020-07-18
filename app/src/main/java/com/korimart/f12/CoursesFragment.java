@@ -1,5 +1,6 @@
 package com.korimart.f12;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,24 +17,28 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static com.korimart.f12.SchoolListParser.DeptInfo;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.StringJoiner;
 
 public class CoursesFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
     private CoursesViewModel coursesViewModel;
-    private F12ViewModel f12ViewModel;
+    private WiseViewModel wiseViewModel;
     private TextView title;
     private TextView systemMessage;
     private Button refreshButton;
+
+    private MainActivity mainActivity;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mainActivity = (MainActivity) context;
+    }
 
     @Nullable
     @Override
@@ -46,17 +51,24 @@ public class CoursesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         initMembers(view);
-        coursesViewModel.getCourseListFetchReady().observe(this, this::onCourseListFetchReady);
-        coursesViewModel.getCourseListReady().observe(this, this::onCourseListReady);
-        fetch(false);
+
+        if (coursesViewModel.isFirstOpen()){
+            coursesViewModel.setFirstOpen(false);
+
+            wiseViewModel.fetchAndParseMyCourses(false)
+                    .thenCompose(ignored -> wiseViewModel.fetchAndParsePersonalInfo(false))
+                    .thenRun(this::setUpInitialFilter)
+                    .exceptionally(throwable -> {
+                        wiseViewModel.errorHandler(throwable, this::onError);
+                        return null;
+                    });
+        }
     }
 
     private void initMembers(View view){
         ViewModelProvider vmp = new ViewModelProvider(getActivity(), new ViewModelProvider.NewInstanceFactory());
         coursesViewModel = vmp.get(CoursesViewModel.class);
-        f12ViewModel = vmp.get(F12ViewModel.class);
-
-        coursesViewModel.getFilteredCourses().setValue(null);
+        wiseViewModel = vmp.get(WiseViewModel.class);
 
         recyclerView = view.findViewById(R.id.courses_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -73,179 +85,52 @@ public class CoursesFragment extends Fragment {
         title = view.findViewById(R.id.course_desc_title);
         systemMessage = view.findViewById(R.id.courses_system_message);
         refreshButton = view.findViewById(R.id.courses_refresh);
+
         refreshButton.setOnClickListener(v -> {
-            fetch(true);
+//            fetch(true);
             refreshButton.setVisibility(View.INVISIBLE);
+        });
+
+        coursesViewModel.getTitle().observe(this, s -> title.setText(s));
+        coursesViewModel.getFilteredCourses().observe(this, courses -> {
+            if (courses.size() == 0)
+                systemMessage.setText("검색 결과가 없습니다.");
+            else
+                systemMessage.setText("");
         });
     }
 
-    private void onCourseListFetchReady(Boolean ready){
-        if (ready == null || !ready) return;
+    private void setUpInitialFilter(){
+        mainActivity.runOnUiThread(() -> {
+            F12InfoParser.Result f12Info =
+                    (F12InfoParser.Result) wiseViewModel.getF12Info().getValue();
 
-        coursesViewModel.getCourseListFetchReady().setValue(false);
+            SchoolListParser.Result schoolList =
+                    (SchoolListParser.Result) wiseViewModel.getSchoolList().getValue();
 
-        PersonalInfoParser.Result persInfo = coursesViewModel.getPersonalInfoParsed();
-        SchoolListParser.Result schoolList = coursesViewModel.getSchoolListParsed();
+            CourseListParser.Result courseList =
+                    (CourseListParser.Result) wiseViewModel.getCourseList().getValue();
 
-        if (!errorCheckFetchedParsed(
-                coursesViewModel.getSchoolListFetched(),
-                schoolList))
-            return;
+            PersonalInfoParser.Result personalInfo =
+                    (PersonalInfoParser.Result) wiseViewModel.getPersonalInfo().getValue();
 
-        if (!errorCheckFetchedParsed(
-                coursesViewModel.getPersonalInfoFetched(),
-                schoolList))
-            return;
+            boolean departmentNotFound = coursesViewModel.setUpInitialFilter(
+                    f12Info.schoolCode, f12Info.deptCode, schoolList);
+            coursesViewModel.setUpInitialYearLevel(personalInfo);
 
-        if (!errorCheckFetchedParsed(
-                f12ViewModel.getF12InfoFetched(),
-                f12ViewModel.getF12InfoParsed()))
-            return;
+            if (departmentNotFound)
+                onError(new ErrorInfo(ErrorInfo.ErrorType.departmentNotFound));
+            else
+                coursesViewModel.setTitleFromFilter();
 
-        boolean departmentNotFound = false;
-        if (!coursesViewModel.isInitialized()){
-            setupInitialYearLevel(persInfo);
-            departmentNotFound = setupInitialFilter(schoolList);
-            coursesViewModel.setInitialized(true);
-        }
-
-        if (departmentNotFound){
-            this.title.setText("기본 필터를 가져오는데 실패했습니다.\n대학원생이신가요?");
-            ErrorReporter.INSTANCE.reportError(new Exception("department not found"));
-        }
-        else
-            setTitle();
-
-        coursesViewModel.fetchAndParseCourses(coursesViewModel.isShouldFetchCourses())
-                .thenRun(() -> coursesViewModel.getCourseListReady().postValue(true));
-        coursesViewModel.setShouldFetchCourses(false);
-    }
-
-    private void onCourseListReady(Boolean ready){
-        if (ready == null || !ready) return;
-
-        coursesViewModel.getCourseListReady().setValue(false);
-
-        if (!errorCheckFetchedParsed(
-                coursesViewModel.getCourseListFetched(),
-                coursesViewModel.getCourseListParsed()))
-            return;
-
-        coursesViewModel.applyFilter();
-        setSystemMessage();
-        adapter.notifyDataSetChanged();
-    }
-
-    private void fetch(boolean refetch) {
-        systemMessage.setText("가져오는 중...");
-
-        coursesViewModel.prepare(
-                f12ViewModel.fetchAndParse(false, refetch),
-                refetch
-        ).thenRun(() -> coursesViewModel.getCourseListFetchReady().postValue(true));
-    }
-
-    private boolean errorCheckFetchedParsed(WiseFetcher.Result fetched, WiseParser.Result parsed){
-        if (!onFetched(fetched)) return false;
-        return onParsed(parsed);
-    }
-
-    private boolean onFetched(@NonNull WiseFetcher.Result fetched){
-        if (fetched.errorInfo != null){
-            onError(fetched.errorInfo);
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean onParsed(@NonNull WiseParser.Result parsed){
-        if (parsed.getErrorInfo() != null){
-            onError(parsed.getErrorInfo());
-            return false;
-        }
-
-        return true;
-    }
-
-    private void setSystemMessage(){
-        if (coursesViewModel.getFilteredCourses().getValue().size() == 0)
-            systemMessage.setText("검색 결과가 없습니다.");
-        else
-            systemMessage.setText("");
-    }
-
-    private void setTitle() {
-        if (coursesViewModel.getSchoolYears().getValue() == null)
-            return;
-
-        String title = "";
-        title += coursesViewModel.getSchoolYears().getValue().get(
-                coursesViewModel.getSelections()[0]
-        );
-
-        title += "년 ";
-        switch (coursesViewModel.getSelections()[1]){
-            case 0:
-                title += "1학기 ";
-                break;
-
-            case 1:
-                title += "2학기 ";
-                break;
-
-            case 2:
-                title += "계절학기 ";
-                break;
-        }
-
-        title += coursesViewModel.getDepartments().getValue().get(
-                coursesViewModel.getSelections()[3]
-        ).s1;
-
-        title += " ";
-        if (coursesViewModel.getFreshman().getValue())
-            title += "1 ";
-        if (coursesViewModel.getSophomore().getValue())
-            title += "2 ";
-        if (coursesViewModel.getJunior().getValue())
-            title += "3 ";
-        if (coursesViewModel.getSenior().getValue())
-            title += "4 ";
-
-        title = title.substring(0, title.length() - 1);
-        title += "학년";
-        this.title.setText(title);
-    }
-
-    private void setupInitialYearLevel(@NonNull PersonalInfoParser.Result parsed) {
-        switch (parsed.yearLevel){
-            case 1:
-                coursesViewModel.getFreshman().setValue(true);
-                break;
-
-            case 2:
-                coursesViewModel.getSophomore().setValue(true);
-                break;
-
-            case 3:
-                coursesViewModel.getJunior().setValue(true);
-                break;
-
-            case 4:
-                coursesViewModel.getSenior().setValue(true);
-                break;
-        }
+            coursesViewModel.applyFilter(courseList.courseInfos);
+        });
     }
 
     private void onError(ErrorInfo errorInfo) {
-        if (errorInfo.exception != null)
-            ErrorReporter.INSTANCE.reportError(errorInfo.exception);
-
         switch (errorInfo.type){
             case sessionExpired:
-                MainActivity ma = (MainActivity) getActivity();
-                ma.goToLoginFrag(1);
+                mainActivity.goToLoginFrag(1);
                 break;
 
             case timeout:
@@ -255,83 +140,14 @@ public class CoursesFragment extends Fragment {
                 adapter.notifyDataSetChanged();
                 break;
 
+            case departmentNotFound:
+                coursesViewModel.getTitle().setValue("기본 필터를 가져오는데 실패했습니다.\n대학원생이신가요?");
+                break;
+
             default:
-                ((MainActivity) getActivity()).goToErrorFrag();
+                mainActivity.goToErrorFrag();
                 break;
         }
-    }
-
-    private boolean setupInitialFilter(@NonNull SchoolListParser.Result schoolResult) {
-        ArrayList<String> schoolYears = new ArrayList<>();
-        for (int i = schoolResult.latestSchoolYear; i > schoolResult.latestSchoolYear - 10; i--)
-            schoolYears.add(String.valueOf(i));
-        coursesViewModel.getSchoolYears().setValue(schoolYears);
-
-        F12InfoParser.Result f12Result = f12ViewModel.getF12InfoParsed();
-
-        ArrayList<StringPair> al = new ArrayList<>();
-        schoolResult.schoolToDepts.keySet().forEach((info) -> al.add(new StringPair(info.name, info.code)));
-        Collections.sort(al, (o1, o2) -> o1.s1.compareTo(o2.s1));
-        coursesViewModel.getSchools().setValue(al);
-
-        List<StringPair> schools = coursesViewModel.getSchools().getValue();
-        List<DeptInfo> defaultDepartments = null;
-
-        for (Map.Entry<DeptInfo, List<DeptInfo>> e : schoolResult.schoolToDepts.entrySet()){
-            if (e.getKey().code.equals(al.get(0).s2))
-                defaultDepartments = e.getValue();
-
-            if (!e.getKey().code.equals(f12Result.schoolCode)) continue;
-
-            for (DeptInfo dept : e.getValue()){
-                if (!dept.code.equals(f12Result.deptCode)) continue;
-
-                coursesViewModel.setDepartments(e.getValue());
-                List<StringPair> depts = coursesViewModel.getDepartments().getValue();
-
-                int schoolPos = LinearTimeHelper.INSTANCE.indexOf(
-                        schools,
-                        e.getKey().name,
-                        (stringPair, s) -> stringPair.s1.compareTo(s)
-                );
-
-                int deptPos = LinearTimeHelper.INSTANCE.indexOf(
-                        depts,
-                        dept.name,
-                        (stringPair, s) -> stringPair.s1.compareTo(s)
-                );
-
-                int semesterPos = 0;
-                switch (schoolResult.latestSemester){
-                    case "10":
-                        semesterPos = 0;
-                        break;
-                    case "20":
-                        semesterPos = 1;
-                        break;
-                    case "11":
-                        semesterPos = 2;
-                        break;
-                }
-
-                coursesViewModel.setSelections(0, 0);
-                coursesViewModel.setSelections(1, semesterPos);
-                coursesViewModel.setSelections(2, schoolPos);
-                coursesViewModel.setSelections(3, deptPos);
-            }
-        }
-
-        // department not found; probably graduate student
-        if (coursesViewModel.getDepartments().getValue() == null){
-            coursesViewModel.setDepartments(defaultDepartments);
-            coursesViewModel.setSelections(0, 0);
-            coursesViewModel.setSelections(1, 0);
-            coursesViewModel.setSelections(2, 0);
-            coursesViewModel.setSelections(3, 0);
-            return true;
-        }
-
-        return false;
     }
 
     public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {

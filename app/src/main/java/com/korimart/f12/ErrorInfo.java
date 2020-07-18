@@ -9,6 +9,7 @@ public class ErrorInfo extends Throwable {
         loginFailed,
         noLoginFile,
         noOneDisclosedGrade,
+        departmentNotFound,
         unknown
     }
 

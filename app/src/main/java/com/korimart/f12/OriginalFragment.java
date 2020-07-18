@@ -34,7 +34,7 @@ public class OriginalFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ViewModelProvider vmp = new ViewModelProvider(getActivity(), new ViewModelProvider.NewInstanceFactory());
-        F12ViewModel f12ViewModel = vmp.get(F12ViewModel.class);
+        WiseViewModel wiseViewModel = vmp.get(WiseViewModel.class);
         text = view.findViewById(R.id.original_text);
 //        text.setText(prettyFormat(f12ViewModel.getF12Fetched().response));
     }

@@ -5,7 +5,7 @@ import org.w3c.dom.Document;
 import java.io.UnsupportedEncodingException;
 
 public enum WiseFetcher {
-    INSTNACE;
+    INSTANCE;
 
     private WebService webService = WebService.INSTANCE;
     private XMLHelper xmlHelper = XMLHelper.INSTANCE;

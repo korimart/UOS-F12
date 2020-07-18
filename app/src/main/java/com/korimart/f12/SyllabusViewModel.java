@@ -19,7 +19,7 @@ public class SyllabusViewModel extends ViewModel {
     private WiseParser.Result oParsed;
     private WiseParser.Result wParsed;
 
-    private WiseFetcher wiseFetcher = WiseFetcher.INSTNACE;
+    private WiseFetcher wiseFetcher = WiseFetcher.INSTANCE;
     private SyllabusUabOParser uabOParser = SyllabusUabOParser.INSTANCE;
     private SyllabusUabWParser uabWParser = SyllabusUabWParser.INSTANCE;
     private SyllabusOParser nonUabOParser = SyllabusOParser.INSTANCE;
