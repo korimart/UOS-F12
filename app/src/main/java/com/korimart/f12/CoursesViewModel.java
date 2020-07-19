@@ -21,15 +21,15 @@ public class CoursesViewModel extends ViewModel {
     private MutableLiveData<List<StringPair>> schools = new MutableLiveData<>();
     private MutableLiveData<List<StringPair>> departments = new MutableLiveData<>();
     private MutableLiveData<List<String>> schoolYears = new MutableLiveData<>();
-    private MutableLiveData<int[]> selections = new MutableLiveData<>();
     private MutableLiveData<FilterOptions> filterOptions = new MutableLiveData<>();
     private MutableLiveData<String> title = new MutableLiveData<>();
-
+    
+    private int[] selections = new int[4];
     private boolean firstOpen = true;
+    private boolean shouldFetchCourses = false;
 
     public CoursesViewModel(){
         filterOptions.setValue(new FilterOptions());
-        selections.setValue(new int[4]);
     }
 
     /**
@@ -153,10 +153,10 @@ public class CoursesViewModel extends ViewModel {
      */
     public void setTitleFromFilter() {
         String title = "";
-        title += schoolYears.getValue().get(selections.getValue()[0]);
+        title += schoolYears.getValue().get(selections[0]);
 
         title += "년 ";
-        switch (selections.getValue()[1]){
+        switch (selections[1]){
             case 0:
                 title += "1학기 ";
                 break;
@@ -170,7 +170,7 @@ public class CoursesViewModel extends ViewModel {
                 break;
         }
 
-        title += departments.getValue().get(selections.getValue()[3]).s1;
+        title += departments.getValue().get(selections[3]).s1;
 
         title += " ";
         StringJoiner sj = new StringJoiner(" ");
@@ -235,15 +235,28 @@ public class CoursesViewModel extends ViewModel {
         return filteredCourses;
     }
 
-    public MutableLiveData<int[]> getSelections() {
-        return selections;
-    }
-
     public boolean isFirstOpen() {
         return firstOpen;
     }
 
     public void setFirstOpen(boolean firstOpen) {
         this.firstOpen = firstOpen;
+    }
+
+    public void setSelection(int index, int value){
+        selections[index] = value;
+        shouldFetchCourses = true;
+    }
+
+    public int getSelection(int index){
+        return selections[index];
+    }
+
+    public boolean shouldFetchCourses(){
+        return shouldFetchCourses;
+    }
+
+    public void setShouldFetchCourses(boolean shouldFetch){
+        shouldFetchCourses = shouldFetch;
     }
 }

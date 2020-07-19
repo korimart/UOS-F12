@@ -54,15 +54,21 @@ public class CoursesFragment extends Fragment {
 
         if (coursesViewModel.isFirstOpen()){
             coursesViewModel.setFirstOpen(false);
-
-            wiseViewModel.fetchAndParseMyCourses(false)
-                    .thenCompose(ignored -> wiseViewModel.fetchAndParsePersonalInfo(false))
-                    .thenRun(this::setUpInitialFilter)
-                    .exceptionally(throwable -> {
-                        wiseViewModel.errorHandler(throwable, this::onError);
-                        return null;
-                    });
+            firstFetch(false);
         }
+        else if (coursesViewModel.shouldFetchCourses()){
+            fetchFromFilter();
+        }
+    }
+
+    private void firstFetch(boolean refetch){
+        wiseViewModel.fetchAndParseMyCourses(refetch)
+                .thenCompose(ignored -> wiseViewModel.fetchAndParsePersonalInfo(refetch))
+                .thenRun(this::setUpInitialFilter)
+                .exceptionally(throwable -> {
+                    wiseViewModel.errorHandler(throwable, this::onError);
+                    return null;
+                });
     }
 
     private void initMembers(View view){
@@ -87,7 +93,7 @@ public class CoursesFragment extends Fragment {
         refreshButton = view.findViewById(R.id.courses_refresh);
 
         refreshButton.setOnClickListener(v -> {
-//            fetch(true);
+            firstFetch(true);
             refreshButton.setVisibility(View.INVISIBLE);
         });
 
@@ -98,37 +104,37 @@ public class CoursesFragment extends Fragment {
             else
                 systemMessage.setText("");
         });
+    }
 
-        coursesViewModel.getFilterOptions().observe(this, options -> {
-            CourseListParser.Result courseList =
-                    (CourseListParser.Result) wiseViewModel.getCourseList().getValue();
+    private void fetchFromFilter(){
+        List<String> schoolYears = coursesViewModel.getSchoolYears().getValue();
+        List<StringPair> schools = coursesViewModel.getSchools().getValue();
+        List<StringPair> depts = coursesViewModel.getDepartments().getValue();
+        
+        if (schoolYears == null || schools == null || depts == null){
+            onError(new ErrorInfo(new Exception("filter was not set but fetchFromFilter was called")));
+            return;
+        }
+        
+        coursesViewModel.setShouldFetchCourses(false);
+        coursesViewModel.setTitleFromFilter();
 
-            if (courseList == null) return;
+        int schoolYear = Integer.parseInt(schoolYears.get(selections[0]));
+        String semester = coursesViewModel.getSemesterString(selections[1]);
+        String schoolCode = schools.get(selections[2]).s2;
+        String deptCode = depts.get(selections[3]).s2;
 
-            coursesViewModel.setTitleFromFilter();
-            coursesViewModel.applyFilter(courseList.courseInfos);
-        });
-
-        coursesViewModel.getSelections().observe(this, selections -> {
-            List<String> schoolYears = coursesViewModel.getSchoolYears().getValue();
-            List<StringPair> schools = coursesViewModel.getSchools().getValue();
-            List<StringPair> depts = coursesViewModel.getDepartments().getValue();
-
-            if (schoolYears == null || schools == null || depts == null)
-                return;
-
-            int schoolYear = Integer.parseInt(schoolYears.get(selections[0]));
-            String semester = coursesViewModel.getSemesterString(selections[1]);
-            String schoolCode = schools.get(selections[2]).s2;
-            String deptCode = depts.get(selections[3]).s2;
-
-            wiseViewModel
-                    .fetchAndParseCourses(false, schoolYear, semester, schoolCode, deptCode)
-                    .exceptionally(t -> {
-                        wiseViewModel.errorHandler(t, this::onError);
-                        return null;
+        wiseViewModel
+                .fetchAndParseCourses(false, schoolYear, semester, schoolCode, deptCode)
+                .thenRun(() -> {
+                    mainActivity.runOnUiThread(() -> {
+                        coursesViewModel.applyFilter(courseList.courseInfos);
                     });
-        });
+                })
+                .exceptionally(t -> {
+                    wiseViewModel.errorHandler(t, this::onError);
+                    return null;
+                });
     }
 
     private void setUpInitialFilter(){
@@ -149,6 +155,10 @@ public class CoursesFragment extends Fragment {
 
             if (departmentNotFound)
                 onError(new ErrorInfo(ErrorInfo.ErrorType.departmentNotFound));
+            else
+                coursesViewModel.setTitleFromFilter();
+
+            coursesViewModel.applyFilter(courseList.courseInfos);
         });
     }
 
@@ -166,7 +176,7 @@ public class CoursesFragment extends Fragment {
                 break;
 
             case departmentNotFound:
-//                systemMessage.setText("기본 필터를 가져오는데 실패했습니다.\n학부생이 아니신가요?");
+                coursesViewModel.getTitle().setValue("기본 필터를 가져오는데 실패했습니다.\n학부생이 아니신가요?");
                 break;
 
             default:

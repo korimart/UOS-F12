@@ -62,10 +62,10 @@ public class CoursesFilterFragment extends Fragment {
         semesterAdapter.add(new StringPair("2학기", "20"));
         semesterAdapter.add(new StringPair("계절학기", "11"));
 
-        schoolYear.setSelection(coursesViewModel.getSelections().getValue()[0]);
-        semester.setSelection(coursesViewModel.getSelections().getValue()[1]);
-        school.setSelection(coursesViewModel.getSelections().getValue()[2]);
-        department.setSelection(coursesViewModel.getSelections().getValue()[3]);
+        schoolYear.setSelection(coursesViewModel.getSelection(0));
+        semester.setSelection(coursesViewModel.getSelection(1));
+        school.setSelection(coursesViewModel.getSelection(2));
+        department.setSelection(coursesViewModel.getSelection(3));
 
         coursesViewModel.getFilterOptions().observe(this, options -> {
             for (int i = 0; i < options.yearLevels.length; i++)
@@ -102,9 +102,9 @@ public class CoursesFilterFragment extends Fragment {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int[] selections = coursesViewModel.getSelections().getValue();
-                selections[0] = position;
-                coursesViewModel.getSelections().setValue(selections);
+                if (count > 0)
+                    coursesViewModel.setSelection(0, position);
+                count++;
             }
 
             @Override
@@ -117,9 +117,9 @@ public class CoursesFilterFragment extends Fragment {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int[] selections = coursesViewModel.getSelections().getValue();
-                selections[1] = position;
-                coursesViewModel.getSelections().setValue(selections);
+                if (count > 0)
+                    coursesViewModel.setSelection(1, position);
+                count++;
             }
 
             @Override
@@ -132,9 +132,8 @@ public class CoursesFilterFragment extends Fragment {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int[] selections = coursesViewModel.getSelections().getValue();
-                selections[2] = position;
-                coursesViewModel.getSelections().setValue(selections);
+                if (count > 0)
+                    coursesViewModel.setSelection(2, position);
 
                 SchoolListParser.Result result = (SchoolListParser.Result) wiseViewModel.getSchoolList().getValue();
                 for (SchoolListParser.DeptInfo dept : result.schoolToDepts.keySet())
@@ -155,9 +154,9 @@ public class CoursesFilterFragment extends Fragment {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int[] selections = coursesViewModel.getSelections().getValue();
-                selections[3] = position;
-                coursesViewModel.getSelections().setValue(selections);
+                if (count > 0)
+                    coursesViewModel.setSelection(3, position);
+                count++;
             }
 
             @Override
