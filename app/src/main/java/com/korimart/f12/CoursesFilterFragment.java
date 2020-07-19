@@ -23,6 +23,7 @@ public class CoursesFilterFragment extends Fragment {
     private Spinner department;
     private CheckBox[] yearLevels = new CheckBox[4];
     private CoursesViewModel coursesViewModel;
+    private WiseViewModel wiseViewModel;
 
     @Nullable
     @Override
@@ -37,6 +38,7 @@ public class CoursesFilterFragment extends Fragment {
         ViewModelProvider vmp = new ViewModelProvider(getActivity(),
                 new ViewModelProvider.NewInstanceFactory());
         coursesViewModel = vmp.get(CoursesViewModel.class);
+        wiseViewModel = vmp.get(WiseViewModel.class);
 
         schoolYear = view.findViewById(R.id.courses_filter_school_year);
         semester = view.findViewById(R.id.courses_filter_semester);
@@ -60,10 +62,10 @@ public class CoursesFilterFragment extends Fragment {
         semesterAdapter.add(new StringPair("2학기", "20"));
         semesterAdapter.add(new StringPair("계절학기", "11"));
 
-        schoolYear.setSelection(coursesViewModel.getSelections()[0]);
-        semester.setSelection(coursesViewModel.getSelections()[1]);
-        school.setSelection(coursesViewModel.getSelections()[2]);
-        department.setSelection(coursesViewModel.getSelections()[3]);
+        schoolYear.setSelection(coursesViewModel.getSelections().getValue()[0]);
+        semester.setSelection(coursesViewModel.getSelections().getValue()[1]);
+        school.setSelection(coursesViewModel.getSelections().getValue()[2]);
+        department.setSelection(coursesViewModel.getSelections().getValue()[3]);
 
         coursesViewModel.getFilterOptions().observe(this, options -> {
             for (int i = 0; i < options.yearLevels.length; i++)
@@ -95,78 +97,73 @@ public class CoursesFilterFragment extends Fragment {
             deptAdapter.addAll(departments);
         });
 
-//        schoolYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            private int count = 0;
-//
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                coursesViewModel.setSelections(0, position);
-//                if (count > 0)
-//                    coursesViewModel.setShouldFetchCourses(true);
-//                count++;
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//            }
-//        });
-//
-//        semester.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            private int count = 0;
-//
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                coursesViewModel.setSelections(1, position);
-//                if (count > 0)
-//                    coursesViewModel.setShouldFetchCourses(true);
-//
-//                count++;
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//            }
-//        });
+        schoolYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            private int count = 0;
 
-//        school.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            private int count = 0;
-//
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                coursesViewModel.setSelections(2, position);
-//                if (count > 0)
-//                    coursesViewModel.setShouldFetchCourses(true);
-//
-//                SchoolListParser.Result result = coursesViewModel.getSchoolListParsed();
-//                for (SchoolListParser.DeptInfo dept : result.schoolToDepts.keySet())
-//                    if (dept.name.equals(((TextView) view).getText())){
-//                        coursesViewModel.setDepartments(result.schoolToDepts.get(dept));
-//                    }
-//
-//                count++;
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//            }
-//        });
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                int[] selections = coursesViewModel.getSelections().getValue();
+                selections[0] = position;
+                coursesViewModel.getSelections().setValue(selections);
+            }
 
-//        department.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            private int count = 0;
-//
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                coursesViewModel.setSelections(3, position);
-//                if (count > 0)
-//                    coursesViewModel.setShouldFetchCourses(true);
-//
-//                count++;
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//            }
-//        });
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        semester.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            private int count = 0;
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                int[] selections = coursesViewModel.getSelections().getValue();
+                selections[1] = position;
+                coursesViewModel.getSelections().setValue(selections);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        school.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            private int count = 0;
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                int[] selections = coursesViewModel.getSelections().getValue();
+                selections[2] = position;
+                coursesViewModel.getSelections().setValue(selections);
+
+                SchoolListParser.Result result = (SchoolListParser.Result) wiseViewModel.getSchoolList().getValue();
+                for (SchoolListParser.DeptInfo dept : result.schoolToDepts.keySet())
+                    if (dept.name.equals(((TextView) view).getText())){
+                        coursesViewModel.setDepartments(result.schoolToDepts.get(dept));
+                    }
+
+                count++;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        department.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            private int count = 0;
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                int[] selections = coursesViewModel.getSelections().getValue();
+                selections[3] = position;
+                coursesViewModel.getSelections().setValue(selections);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
     private StringPairAdapter setSpinnerAdapter(Spinner spinner){

@@ -98,6 +98,37 @@ public class CoursesFragment extends Fragment {
             else
                 systemMessage.setText("");
         });
+
+        coursesViewModel.getFilterOptions().observe(this, options -> {
+            CourseListParser.Result courseList =
+                    (CourseListParser.Result) wiseViewModel.getCourseList().getValue();
+
+            if (courseList == null) return;
+
+            coursesViewModel.setTitleFromFilter();
+            coursesViewModel.applyFilter(courseList.courseInfos);
+        });
+
+        coursesViewModel.getSelections().observe(this, selections -> {
+            List<String> schoolYears = coursesViewModel.getSchoolYears().getValue();
+            List<StringPair> schools = coursesViewModel.getSchools().getValue();
+            List<StringPair> depts = coursesViewModel.getDepartments().getValue();
+
+            if (schoolYears == null || schools == null || depts == null)
+                return;
+
+            int schoolYear = Integer.parseInt(schoolYears.get(selections[0]));
+            String semester = coursesViewModel.getSemesterString(selections[1]);
+            String schoolCode = schools.get(selections[2]).s2;
+            String deptCode = depts.get(selections[3]).s2;
+
+            wiseViewModel
+                    .fetchAndParseCourses(false, schoolYear, semester, schoolCode, deptCode)
+                    .exceptionally(t -> {
+                        wiseViewModel.errorHandler(t, this::onError);
+                        return null;
+                    });
+        });
     }
 
     private void setUpInitialFilter(){
@@ -108,22 +139,16 @@ public class CoursesFragment extends Fragment {
             SchoolListParser.Result schoolList =
                     (SchoolListParser.Result) wiseViewModel.getSchoolList().getValue();
 
-            CourseListParser.Result courseList =
-                    (CourseListParser.Result) wiseViewModel.getCourseList().getValue();
-
             PersonalInfoParser.Result personalInfo =
                     (PersonalInfoParser.Result) wiseViewModel.getPersonalInfo().getValue();
 
             boolean departmentNotFound = coursesViewModel.setUpInitialFilter(
                     f12Info.schoolCode, f12Info.deptCode, schoolList);
+
             coursesViewModel.setUpInitialYearLevel(personalInfo);
 
             if (departmentNotFound)
                 onError(new ErrorInfo(ErrorInfo.ErrorType.departmentNotFound));
-            else
-                coursesViewModel.setTitleFromFilter();
-
-            coursesViewModel.applyFilter(courseList.courseInfos);
         });
     }
 
@@ -141,7 +166,7 @@ public class CoursesFragment extends Fragment {
                 break;
 
             case departmentNotFound:
-                coursesViewModel.getTitle().setValue("기본 필터를 가져오는데 실패했습니다.\n대학원생이신가요?");
+//                systemMessage.setText("기본 필터를 가져오는데 실패했습니다.\n학부생이 아니신가요?");
                 break;
 
             default:

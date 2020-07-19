@@ -21,14 +21,15 @@ public class CoursesViewModel extends ViewModel {
     private MutableLiveData<List<StringPair>> schools = new MutableLiveData<>();
     private MutableLiveData<List<StringPair>> departments = new MutableLiveData<>();
     private MutableLiveData<List<String>> schoolYears = new MutableLiveData<>();
+    private MutableLiveData<int[]> selections = new MutableLiveData<>();
     private MutableLiveData<FilterOptions> filterOptions = new MutableLiveData<>();
     private MutableLiveData<String> title = new MutableLiveData<>();
 
-    private int[] selections = new int[4];
     private boolean firstOpen = true;
 
     public CoursesViewModel(){
         filterOptions.setValue(new FilterOptions());
+        selections.setValue(new int[4]);
     }
 
     /**
@@ -113,17 +114,21 @@ public class CoursesViewModel extends ViewModel {
                         break;
                 }
 
+                int[] selections = this.selections.getValue();
                 selections[0] = 0;           // school year (0 for latest)
                 selections[1] = semesterPos; // semester
                 selections[2] = schoolPos;   // school
                 selections[3] = deptPos;     // department
+                this.selections.setValue(selections);
             }
         }
 
         // department not found; probably graduate student
         if (departments.getValue() == null){
             setDepartments(defaultDepartments);
+            int[] selections = this.selections.getValue();
             Arrays.fill(selections, 0);
+            this.selections.setValue(selections);
             return true;
         }
 
@@ -148,10 +153,10 @@ public class CoursesViewModel extends ViewModel {
      */
     public void setTitleFromFilter() {
         String title = "";
-        title += schoolYears.getValue().get(selections[0]);
+        title += schoolYears.getValue().get(selections.getValue()[0]);
 
         title += "년 ";
-        switch (selections[1]){
+        switch (selections.getValue()[1]){
             case 0:
                 title += "1학기 ";
                 break;
@@ -165,7 +170,7 @@ public class CoursesViewModel extends ViewModel {
                 break;
         }
 
-        title += departments.getValue().get(selections[3]).s1;
+        title += departments.getValue().get(selections.getValue()[3]).s1;
 
         title += " ";
         StringJoiner sj = new StringJoiner(" ");
@@ -182,11 +187,24 @@ public class CoursesViewModel extends ViewModel {
         this.title.setValue(title);
     }
 
+    public String getSemesterString(int selection){
+        switch (selection){
+            case 0:
+                return "10";
+            case 1:
+                return "20";
+            case 2:
+                return "11";
+        }
+
+        return null;
+    }
+
     /**
      * This is "set"-Departments not "post"-Departments
      * @param departments
      */
-    private void setDepartments(List<SchoolListParser.DeptInfo> departments){
+    public void setDepartments(List<SchoolListParser.DeptInfo> departments){
         List<StringPair> deptStrings = new ArrayList<>();
         departments.forEach((info) -> deptStrings.add(new StringPair(info.name, info.code)));
         Collections.sort(deptStrings, (o1, o2) -> o1.s1.compareTo(o2.s1));
@@ -217,12 +235,8 @@ public class CoursesViewModel extends ViewModel {
         return filteredCourses;
     }
 
-    public int[] getSelections() {
+    public MutableLiveData<int[]> getSelections() {
         return selections;
-    }
-
-    public void setSelections(int index, int selection) {
-        this.selections[index] = selection;
     }
 
     public boolean isFirstOpen() {
