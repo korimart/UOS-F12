@@ -34,6 +34,8 @@ public class WiseViewModel extends ViewModel {
 
     public CompletableFuture<Void> fetchAndParseMyCourses(boolean refetch){
         courseListFetchParser.setFetchMine(true);
+        courseListFetchParser.setRefetchF12Info(refetch);
+        courseListFetchParser.setRefetchSchoolList(refetch);
         return courseListFetchParser.fetchAndParse(refetch);
     }
 
@@ -41,6 +43,8 @@ public class WiseViewModel extends ViewModel {
                                                         String semester, String schoolCode,
                                                         String deptCode){
         courseListFetchParser.setFetchMine(false);
+        courseListFetchParser.setRefetchF12Info(false);
+        courseListFetchParser.setRefetchSchoolList(false);
         courseListFetchParser.setParams(schoolYear, semester, schoolCode, deptCode);
         return courseListFetchParser.fetchAndParse(refetch);
     }

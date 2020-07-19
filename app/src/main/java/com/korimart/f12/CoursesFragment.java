@@ -59,6 +59,10 @@ public class CoursesFragment extends Fragment {
         else if (coursesViewModel.shouldFetchCourses()){
             fetchFromFilter();
         }
+        else {
+            coursesViewModel.applyFilter(((CourseListParser.Result) wiseViewModel.getCourseList().getValue()).courseInfos);
+            coursesViewModel.setTitleFromFilter();
+        }
     }
 
     private void firstFetch(boolean refetch){
@@ -103,6 +107,8 @@ public class CoursesFragment extends Fragment {
                 systemMessage.setText("검색 결과가 없습니다.");
             else
                 systemMessage.setText("");
+
+            adapter.notifyDataSetChanged();
         });
     }
 
@@ -119,15 +125,18 @@ public class CoursesFragment extends Fragment {
         coursesViewModel.setShouldFetchCourses(false);
         coursesViewModel.setTitleFromFilter();
 
-        int schoolYear = Integer.parseInt(schoolYears.get(selections[0]));
-        String semester = coursesViewModel.getSemesterString(selections[1]);
-        String schoolCode = schools.get(selections[2]).s2;
-        String deptCode = depts.get(selections[3]).s2;
+        int schoolYear = Integer.parseInt(schoolYears.get(coursesViewModel.getSelection(0)));
+        String semester = coursesViewModel.getSemesterString(coursesViewModel.getSelection(1));
+        String schoolCode = schools.get(coursesViewModel.getSelection(2)).s2;
+        String deptCode = depts.get(coursesViewModel.getSelection(3)).s2;
+
 
         wiseViewModel
-                .fetchAndParseCourses(false, schoolYear, semester, schoolCode, deptCode)
+                .fetchAndParseCourses(true, schoolYear, semester, schoolCode, deptCode)
                 .thenRun(() -> {
                     mainActivity.runOnUiThread(() -> {
+                        CourseListParser.Result courseList =
+                                (CourseListParser.Result) wiseViewModel.getCourseList().getValue();
                         coursesViewModel.applyFilter(courseList.courseInfos);
                     });
                 })
@@ -147,6 +156,9 @@ public class CoursesFragment extends Fragment {
 
             PersonalInfoParser.Result personalInfo =
                     (PersonalInfoParser.Result) wiseViewModel.getPersonalInfo().getValue();
+
+            CourseListParser.Result courseList =
+                    (CourseListParser.Result) wiseViewModel.getCourseList().getValue();
 
             boolean departmentNotFound = coursesViewModel.setUpInitialFilter(
                     f12Info.schoolCode, f12Info.deptCode, schoolList);

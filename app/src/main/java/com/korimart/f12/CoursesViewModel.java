@@ -114,21 +114,17 @@ public class CoursesViewModel extends ViewModel {
                         break;
                 }
 
-                int[] selections = this.selections.getValue();
                 selections[0] = 0;           // school year (0 for latest)
                 selections[1] = semesterPos; // semester
                 selections[2] = schoolPos;   // school
                 selections[3] = deptPos;     // department
-                this.selections.setValue(selections);
             }
         }
 
         // department not found; probably graduate student
         if (departments.getValue() == null){
             setDepartments(defaultDepartments);
-            int[] selections = this.selections.getValue();
             Arrays.fill(selections, 0);
-            this.selections.setValue(selections);
             return true;
         }
 
