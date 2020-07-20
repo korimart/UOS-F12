@@ -83,15 +83,18 @@ public class SyllabusFragment extends Fragment {
         rubricsValues = view.findViewById(R.id.syllabus_rubrics_values);
         weeklyPlans = view.findViewById(R.id.syllabus_plans);
 
-        wiseViewModel.getSyllabus().observe(this, syllabus -> {
-            if (syllabus == null) return;
-            onSuccess((SyllabusFetchParser.Result) syllabus);
-        });
-
         syllabusViewModel.getSystemMessage().observe(this,
                 message -> title.setText(message));
 
-        clearDummy();
+        wiseViewModel.getSyllabus().observe(this, syllabus -> {
+            if (syllabus == null) {
+                clearDummy();
+                return;
+            }
+
+            onSuccess((SyllabusFetchParser.Result) syllabus);
+        });
+
         courseParsed = majorsViewModel.getFilteredCourses().getValue().get(position);
         syllabusViewModel.onViewCreated(wiseViewModel, mainActivity,
                 courseParsed.schoolYear,
@@ -100,12 +103,6 @@ public class SyllabusFragment extends Fragment {
                 courseParsed.classNumber,
                 courseParsed.uab,
                 courseParsed.certDivCode);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        wiseViewModel.getSyllabus().setValue(null);
     }
 
     private void onSuccess(SyllabusFetchParser.Result syllabus) {

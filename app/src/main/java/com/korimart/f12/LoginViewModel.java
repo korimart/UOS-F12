@@ -29,6 +29,7 @@ public class LoginViewModel extends ViewModel {
     public void login(MainActivity mainActivity, String id, String password, boolean save, Runnable onSuccess){
         fetching.setValue(true);
         tryLogin(id, password)
+                .whenComplete((ignored1, ignored2) -> fetching.postValue(false))
                 .thenRun(() -> {
                     if (save){
                         SharedPreferences prefs = mainActivity.getPreferences(Context.MODE_PRIVATE);
@@ -39,7 +40,6 @@ public class LoginViewModel extends ViewModel {
                     }
 
                     mainActivity.runOnUiThread(onSuccess);
-                    fetching.postValue(false);
                 })
                 .exceptionally(t -> {
                     errorReporter.backgroundErrorHandler(t, errorInfo1 -> onError(errorInfo1, mainActivity));

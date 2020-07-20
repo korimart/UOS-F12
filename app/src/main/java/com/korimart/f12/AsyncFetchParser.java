@@ -64,7 +64,7 @@ public class AsyncFetchParser {
             resultCache.future.cancel(true);
             resultCache.data = null;
             resultCache.future = null;
-            resultCache.resultLiveData.postValue(null);
+//            resultCache.resultLiveData.postValue(null);
         }
     }
 

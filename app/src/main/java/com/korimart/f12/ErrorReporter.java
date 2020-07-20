@@ -5,6 +5,7 @@ import android.os.Looper;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletionException;
 import java.util.function.Consumer;
 
@@ -22,6 +23,9 @@ public enum ErrorReporter {
 
         if (throwable instanceof CompletionException)
             throwable = throwable.getCause();
+
+        if (throwable instanceof CancellationException)
+            return;
 
         if (throwable instanceof ErrorInfo){
             Throwable finalThrowable = throwable;

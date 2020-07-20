@@ -125,8 +125,7 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
                 break;
 
             default:
-                mainActivity.goToErrorFrag();
-                errorReporter.reportError(errorInfo.throwable);
+                mainActivity.goToErrorFrag(errorInfo.throwable);
                 break;
         }
     }

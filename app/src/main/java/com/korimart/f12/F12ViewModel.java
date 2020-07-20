@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel;
 
 import java.time.LocalDateTime;
 import java.util.Locale;
-import java.util.function.Consumer;
 
 public class F12ViewModel extends ViewModel {
     private MutableLiveData<String> message = new MutableLiveData<>();
@@ -90,8 +89,7 @@ public class F12ViewModel extends ViewModel {
                 break;
 
             default:
-                errorReporter.reportError(errorInfo.throwable);
-                mainActivity.goToErrorFrag();
+                mainActivity.goToErrorFrag(errorInfo.throwable);
                 break;
         }
     }

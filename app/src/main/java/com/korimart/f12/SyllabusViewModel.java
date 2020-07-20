@@ -14,6 +14,7 @@ public class SyllabusViewModel extends ViewModel {
                       String curriNumber, String classNumber,
                       boolean uab, String certDivCode){
         systemMessage.setValue("가져오는 중...");
+        wiseViewModel.getSyllabus().setValue(null);
 
         wiseViewModel
                 .fetchAndParseSyllabus(
@@ -41,8 +42,7 @@ public class SyllabusViewModel extends ViewModel {
                 break;
 
             default:
-                errorReporter.reportError(errorInfo.throwable);
-                mainActivity.goToErrorFrag();
+                mainActivity.goToErrorFrag(errorInfo.throwable);
                 break;
         }
     }
