@@ -98,7 +98,7 @@ public class MajorsFilterFragment extends Fragment {
             yearLevels[i].setOnCheckedChangeListener(((buttonView, isChecked) -> {
                 MajorsViewModel.FilterOptions fo = majorsViewModel.getFilterOptions().getValue();
                 fo.yearLevels[finalI] = isChecked;
-                majorsViewModel.getFilterOptions().postValue(fo);
+                majorsViewModel.getFilterOptions().setValue(fo);
             }));
         }
 

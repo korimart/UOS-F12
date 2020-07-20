@@ -22,6 +22,10 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
     @Override
     public void onFirstOpen(WiseViewModel wiseViewModel, MainActivity mainActivity) {
         commons.firstOpen = false;
+
+        commons.filteredCourses.setValue(null);
+        commons.systemMessage.setValue("가져오는 중...");
+
         wiseViewModel.fetchAndParseMyCourses(true)
                 .thenCompose(ignored -> wiseViewModel.fetchAndParsePersonalInfo(false))
                 .thenRun(() -> onFetchAndParseReady(wiseViewModel, mainActivity))
@@ -52,6 +56,9 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
     }
 
     public void fetchFromFilter(WiseViewModel wiseViewModel, MainActivity mainActivity) {
+        commons.filteredCourses.setValue(null);
+        commons.systemMessage.setValue("가져오는 중...");
+
         List<String> schoolYears = commons.schoolYears.getValue();
         List<StringPair> schools = this.schools.getValue();
         List<StringPair> depts = departments.getValue();
@@ -101,8 +108,6 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
      * @param mainActivity
      */
     private void onError(ErrorInfo errorInfo, MainActivity mainActivity) {
-        commons.filteredCourses.setValue(null);
-
         switch (errorInfo.type){
             case sessionExpired:
                 mainActivity.goToLoginFrag(1);
@@ -298,18 +303,18 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
         List<StringPair> deptStrings = new ArrayList<>();
         departments.forEach((info) -> deptStrings.add(new StringPair(info.name, info.code)));
         Collections.sort(deptStrings, (o1, o2) -> o1.s1.compareTo(o2.s1));
-        getDepartments().setValue(deptStrings);
+        this.departments.setValue(deptStrings);
     }
 
-    public MutableLiveData<List<String>> getSchoolYears() {
+    public LiveData<List<String>> getSchoolYears() {
         return commons.schoolYears;
     }
 
-    public MutableLiveData<List<StringPair>> getSchools() {
+    public LiveData<List<StringPair>> getSchools() {
         return schools;
     }
 
-    public MutableLiveData<List<StringPair>> getDepartments() {
+    public LiveData<List<StringPair>> getDepartments() {
         return departments;
     }
 
