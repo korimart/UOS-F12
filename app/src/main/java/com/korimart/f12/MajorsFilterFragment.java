@@ -68,9 +68,8 @@ public class MajorsFilterFragment extends Fragment {
         if (shouldFetchCourses){
             majorsViewModel.fetchFromFilter(wiseViewModel, mainActivity);
         }
-        else {
+        else
             majorsViewModel.applyFilter(wiseViewModel);
-        }
     }
 
     private void setViewListeners() {

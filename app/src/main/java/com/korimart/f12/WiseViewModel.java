@@ -56,7 +56,7 @@ public class WiseViewModel extends ViewModel {
     /**
      * may be called from background thread
      * @param throwable
-     * @param onError
+     * @param onError this is called from UI thread
      */
     public void errorHandler(Throwable throwable, Consumer<ErrorInfo> onError){
         if (throwable == null) return;

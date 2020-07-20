@@ -49,11 +49,8 @@ public class CourseListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         initMembers(view);
-
-        if (courseListViewModel.isFirstOpen())
-            courseListViewModel.onFirstOpen(wiseViewModel, mainActivity);
+        courseListViewModel.onViewCreated(wiseViewModel, mainActivity);
     }
 
     private void initMembers(View view){
@@ -77,7 +74,7 @@ public class CourseListFragment extends Fragment {
         refreshButton = view.findViewById(R.id.courses_refresh);
 
         refreshButton.setOnClickListener(v -> {
-            courseListViewModel.onFirstOpen(wiseViewModel, mainActivity);
+            courseListViewModel.referesh(wiseViewModel, mainActivity);
             refreshButton.setVisibility(View.INVISIBLE);
         });
 
@@ -102,6 +99,7 @@ public class CourseListFragment extends Fragment {
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(CourseListFragment.this.getContext())
                     .inflate(R.layout.item_course, parent, false);
+
             view.setOnClickListener(v -> {
                 RecyclerView.ViewHolder viewHolder = recyclerView.getChildViewHolder(v);
 
@@ -119,6 +117,7 @@ public class CourseListFragment extends Fragment {
 
                 ma.goToCourseDescFrag(ma::goToCoursesFrag, position, sj.toString());
             });
+
             return new ViewHolder(view);
         }
 

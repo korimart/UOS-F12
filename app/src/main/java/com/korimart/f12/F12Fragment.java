@@ -39,6 +39,12 @@ public class F12Fragment extends Fragment {
 
     private MainActivity mainActivity;
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mainActivity = (MainActivity) context;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,7 +55,7 @@ public class F12Fragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ViewModelProvider vmp = new ViewModelProvider(getActivity(), new ViewModelProvider.NewInstanceFactory());
+        ViewModelProvider vmp = new ViewModelProvider(mainActivity, new ViewModelProvider.NewInstanceFactory());
         mainViewModel = vmp.get(MainViewModel.class);
         wiseViewModel = vmp.get(WiseViewModel.class);
         f12ViewModel = vmp.get(F12ViewModel.class);
@@ -70,13 +76,8 @@ public class F12Fragment extends Fragment {
         hideStudent = view.findViewById(R.id.f12_hideStudent);
 
         setViewListeners();
-        fetch(false);
-    }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        mainActivity = (MainActivity) context;
+        f12ViewModel.onViewCreated(wiseViewModel, mainActivity);
     }
 
     private void setViewListeners() {
@@ -86,10 +87,7 @@ public class F12Fragment extends Fragment {
 
         f12ViewModel.getRefreshButton().observe(this, b -> refreshButton.setEnabled(b));
         refreshButton.setOnClickListener((v) -> {
-            f12ViewModel.getRefreshButton().setValue(false);
-            f12ViewModel.getMessageColor().setValue(0xFF000000);
-            f12ViewModel.getMessage().setValue("가져오는 중...");
-            fetch(true);
+            f12ViewModel.fetch(wiseViewModel, mainActivity, true);
         });
 
         mainViewModel.getNoPnp().observe(this, (b) -> pnpSwitch.setChecked(b));
@@ -118,17 +116,7 @@ public class F12Fragment extends Fragment {
         });
     }
 
-    private void fetch(boolean refetch){
-        wiseViewModel.fetchAndParseF12(refetch, refetch)
-        .exceptionally(throwable -> {
-            wiseViewModel.errorHandler(throwable, this::onError);
-            return null;
-        });
-    }
-
     private void onSuccess(F12Parser.Result parsed) {
-        whenDone();
-
         // 2 = 1 (description) + 1 (space)
         courseNames.removeViews(2, courseNames.getChildCount() - 2);
         letterGrades.removeViews(2, letterGrades.getChildCount() - 2);
@@ -163,17 +151,6 @@ public class F12Fragment extends Fragment {
         totalAvg.setText(String.format(Locale.US, "%.2f", parsed.totalAvg));
 
         setHiddenAvg(parsed.hiddenAvg);
-
-        LocalDateTime dt = LocalDateTime.now();
-        f12ViewModel.getMessage().setValue(
-                String.format(
-                        Locale.getDefault(),
-                        "마지막 새로고침 : %d-%d-%d %d시 %d분 %d초",
-                        dt.getYear(), dt.getMonthValue(),
-                        dt.getDayOfMonth(), dt.getHour(),
-                        dt.getMinute(), dt.getSecond())
-        );
-        f12ViewModel.getMessageColor().setValue(0xFF000000);
     }
 
     private void setHiddenAvg(float hiddenAvgFloat){
@@ -184,41 +161,5 @@ public class F12Fragment extends Fragment {
         else
             avgText = String.format(Locale.US, "%.1f", hiddenAvgFloat);
         hiddenAvg.setText(avgText);
-    }
-
-    private void onError(ErrorInfo errorInfo){
-        whenDone();
-        switch (errorInfo.type){
-            case sessionExpired:
-                mainActivity.goToLoginFrag(0);
-                break;
-
-            case timeout:
-            case responseFailed:
-                f12ViewModel.getMessage().setValue("성적 불러오기 실패");
-                f12ViewModel.getMessageColor().setValue(0xFFFF0000);
-                refreshButton.setEnabled(true);
-                break;
-
-            case parseFailed:
-                f12ViewModel.getMessage().setValue("와이즈 시스템 방식이 변경된 듯 (F12가 막혔을 수 있음)");
-                f12ViewModel.getMessageColor().setValue(0xFFFF0000);
-                refreshButton.setEnabled(true);
-                break;
-
-            case noOneDisclosedGrade:
-                f12ViewModel.getMessage().setValue("성적이 하나도 안 떠서 볼 수가 없음");
-                f12ViewModel.getMessageColor().setValue(0xFFFF0000);
-                refreshButton.setEnabled(true);
-                break;
-
-            default:
-                mainActivity.goToErrorFrag();
-                break;
-        }
-    }
-
-    private void whenDone(){
-        refreshButton.setEnabled(true);
     }
 }

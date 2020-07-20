@@ -9,8 +9,9 @@ public interface CourseListViewModel {
         boolean[] yearLevels = new boolean[4];
     }
 
-    void onFirstOpen(WiseViewModel wiseViewModel, MainActivity mainActivity);
-    boolean isFirstOpen();
+    void onViewCreated(WiseViewModel wiseViewModel, MainActivity mainActivity);
+    void referesh(WiseViewModel wiseViewModel, MainActivity mainActivity);
+
     LiveData<List<CourseListParser.CourseInfo>> getFilteredCourses();
     LiveData<String> getTitle();
     LiveData<String> getSystemMessage();

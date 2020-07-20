@@ -20,24 +20,16 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
     private int[] selections = new int[4];
 
     @Override
-    public void onFirstOpen(WiseViewModel wiseViewModel, MainActivity mainActivity) {
+    public void onViewCreated(WiseViewModel wiseViewModel, MainActivity mainActivity) {
+        if (!commons.firstOpen) return;
+
         commons.firstOpen = false;
-
-        commons.filteredCourses.setValue(null);
-        commons.systemMessage.setValue("가져오는 중...");
-
-        wiseViewModel.fetchAndParseMyCourses(true)
-                .thenCompose(ignored -> wiseViewModel.fetchAndParsePersonalInfo(false))
-                .thenRun(() -> onFetchAndParseReady(wiseViewModel, mainActivity))
-                .exceptionally(throwable -> {
-                    wiseViewModel.errorHandler(throwable, errorInfo -> this.onError(errorInfo, mainActivity));
-                    return null;
-                });
+        fetchFilterAndFromFilter(wiseViewModel, mainActivity);
     }
 
     @Override
-    public boolean isFirstOpen() {
-        return commons.firstOpen;
+    public void referesh(WiseViewModel wiseViewModel, MainActivity mainActivity) {
+        fetchFilterAndFromFilter(wiseViewModel, mainActivity);
     }
 
     @Override
@@ -53,6 +45,19 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
     @Override
     public LiveData<String> getSystemMessage() {
         return commons.systemMessage;
+    }
+
+    public void fetchFilterAndFromFilter(WiseViewModel wiseViewModel, MainActivity mainActivity){
+        commons.filteredCourses.setValue(null);
+        commons.systemMessage.setValue("가져오는 중...");
+
+        wiseViewModel.fetchAndParseMyCourses(true)
+                .thenCompose(ignored -> wiseViewModel.fetchAndParsePersonalInfo(false))
+                .thenRun(() -> onFetchAndParseReady(wiseViewModel, mainActivity))
+                .exceptionally(throwable -> {
+                    wiseViewModel.errorHandler(throwable, errorInfo -> this.onError(errorInfo, mainActivity));
+                    return null;
+                });
     }
 
     public void fetchFromFilter(WiseViewModel wiseViewModel, MainActivity mainActivity) {
