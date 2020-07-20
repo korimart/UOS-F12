@@ -30,7 +30,7 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
     }
 
     @Override
-    public void referesh(WiseViewModel wiseViewModel, MainActivity mainActivity) {
+    public void refresh(WiseViewModel wiseViewModel, MainActivity mainActivity) {
         fetchFilterAndFromFilter(wiseViewModel, mainActivity);
     }
 
@@ -83,7 +83,7 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
         String deptCode = depts.get(selections[3]).s2;
 
         wiseViewModel
-                .fetchAndParseCourses(true, schoolYear, semester, schoolCode, deptCode)
+                .fetchAndParseMajors(true, schoolYear, semester, schoolCode, deptCode)
                 .thenRun(() -> {
                     commons.handler.post(() -> applyFilter(wiseViewModel));
                 })
@@ -98,9 +98,9 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
      */
     public void applyFilter(WiseViewModel wiseViewModel) {
         CourseListParser.Result
-                r = (CourseListParser.Result) wiseViewModel.getCourseList().getValue();
-
+                r = (CourseListParser.Result) wiseViewModel.getMajorList().getValue();
         List<CourseListParser.CourseInfo> filtered = commons.applyFilterOnYearLevels(r.courseInfos);
+
         if (filtered.isEmpty())
             commons.systemMessage.setValue("검색 결과가 없습니다.");
         else

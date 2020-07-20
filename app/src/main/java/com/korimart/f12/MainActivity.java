@@ -119,10 +119,14 @@ public class MainActivity extends AppCompatActivity
                 .commit();
     }
 
-    public void goToCoursesFrag(){
+    public void goToCoursesFrag(boolean major){
+        CourseListFragment clf = new CourseListFragment();
+        Bundle args = new Bundle();
+        args.putBoolean("major", major);
+        clf.setArguments(args);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frag, new CourseListFragment())
+                .replace(R.id.frag, clf)
                 .commit();
     }
 
@@ -134,12 +138,13 @@ public class MainActivity extends AppCompatActivity
                 .commit();
     }
 
-    public void goToCourseDescFrag(Runnable howToGoBack, int position, String timePlace) {
+    public void goToCourseDescFrag(Runnable howToGoBack, int position, String timePlace, boolean major) {
         fragStack.add(howToGoBack);
         SyllabusFragment cdf = new SyllabusFragment();
         Bundle args = new Bundle();
         args.putInt("position", position);
         args.putString("timePlace", timePlace);
+        args.putBoolean("major", major);
         cdf.setArguments(args);
 
         getSupportFragmentManager()
@@ -161,8 +166,12 @@ public class MainActivity extends AppCompatActivity
                 goToHelpFrag();
                 break;
 
-            case R.id.bottomNav_courses:
-                goToCoursesFrag();
+            case R.id.bottomNav_majors:
+                goToCoursesFrag(true);
+                break;
+
+            case R.id.bottomNav_cores:
+                goToCoursesFrag(false);
                 break;
         }
         return true;

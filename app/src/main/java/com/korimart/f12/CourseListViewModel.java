@@ -10,7 +10,7 @@ public interface CourseListViewModel {
     }
 
     void onViewCreated(WiseViewModel wiseViewModel, MainActivity mainActivity);
-    void referesh(WiseViewModel wiseViewModel, MainActivity mainActivity);
+    void refresh(WiseViewModel wiseViewModel, MainActivity mainActivity);
 
     LiveData<List<CourseListParser.CourseInfo>> getFilteredCourses();
     LiveData<String> getTitle();

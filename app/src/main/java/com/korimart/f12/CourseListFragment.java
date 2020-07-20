@@ -33,6 +33,7 @@ public class CourseListFragment extends Fragment {
     private Button refreshButton;
 
     private MainActivity mainActivity;
+    private boolean major;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -54,9 +55,15 @@ public class CourseListFragment extends Fragment {
     }
 
     private void initMembers(View view){
+        major = getArguments().getBoolean("major");
+
         ViewModelProvider vmp = new ViewModelProvider(mainActivity, new ViewModelProvider.NewInstanceFactory());
-        courseListViewModel = vmp.get(MajorsViewModel.class);
         wiseViewModel = vmp.get(WiseViewModel.class);
+
+        if (major)
+            courseListViewModel = vmp.get(MajorsViewModel.class);
+        else
+            courseListViewModel = vmp.get(CoresViewModel.class);
 
         recyclerView = view.findViewById(R.id.courses_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(mainActivity));
@@ -67,14 +74,14 @@ public class CourseListFragment extends Fragment {
         recyclerView.addItemDecoration(did);
 
         view.findViewById(R.id.courses_filterButton).setOnClickListener(v ->
-                mainActivity.goToCoursesFilterFrag(mainActivity::goToCoursesFrag));
+                mainActivity.goToCoursesFilterFrag(() -> mainActivity.goToCoursesFrag(major)));
 
         title = view.findViewById(R.id.course_desc_title);
         systemMessage = view.findViewById(R.id.courses_system_message);
         refreshButton = view.findViewById(R.id.courses_refresh);
 
         refreshButton.setOnClickListener(v -> {
-            courseListViewModel.referesh(wiseViewModel, mainActivity);
+            courseListViewModel.refresh(wiseViewModel, mainActivity);
             refreshButton.setVisibility(View.INVISIBLE);
         });
 
@@ -115,7 +122,7 @@ public class CourseListFragment extends Fragment {
                 MainActivity ma = (MainActivity) getActivity();
                 if (ma == null) return;
 
-                ma.goToCourseDescFrag(ma::goToCoursesFrag, position, sj.toString());
+                ma.goToCourseDescFrag(() -> mainActivity.goToCoursesFrag(major), position, sj.toString(), major);
             });
 
             return new ViewHolder(view);

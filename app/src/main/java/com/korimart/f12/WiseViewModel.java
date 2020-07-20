@@ -1,7 +1,6 @@
 package com.korimart.f12;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import java.util.concurrent.CompletableFuture;
 
@@ -17,8 +16,14 @@ public class WiseViewModel extends ViewModel {
 
     private F12FetchParser f12FetchParser = new F12FetchParser(f12InfoFetchParser);
 
-    private CourseListFetchParser courseListFetchParser
+    private CourseListFetchParser majorListFetchParser
             = new CourseListFetchParser(f12InfoFetchParser, schoolListFetchParser);
+
+    private AsyncFetchParser coreListFetchParserRequired
+            = new AsyncFetchParser(URLStorage.getCoreListUrl(), null, CourseListParser.INSTANCE);
+
+    private AsyncFetchParser coreListFetchParser
+            = new AsyncFetchParser(URLStorage.getCoreListUrl(), null, CourseListParser.INSTANCE);
 
     private SyllabusFetchParser syllabusFetchParser = new SyllabusFetchParser();
 
@@ -28,20 +33,48 @@ public class WiseViewModel extends ViewModel {
     }
 
     public CompletableFuture<Void> fetchAndParseMyCourses(boolean refetch){
-        courseListFetchParser.setFetchMine(true);
-        courseListFetchParser.setRefetchF12Info(refetch);
-        courseListFetchParser.setRefetchSchoolList(refetch);
-        return courseListFetchParser.fetchAndParse(refetch);
+        majorListFetchParser.setFetchMine(true);
+        majorListFetchParser.setRefetchF12Info(refetch);
+        majorListFetchParser.setRefetchSchoolList(refetch);
+        return majorListFetchParser.fetchAndParse(refetch);
     }
 
-    public CompletableFuture<Void> fetchAndParseCourses(boolean refetch, int schoolYear,
-                                                        String semester, String schoolCode,
-                                                        String deptCode){
-        courseListFetchParser.setFetchMine(false);
-        courseListFetchParser.setRefetchF12Info(false);
-        courseListFetchParser.setRefetchSchoolList(false);
-        courseListFetchParser.setParams(schoolYear, semester, schoolCode, deptCode);
-        return courseListFetchParser.fetchAndParse(refetch);
+    public CompletableFuture<Void> fetchAndParseMajors(boolean refetch, int schoolYear,
+                                                       String semester, String schoolCode,
+                                                       String deptCode){
+        majorListFetchParser.setFetchMine(false);
+        majorListFetchParser.setRefetchF12Info(false);
+        majorListFetchParser.setRefetchSchoolList(false);
+        majorListFetchParser
+                .setParams(URLStorage.getCourseListParam(schoolYear, semester, schoolCode, deptCode));
+        return majorListFetchParser.fetchAndParse(refetch);
+    }
+
+    public CompletableFuture<Void> fetchAndParseLatestCores(boolean refetch){
+        return schoolListFetchParser
+                .fetchAndParse(false)
+                .thenCompose(ignored -> {
+                    SchoolListParser.Result info = (SchoolListParser.Result) schoolListFetchParser.getpCache().data;
+                    coreListFetchParserRequired
+                            .setParams(URLStorage.getCoreListParam(info.latestSchoolYear, info.latestSemester, true));
+                    coreListFetchParser
+                            .setParams(URLStorage.getCoreListParam(info.latestSchoolYear, info.latestSemester, false));
+                    return CompletableFuture.allOf(
+                            coreListFetchParserRequired.fetchAndParse(refetch),
+                            coreListFetchParser.fetchAndParse(refetch)
+                    );
+                });
+    }
+
+    public CompletableFuture<Void> fetchAndParseCores(boolean refetch, int schoolYear, String semester){
+        coreListFetchParserRequired
+                .setParams(URLStorage.getCoreListParam(schoolYear, semester, true));
+        coreListFetchParser
+                .setParams(URLStorage.getCoreListParam(schoolYear, semester, false));
+
+        return CompletableFuture.allOf(
+                coreListFetchParserRequired.fetchAndParse(refetch),
+                coreListFetchParser.fetchAndParse(refetch));
     }
 
     public CompletableFuture<Void> fetchAndParsePersonalInfo(boolean refetch){
@@ -136,11 +169,20 @@ public class WiseViewModel extends ViewModel {
         return personalInfoFetchParser.getpCache().resultLiveData;
     }
 
-    public LiveData<WiseParser.Result> getCourseList() {
-        return courseListFetchParser.getpCache().resultLiveData;
+    public LiveData<WiseParser.Result> getMajorList() {
+        return majorListFetchParser.getpCache().resultLiveData;
     }
 
-    public MutableLiveData<WiseParser.Result> getSyllabus(){
+    public LiveData<WiseParser.Result> getCoreList() {
+        return coreListFetchParser.getpCache().resultLiveData;
+    }
+
+    public LiveData<WiseParser.Result> getSyllabus(){
         return syllabusFetchParser.getpCache().resultLiveData;
+    }
+
+    public void clearSyllabus(){
+        syllabusFetchParser.getpCache().resultLiveData.setValue(null);
+        syllabusFetchParser.getpCache().data = null;
     }
 }

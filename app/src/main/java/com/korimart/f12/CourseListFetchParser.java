@@ -54,8 +54,4 @@ public class CourseListFetchParser extends AsyncFetchParser {
     public void setFetchMine(boolean fetchMine) {
         this.fetchMine = fetchMine;
     }
-
-    public void setParams(int schoolYear, String semester, String schoolCode, String deptCode){
-        setParams(URLStorage.getCourseListParam(schoolYear, semester, schoolCode, deptCode));
-    }
 }

@@ -10,9 +10,12 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 public class CoresFilterFragment extends Fragment {
     private MainActivity mainActivity;
+    private WiseViewModel wiseViewModel;
+    private CoresViewModel coresViewModel;
 
     private Spinner schoolYear;
     private Spinner semester;
@@ -33,6 +36,11 @@ public class CoresFilterFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        ViewModelProvider vmp = new ViewModelProvider(mainActivity,
+                new ViewModelProvider.NewInstanceFactory());
+        coresViewModel = vmp.get(CoresViewModel.class);
+        wiseViewModel = vmp.get(WiseViewModel.class);
 
         schoolYear = view.findViewById(R.id.core_filter_school_year);
         semester = view.findViewById(R.id.core_filter_semester);

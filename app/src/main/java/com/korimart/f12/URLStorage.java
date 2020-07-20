@@ -29,7 +29,7 @@ public class URLStorage {
             "strCuriNm=%s&strSmtNm=%s&strPgmCd=%s&strViewDiv=%s&&_COMMAND_=list&&_XML_=XML&_strMenuId=stud00180&";
 
     private static final String coreListUrl = "https://wise.uos.ac.kr/uosdoc/ucr.UcrCultTimeInq.do";
-    private static final String coreListParam = "strSchYear=%s&strSmtCd=%s&strAreaCd=&strCmpDivCd=%s&" +
+    private static final String coreListParam = "strSchYear=%d&strSmtCd=%s&strAreaCd=&strCmpDivCd=%s&" +
             "strCuriNo=&strClassNo=&strCuriNm=&strUnivCd=20230&strSustCd=-----&&_COMMAND_=list&&_XML_=XML&_strMenuId=stud00190&";
 
     public static String getLoginURL() {
@@ -111,7 +111,7 @@ public class URLStorage {
         return coreListUrl;
     }
 
-    public static String getCoreListParam(String schoolYear, String semester, boolean required) {
+    public static String getCoreListParam(int schoolYear, String semester, boolean required) {
         return String.format(coreListParam, schoolYear, semester, required ? "02" : "01");
     }
 }

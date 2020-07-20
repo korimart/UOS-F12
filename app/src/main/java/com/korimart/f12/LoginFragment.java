@@ -100,7 +100,7 @@ public class LoginFragment extends Fragment {
             break;
 
             case 1:
-            mainActivity.getBottomNav().setSelectedItemId(R.id.bottomNav_courses);
+            mainActivity.getBottomNav().setSelectedItemId(R.id.bottomNav_majors);
             break;
         }
     }

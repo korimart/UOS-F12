@@ -6,9 +6,15 @@
         android:icon="@android:drawable/ic_menu_my_calendar"
         />
     <item android:title="전공시간표"
-        android:id="@+id/bottomNav_courses"
+        android:id="@+id/bottomNav_majors"
         android:icon="@android:drawable/ic_menu_add"
         />
+
+    <item android:title="교양시간표"
+        android:id="@+id/bottomNav_cores"
+        android:icon="@android:drawable/ic_menu_add"
+        />
+
     <item android:title="업데이트"
         android:id="@+id/bottomNav_help"
         android:icon="@android:drawable/ic_menu_help"

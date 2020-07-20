@@ -15,17 +15,17 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 import java.util.StringJoiner;
 
 public class SyllabusFragment extends Fragment {
     private int position;
     private String timePlace;
+    private boolean major;
 
     private WiseViewModel wiseViewModel;
     private SyllabusViewModel syllabusViewModel;
-    private CourseListViewModel majorsViewModel;
+    private CourseListViewModel courseListViewModel;
     private CourseListParser.CourseInfo courseParsed;
     private MainActivity mainActivity;
 
@@ -60,13 +60,18 @@ public class SyllabusFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ViewModelProvider vmp = new ViewModelProvider(mainActivity, new ViewModelProvider.NewInstanceFactory());
-        wiseViewModel = vmp.get(WiseViewModel.class);
-        majorsViewModel = vmp.get(MajorsViewModel.class);
-        syllabusViewModel = vmp.get(SyllabusViewModel.class);
-
         position = getArguments().getInt("position");
         timePlace = getArguments().getString("timePlace");
+        major = getArguments().getBoolean("major");
+
+        ViewModelProvider vmp = new ViewModelProvider(mainActivity, new ViewModelProvider.NewInstanceFactory());
+        wiseViewModel = vmp.get(WiseViewModel.class);
+        syllabusViewModel = vmp.get(SyllabusViewModel.class);
+
+        if (major)
+            courseListViewModel = vmp.get(MajorsViewModel.class);
+        else
+            courseListViewModel = vmp.get(CoresViewModel.class);
 
         TOYear = view.findViewById(R.id.syllabus_TO_year);
         TOAll = view.findViewById(R.id.syllabus_TO_all);
@@ -95,7 +100,7 @@ public class SyllabusFragment extends Fragment {
             onSuccess((SyllabusFetchParser.Result) syllabus);
         });
 
-        courseParsed = majorsViewModel.getFilteredCourses().getValue().get(position);
+        courseParsed = courseListViewModel.getFilteredCourses().getValue().get(position);
         syllabusViewModel.onViewCreated(wiseViewModel, mainActivity,
                 courseParsed.schoolYear,
                 courseParsed.semester,
@@ -110,6 +115,7 @@ public class SyllabusFragment extends Fragment {
         titleClassNumber.setText(courseParsed.classNumber + "분반");
 
         syllabus.textbook = syllabus.textbook.replace("\n", "\n\n");
+        syllabus.summary = syllabus.summary.replace("\n", "\n\n");
 
         this.TOYear.setText(String.format(
                 Locale.getDefault(), "%s/%s", courseParsed.TOYear, courseParsed.TOYearMax));
