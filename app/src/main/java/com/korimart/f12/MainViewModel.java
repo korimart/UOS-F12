@@ -22,7 +22,6 @@ public class MainViewModel extends ViewModel {
 
     private MutableLiveData<String> updateLink = new MutableLiveData<>();
     private MutableLiveData<String> announcement = new MutableLiveData<>();
-    private MutableLiveData<Boolean> noPnp = new MutableLiveData<>();
 
     public void fetchGithub(Context context){
         new Thread(() -> {
@@ -67,46 +66,11 @@ public class MainViewModel extends ViewModel {
         }
     }
 
-    public void fetchNoPnp(Context context){
-        File internalPath = context.getFilesDir();
-        Path settingsPath = Paths.get(internalPath.getPath(), "settings.txt");
-        if (settingsPath.toFile().isFile()){
-            try {
-                List<String> settings = Files.readAllLines(settingsPath);
-                noPnp.postValue(settings.get(0).equals("noPnp"));
-            } catch (IOException ignore) {
-            }
-        }
-        else {
-            writeNoPnp(context);
-        }
-    }
-
-    public void writeNoPnp(Context context){
-        try {
-            OutputStreamWriter osw = new OutputStreamWriter(
-                    context.openFileOutput("settings.txt", Context.MODE_PRIVATE));
-            Boolean noPnpVal = noPnp.getValue();
-            boolean noPnpPrim = false;
-            if (noPnpVal != null) noPnpPrim = noPnpVal;
-
-            String setting = noPnpPrim ? "noPnp\n" : "pnp\n";
-            osw.write(setting);
-            osw.flush();
-            osw.close();
-        } catch (IOException ignore) {
-        }
-    }
-
     public MutableLiveData<String> getAnnouncement() {
         return announcement;
     }
 
     public MutableLiveData<String> getUpdateLink() {
         return updateLink;
-    }
-
-    public MutableLiveData<Boolean> getNoPnp() {
-        return noPnp;
     }
 }

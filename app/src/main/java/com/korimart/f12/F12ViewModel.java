@@ -1,5 +1,8 @@
 package com.korimart.f12;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -12,7 +15,8 @@ public class F12ViewModel extends ViewModel {
     private MutableLiveData<Integer> messageColor = new MutableLiveData<>();
     private MutableLiveData<Boolean> hideCourse = new MutableLiveData<>();
     private MutableLiveData<Boolean> hideStudent = new MutableLiveData<>();
-    private MutableLiveData<Boolean> refreshButton = new MutableLiveData<>();
+    private MutableLiveData<Boolean> canMakeRequest = new MutableLiveData<>();
+    private MutableLiveData<Boolean> noPnp = new MutableLiveData<>();
 
     private boolean firstOpen = true;
     private ErrorReporter errorReporter = ErrorReporter.INSTANCE;
@@ -21,15 +25,16 @@ public class F12ViewModel extends ViewModel {
         if (!firstOpen) return;
 
         firstOpen = false;
+        fetchNoPnp(mainActivity);
         fetch(wiseViewModel, mainActivity, true);
     }
 
     public void fetch(WiseViewModel wiseViewModel, MainActivity mainActivity, boolean refetch){
-        refreshButton.setValue(false);
+        canMakeRequest.setValue(false);
         message.setValue("가져오는 중...");
         messageColor.setValue(0xFF000000);
 
-        wiseViewModel.fetchAndParseF12(refetch, refetch)
+        wiseViewModel.fetchAndParseF12(refetch, noPnp.getValue())
                 .whenComplete((ignored, throwable) -> whenDone())
                 .thenRun(this::onSuccess)
                 .exceptionally(throwable -> {
@@ -38,6 +43,12 @@ public class F12ViewModel extends ViewModel {
                             errorInfo -> onError(errorInfo, mainActivity));
                     return null;
                 });
+    }
+
+    private void fetchNoPnp(MainActivity mainActivity){
+        SharedPreferences prefs = mainActivity.getPreferences(Context.MODE_PRIVATE);
+        boolean noPnp = prefs.getBoolean("noPnp", false);
+        this.noPnp.setValue(noPnp);
     }
 
     /**
@@ -60,7 +71,7 @@ public class F12ViewModel extends ViewModel {
      * should be called from background thread
      */
     private void whenDone(){
-        refreshButton.postValue(true);
+        canMakeRequest.postValue(true);
     }
 
     private void onError(ErrorInfo errorInfo, MainActivity mainActivity){
@@ -73,19 +84,19 @@ public class F12ViewModel extends ViewModel {
             case responseFailed:
                 message.setValue("성적 불러오기 실패");
                 messageColor.setValue(0xFFFF0000);
-                refreshButton.setValue(true);
+                canMakeRequest.setValue(true);
                 break;
 
             case parseFailed:
                 message.setValue("와이즈 시스템 방식이 변경된 듯 (F12가 막혔을 수 있음)");
                 messageColor.setValue(0xFFFF0000);
-                refreshButton.setValue(true);
+                canMakeRequest.setValue(true);
                 break;
 
             case noOneDisclosedGrade:
                 message.setValue("성적이 하나도 안 떠서 볼 수가 없음");
                 messageColor.setValue(0xFFFF0000);
-                refreshButton.setValue(true);
+                canMakeRequest.setValue(true);
                 break;
 
             default:
@@ -102,8 +113,8 @@ public class F12ViewModel extends ViewModel {
         return messageColor;
     }
 
-    public LiveData<Boolean> getRefreshButton() {
-        return refreshButton;
+    public LiveData<Boolean> getCanMakeRequest() {
+        return canMakeRequest;
     }
 
     public MutableLiveData<Boolean> getHideCourse() {
@@ -114,4 +125,7 @@ public class F12ViewModel extends ViewModel {
         return hideStudent;
     }
 
+    public MutableLiveData<Boolean> getNoPnp() {
+        return noPnp;
+    }
 }

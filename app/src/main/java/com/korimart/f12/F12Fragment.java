@@ -1,6 +1,7 @@
 package com.korimart.f12;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.time.LocalDateTime;
 import java.util.Locale;
 
 public class F12Fragment extends Fragment {
@@ -85,16 +85,23 @@ public class F12Fragment extends Fragment {
             mainActivity.goToOriginalXMLFrag(() -> mainActivity.goToF12Frag());
         });
 
-        f12ViewModel.getRefreshButton().observe(this, b -> refreshButton.setEnabled(b));
+        f12ViewModel.getCanMakeRequest().observe(this, b -> refreshButton.setEnabled(b));
         refreshButton.setOnClickListener((v) -> {
             f12ViewModel.fetch(wiseViewModel, mainActivity, true);
         });
 
-        mainViewModel.getNoPnp().observe(this, (b) -> pnpSwitch.setChecked(b));
+        f12ViewModel.getNoPnp().observe(this, b -> {
+            pnpSwitch.setChecked(b);
+        });
 
         pnpSwitch.setOnCheckedChangeListener((v, b) -> {
             wiseViewModel.recalculateHiddenAvg(b);
-            mainViewModel.getNoPnp().setValue(b);
+            f12ViewModel.getNoPnp().setValue(b);
+
+            SharedPreferences prefs = mainActivity.getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("noPnp", b);
+            editor.apply();
         });
 
         f12ViewModel.getHideCourse().observe(this, (b) -> hideCourse.setChecked(b));

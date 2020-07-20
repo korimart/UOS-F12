@@ -42,14 +42,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        mainViewModel.fetchNoPnp(this);
         mainViewModel.fetchGithub(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mainViewModel.writeNoPnp(this);
     }
 
     private void setViewListeners() {
