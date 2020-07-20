@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import java.time.LocalDateTime;
 import java.util.Locale;
+import java.util.function.Consumer;
 
 public class F12ViewModel extends ViewModel {
     private MutableLiveData<String> message = new MutableLiveData<>();
@@ -15,6 +16,7 @@ public class F12ViewModel extends ViewModel {
     private MutableLiveData<Boolean> refreshButton = new MutableLiveData<>();
 
     private boolean firstOpen = true;
+    private ErrorReporter errorReporter = ErrorReporter.INSTANCE;
 
     public void onViewCreated(WiseViewModel wiseViewModel, MainActivity mainActivity){
         if (!firstOpen) return;
@@ -32,7 +34,9 @@ public class F12ViewModel extends ViewModel {
                 .whenComplete((ignored, throwable) -> whenDone())
                 .thenRun(this::onSuccess)
                 .exceptionally(throwable -> {
-                    wiseViewModel.errorHandler(throwable, errorInfo -> onError(errorInfo, mainActivity));
+                    errorReporter.backgroundErrorHandler(
+                            throwable,
+                            errorInfo -> onError(errorInfo, mainActivity));
                     return null;
                 });
     }
@@ -86,6 +90,7 @@ public class F12ViewModel extends ViewModel {
                 break;
 
             default:
+                errorReporter.reportError(errorInfo.throwable);
                 mainActivity.goToErrorFrag();
                 break;
         }

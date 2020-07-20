@@ -1,22 +1,11 @@
 package com.korimart.f12;
 
-import android.os.Handler;
-import android.os.Looper;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 public class WiseViewModel extends ViewModel {
-    private Handler handler = new Handler(Looper.getMainLooper());
-
     private AsyncFetchParser f12InfoFetchParser
             = new AsyncFetchParser(URLStorage.getF12URL(), URLStorage.getF12InfoParams(), F12InfoParser.INSTANCE);
 
@@ -116,27 +105,6 @@ public class WiseViewModel extends ViewModel {
         syllabusFetchParser.setParams(oParams, wParams);
         syllabusFetchParser.setMode((semester.equals("10") || semester.equals("20")) && (uab || certDivCode.equals("01")));
         return syllabusFetchParser.fetchAndParse(refetch);
-    }
-
-    /**
-     * may be called from background thread
-     * @param throwable
-     * @param onError this is called from UI thread
-     */
-    public void errorHandler(Throwable throwable, Consumer<ErrorInfo> onError){
-        if (throwable == null) return;
-
-        Throwable cause = throwable.getCause();
-
-        if (cause instanceof ErrorInfo){
-            handler.post(() -> onError.accept((ErrorInfo) cause));
-            if (((ErrorInfo) cause).throwable != null)
-                ErrorReporter.INSTANCE.reportError(((ErrorInfo) cause).throwable);
-        }
-        else {
-            handler.post(() -> onError.accept(new ErrorInfo(cause)));
-            ErrorReporter.INSTANCE.reportError(cause);
-        }
     }
 
     public void recalculateHiddenAvg(boolean noPnp){

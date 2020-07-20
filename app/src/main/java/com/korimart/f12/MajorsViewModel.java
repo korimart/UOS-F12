@@ -19,6 +19,8 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
 
     private int[] selections = new int[4];
 
+    private ErrorReporter errorReporter = ErrorReporter.INSTANCE;
+
     @Override
     public void onViewCreated(WiseViewModel wiseViewModel, MainActivity mainActivity) {
         if (!commons.firstOpen) return;
@@ -55,7 +57,7 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
                 .thenCompose(ignored -> wiseViewModel.fetchAndParsePersonalInfo(false))
                 .thenRun(() -> onFetchAndParseReady(wiseViewModel, mainActivity))
                 .exceptionally(throwable -> {
-                    wiseViewModel.errorHandler(throwable, errorInfo -> this.onError(errorInfo, mainActivity));
+                    errorReporter.backgroundErrorHandler(throwable, errorInfo -> this.onError(errorInfo, mainActivity));
                     return null;
                 });
     }
@@ -86,7 +88,7 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
                     commons.handler.post(() -> applyFilter(wiseViewModel));
                 })
                 .exceptionally(t -> {
-                    wiseViewModel.errorHandler(t, onError -> this.onError(onError, mainActivity));
+                    errorReporter.backgroundErrorHandler(t, onError -> this.onError(onError, mainActivity));
                     return null;
                 });
     }
@@ -107,11 +109,6 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
         commons.filteredCourses.setValue(filtered);
     }
 
-    /**
-     * should be called from UI thread
-     * @param errorInfo
-     * @param mainActivity
-     */
     private void onError(ErrorInfo errorInfo, MainActivity mainActivity) {
         switch (errorInfo.type){
             case sessionExpired:
@@ -129,6 +126,7 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
 
             default:
                 mainActivity.goToErrorFrag();
+                errorReporter.reportError(errorInfo.throwable);
                 break;
         }
     }

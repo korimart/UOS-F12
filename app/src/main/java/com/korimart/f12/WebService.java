@@ -34,7 +34,7 @@ public enum WebService {
         try {
             return new String(sendPost(requestURL, urlParameters), responseEncoding);
         } catch (UnsupportedEncodingException e) {
-            return null;
+            return "";
         }
     }
 

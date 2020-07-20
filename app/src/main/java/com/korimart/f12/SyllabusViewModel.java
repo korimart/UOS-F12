@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel;
 public class SyllabusViewModel extends ViewModel {
     private MutableLiveData<String> systemMessage = new MutableLiveData<>();
 
+    private ErrorReporter errorReporter = ErrorReporter.INSTANCE;
+
     public void onViewCreated(WiseViewModel wiseViewModel, MainActivity mainActivity,
                       String schoolYear, String semester,
                       String curriNumber, String classNumber,
@@ -17,7 +19,7 @@ public class SyllabusViewModel extends ViewModel {
                 .fetchAndParseSyllabus(
                         true, schoolYear, semester, curriNumber, classNumber, uab, certDivCode)
                 .exceptionally(t -> {
-                    wiseViewModel.errorHandler(t, errorInfo ->
+                    errorReporter.backgroundErrorHandler(t, errorInfo ->
                             this.onError(errorInfo, mainActivity));
                     return null;
                 });
@@ -39,6 +41,7 @@ public class SyllabusViewModel extends ViewModel {
                 break;
 
             default:
+                errorReporter.reportError(errorInfo.throwable);
                 mainActivity.goToErrorFrag();
                 break;
         }

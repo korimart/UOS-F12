@@ -2,6 +2,7 @@ package com.korimart.f12;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -12,41 +13,63 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutionException;
 
 public class LoginViewModel extends ViewModel {
-    public static final String loginParams = "_COMMAND_=LOGIN&strTarget=MAIN&strIpAddr=123.123.123.123" +
-            "&strMacAddr=123.123.123.123&login_div_1_nm=%%C7%%D0%%BB%%FD&strLoginId=%s&strLoginPw=%s";
-    public static final String loginURL = "https://wise.uos.ac.kr/uosdoc/com.StuLogin.serv";
-
-    private MutableLiveData<Boolean> loginInfoReady = new MutableLiveData<>();
-    private MutableLiveData<Boolean> loginTryComplete = new MutableLiveData<>();
-    private MutableLiveData<String> message = new MutableLiveData<>();
-    private MutableLiveData<Integer> messageColor = new MutableLiveData<>();
+    private MutableLiveData<String> systemMeessage = new MutableLiveData<>();
 
     private CompletableFuture<Void> loginInfoFuture;
 
+    private WebService webService = WebService.INSTANCE;
+    private ErrorReporter errorReporter = ErrorReporter.INSTANCE;
+
     private String id;
     private String password;
-    private ErrorInfo errorInfo;
     private boolean shouldWriteToFile = true;
 
-    public CompletableFuture<Void> tryLogin(String id, String password){
-        errorInfo = null;
+    private CompletableFuture<Void> tryLogin(MainActivity mainActivity, String id, String password){
         this.id = id;
         this.password = password;
 
         return CompletableFuture.runAsync(() -> {
-            String response = WebService.INSTANCE.sendPost(loginURL, String.format(loginParams, id, password), "euc-kr");
+            String response = webService.sendPost(
+                    URLStorage.getLoginURL(),
+                    URLStorage.getLoginParams(id, password),
+                    "euc-kr");
+
             if (response.isEmpty()){
-                errorInfo = new ErrorInfo(ErrorInfo.ErrorType.timeout);
-                return;
+                throw new CompletionException(new ErrorInfo(ErrorInfo.ErrorType.timeout));
             }
 
             if (response.contains("전산실 요청에 의해 제거함")){
-                errorInfo = new ErrorInfo(ErrorInfo.ErrorType.loginFailed);
-                return;
+                throw new CompletionException(new ErrorInfo(ErrorInfo.ErrorType.loginFailed));
             }
+
+        }).exceptionally(t -> {
+            errorReporter.backgroundErrorHandler(t, errorInfo1 -> onError(errorInfo1, mainActivity));
+            return null;
         });
+    }
+
+    private void onError(ErrorInfo errorInfo, MainActivity mainActivity) {
+        switch (errorInfo.type){
+            case timeout:
+            case responseFailed:
+                systemMeessage.setValue("포털 연결 실패");
+                break;
+
+            case loginFailed:
+                systemMeessage.setValue("로그인 실패");
+                break;
+
+            case noLoginFile:
+                break;
+
+            default:
+                mainActivity.goToErrorFrag();
+                break;
+        }
     }
 
     public CompletableFuture<Void> fetchLoginInfo(Context appContext){

@@ -3,6 +3,10 @@ package com.korimart.f12;
 import java.util.Locale;
 
 public class URLStorage {
+    private static final String loginURL = "https://wise.uos.ac.kr/uosdoc/com.StuLogin.serv";
+    private static final String loginParams = "_COMMAND_=LOGIN&strTarget=MAIN&strIpAddr=123.123.123.123" +
+            "&strMacAddr=123.123.123.123&login_div_1_nm=%%C7%%D0%%BB%%FD&strLoginId=%s&strLoginPw=%s";
+
     private static final String f12URL = "https://wise.uos.ac.kr/uosdoc/ugd.UgdOtcmInq.do";
     private static final String f12InfoParams = "_dept_authDept=auth&_code_smtList=CMN31&&_COMMAND_=onload&&_XML_=XML&_strMenuId=stud00320&";
     private static final String f12Params = "strSchYear=%d&strSmtCd=%s&strStudId=123123&strDiv=2&&_COMMAND_=list&&_XML_=XML&_strMenuId=stud00320&";
@@ -23,6 +27,14 @@ public class URLStorage {
     private static final String syllabusNonUabUrl = "https://wise.uos.ac.kr/uosdoc/ucs.UcsCoursePlanViewPopup.serv";
     private static final String syllabusParams = "strSchYear=%s&strSmtCd=%s&strCuriNo=%s&strClassNo=%s&" +
             "strCuriNm=%s&strSmtNm=%s&strPgmCd=%s&strViewDiv=%s&&_COMMAND_=list&&_XML_=XML&_strMenuId=stud00180&";
+
+    public static String getLoginURL() {
+        return loginURL;
+    }
+
+    public static String getLoginParams(String id, String password) {
+        return String.format(loginParams, id, password);
+    }
 
     public static String getF12URL() {
         return f12URL;
