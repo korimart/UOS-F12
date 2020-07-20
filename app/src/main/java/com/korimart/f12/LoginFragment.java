@@ -23,6 +23,14 @@ public class LoginFragment extends Fragment {
     private int nextFrag = 0;
     private LoginViewModel loginViewModel;
 
+    private MainActivity mainActivity;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mainActivity = (MainActivity) context;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -31,7 +39,7 @@ public class LoginFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        ViewModelProvider vmp = new ViewModelProvider(getActivity(), new ViewModelProvider.NewInstanceFactory());
+        ViewModelProvider vmp = new ViewModelProvider(mainActivity, new ViewModelProvider.NewInstanceFactory());
         loginViewModel = vmp.get(LoginViewModel.class);
 
         idEdit = view.findViewById(R.id.login_id);
@@ -39,17 +47,13 @@ public class LoginFragment extends Fragment {
         okButton = view.findViewById(R.id.login_okButton);
         systemMessage = view.findViewById(R.id.login_systemMessage);
 
-        ((MainActivity) getActivity()).getBottomNav().setVisibility(View.INVISIBLE);
+        mainActivity.getBottomNav().setVisibility(View.INVISIBLE);
 
         if (savedInstanceState != null)
             nextFrag = savedInstanceState.getInt("onLogin");
 
         setViewListeners();
-
-        loginViewModel.fetchLoginInfo(getActivity().getApplicationContext())
-                .thenRun(() -> {
-                    loginViewModel.getLoginInfoReady().postValue(true);
-                });
+        loginViewModel.onViewCreated(mainActivity, this::goToNextFrag);
     }
 
     private void setViewListeners() {
@@ -69,93 +73,26 @@ public class LoginFragment extends Fragment {
 
         okButton.setOnClickListener((v) -> {
             InputMethodManager imm =
-                    (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    (InputMethodManager) mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(idEdit.getWindowToken(), 0);
             imm.hideSoftInputFromWindow(passwordEdit.getWindowToken(), 0);
-            okButton.setEnabled(false);
-
-            loginViewModel.setShouldWriteToFile(true);
-            tryLogin(idEdit.getText().toString(), passwordEdit.getText().toString());
+            loginViewModel.login(
+                    mainActivity,
+                    idEdit.getText().toString(),
+                    passwordEdit.getText().toString(),
+                    true,
+                    this::goToNextFrag);
         });
 
-        loginViewModel.getMessage().observe(this, message -> systemMessage.setText(message));
-        loginViewModel.getMessageColor().observe(this, color -> systemMessage.setTextColor(color));
-
-        loginViewModel.getLoginTryComplete().observe(this, b -> {
-            if (b == null || !b) return;
-
-            anyway();
-            loginViewModel.getLoginTryComplete().setValue(false);
-
-            if (loginViewModel.getErrorInfo() != null){
-                onError(loginViewModel.getErrorInfo());
-                return;
-            }
-
-            onSuccess();
+        loginViewModel.getMessage().observe(this, message -> {
+            systemMessage.setText(message);
+            systemMessage.setTextColor(0xFFFF0000);
         });
 
-        loginViewModel.getLoginInfoReady().observe(this, b -> {
-            if (b == null || !b) return;
-
-            loginViewModel.getLoginInfoReady().setValue(false);
-
-            if (loginViewModel.getErrorInfo() != null){
-                onError(loginViewModel.getErrorInfo());
-                return;
-            }
-
-            loginViewModel.setShouldWriteToFile(false);
-            tryLogin(loginViewModel.getId(), loginViewModel.getPassword());
-        });
-    }
-
-    private void tryLogin(String id, String password){
-        loginViewModel.tryLogin(id, password)
-                .thenRun(() -> loginViewModel.getLoginTryComplete().postValue(true));
-    }
-
-    private void onError(@NonNull ErrorInfo errorInfo) {
-        if (errorInfo.throwable != null)
-            ErrorReporter.INSTANCE.reportError(errorInfo.throwable);
-
-        loginViewModel.getMessageColor().setValue(0xFFFF0000);
-        switch (errorInfo.type){
-            case timeout:
-            case responseFailed:
-                loginViewModel.getMessage().setValue("포털 연결 실패");
-                break;
-
-            case loginFailed:
-                loginViewModel.getMessage().setValue("로그인 실패");
-                break;
-
-            case noLoginFile:
-                break;
-
-            default:
-                ((MainActivity) getActivity()).goToErrorFrag();
-                break;
-        }
-    }
-
-    private void onSuccess(){
-        if (loginViewModel.isShouldWriteToFile()){
-            loginViewModel.writeLoginInfo(
-                    getActivity().getApplicationContext(),
-                    loginViewModel.getId(),
-                    loginViewModel.getPassword());
-        }
-
-        goToNextFrag();
-    }
-
-    private void anyway(){
-        okButton.setEnabled(true);
+        loginViewModel.getFetching().observe(this, fetching -> okButton.setEnabled(!fetching));
     }
 
     private void goToNextFrag() {
-        MainActivity mainActivity = ((MainActivity) getActivity());
         mainActivity.getBottomNav().setVisibility(View.VISIBLE);
         switch (nextFrag){
             case 0:

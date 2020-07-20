@@ -5,6 +5,7 @@ import android.os.Looper;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import java.util.concurrent.CompletionException;
 import java.util.function.Consumer;
 
 public enum ErrorReporter {
@@ -19,13 +20,16 @@ public enum ErrorReporter {
     public void backgroundErrorHandler(Throwable throwable, Consumer<ErrorInfo> onError){
         if (throwable == null) return;
 
-        Throwable cause = throwable.getCause();
+        if (throwable instanceof CompletionException)
+            throwable = throwable.getCause();
 
-        if (cause instanceof ErrorInfo){
-            handler.post(() -> onError.accept((ErrorInfo) cause));
+        if (throwable instanceof ErrorInfo){
+            Throwable finalThrowable = throwable;
+            handler.post(() -> onError.accept((ErrorInfo) finalThrowable));
         }
         else {
-            handler.post(() -> onError.accept(new ErrorInfo(cause)));
+            Throwable finalThrowable1 = throwable;
+            handler.post(() -> onError.accept(new ErrorInfo(finalThrowable1)));
         }
     }
 }

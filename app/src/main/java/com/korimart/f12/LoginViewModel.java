@@ -1,37 +1,53 @@
 package com.korimart.f12;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
-import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
-import java.util.concurrent.ExecutionException;
 
 public class LoginViewModel extends ViewModel {
     private MutableLiveData<String> systemMeessage = new MutableLiveData<>();
-
-    private CompletableFuture<Void> loginInfoFuture;
+    private MutableLiveData<Boolean> fetching = new MutableLiveData<>();
 
     private WebService webService = WebService.INSTANCE;
     private ErrorReporter errorReporter = ErrorReporter.INSTANCE;
 
-    private String id;
-    private String password;
-    private boolean shouldWriteToFile = true;
+    public void onViewCreated(MainActivity mainActivity, Runnable onSuccess){
+        SharedPreferences prefs = mainActivity.getPreferences(Context.MODE_PRIVATE);
+        String id = prefs.getString("id", null);
+        String password = prefs.getString("password", null);
 
-    private CompletableFuture<Void> tryLogin(MainActivity mainActivity, String id, String password){
-        this.id = id;
-        this.password = password;
+        if (id != null && password != null)
+            login(mainActivity, id, password, false, onSuccess);
+    }
 
+    public void login(MainActivity mainActivity, String id, String password, boolean save, Runnable onSuccess){
+        fetching.setValue(true);
+        tryLogin(id, password)
+                .thenRun(() -> {
+                    if (save){
+                        SharedPreferences prefs = mainActivity.getPreferences(Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putString("id", id);
+                        editor.putString("password", password);
+                        editor.apply();
+                    }
+
+                    mainActivity.runOnUiThread(onSuccess);
+                    fetching.postValue(false);
+                })
+                .exceptionally(t -> {
+                    errorReporter.backgroundErrorHandler(t, errorInfo1 -> onError(errorInfo1, mainActivity));
+                    return null;
+                });
+    }
+
+    private CompletableFuture<Void> tryLogin(String id, String password){
         return CompletableFuture.runAsync(() -> {
             String response = webService.sendPost(
                     URLStorage.getLoginURL(),
@@ -45,10 +61,6 @@ public class LoginViewModel extends ViewModel {
             if (response.contains("전산실 요청에 의해 제거함")){
                 throw new CompletionException(new ErrorInfo(ErrorInfo.ErrorType.loginFailed));
             }
-
-        }).exceptionally(t -> {
-            errorReporter.backgroundErrorHandler(t, errorInfo1 -> onError(errorInfo1, mainActivity));
-            return null;
         });
     }
 
@@ -67,83 +79,16 @@ public class LoginViewModel extends ViewModel {
                 break;
 
             default:
-                mainActivity.goToErrorFrag();
+                mainActivity.goToErrorFrag(errorInfo.throwable);
                 break;
         }
     }
 
-    public CompletableFuture<Void> fetchLoginInfo(Context appContext){
-        errorInfo = null;
-
-        if (loginInfoFuture == null){
-            loginInfoFuture = CompletableFuture.runAsync(() -> {
-                try {
-                    FileInputStream loginFile = appContext.openFileInput("loginInfo.txt");
-                    InputStreamReader ist = new InputStreamReader(loginFile);
-                    BufferedReader br = new BufferedReader(ist);
-                    id = br.readLine();
-                    password = br.readLine();
-                } catch (FileNotFoundException e) {
-                    errorInfo = new ErrorInfo(ErrorInfo.ErrorType.noLoginFile);
-                } catch (IOException e) {
-                    errorInfo = new ErrorInfo(e);
-                }
-            });
-        }
-
-        return loginInfoFuture;
+    public LiveData<String> getMessage() {
+        return systemMeessage;
     }
 
-    public CompletableFuture<Void> writeLoginInfo(Context appContext, String id, String password){
-        errorInfo = null;
-
-        return CompletableFuture.runAsync(() -> {
-            OutputStreamWriter osw = null;
-            try {
-                osw = new OutputStreamWriter(
-                        appContext.openFileOutput("loginInfo.txt", Context.MODE_PRIVATE));
-                osw.write(id + "\n" + password);
-                osw.flush();
-                osw.close();
-            } catch (IOException e) {
-                errorInfo = new ErrorInfo(e);
-            }
-        });
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public ErrorInfo getErrorInfo() {
-        return errorInfo;
-    }
-
-    public MutableLiveData<Boolean> getLoginInfoReady() {
-        return loginInfoReady;
-    }
-
-    public MutableLiveData<Boolean> getLoginTryComplete() {
-        return loginTryComplete;
-    }
-
-    public boolean isShouldWriteToFile() {
-        return shouldWriteToFile;
-    }
-
-    public void setShouldWriteToFile(boolean shouldWriteToFile) {
-        this.shouldWriteToFile = shouldWriteToFile;
-    }
-
-    public MutableLiveData<String> getMessage() {
-        return message;
-    }
-
-    public MutableLiveData<Integer> getMessageColor() {
-        return messageColor;
+    public LiveData<Boolean> getFetching() {
+        return fetching;
     }
 }

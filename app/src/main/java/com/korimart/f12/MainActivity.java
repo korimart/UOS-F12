@@ -86,9 +86,9 @@ public class MainActivity extends AppCompatActivity
                 .commit();
     }
 
-    public void goToErrorFrag() {
+    public void goToErrorFrag(Throwable throwable) {
         fragStack.clear();
-
+        ErrorReporter.INSTANCE.reportError(throwable);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frag, new ErrorFragment())
