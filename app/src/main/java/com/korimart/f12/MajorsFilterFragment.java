@@ -37,14 +37,14 @@ public class MajorsFilterFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_courses_filter, container, false);
+        return inflater.inflate(R.layout.fragment_course_list_filter_majors, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ViewModelProvider vmp = new ViewModelProvider(getActivity(),
+        ViewModelProvider vmp = new ViewModelProvider(mainActivity,
                 new ViewModelProvider.NewInstanceFactory());
         majorsViewModel = vmp.get(MajorsViewModel.class);
         wiseViewModel = vmp.get(WiseViewModel.class);
@@ -73,10 +73,10 @@ public class MajorsFilterFragment extends Fragment {
     }
 
     private void setViewListeners() {
-        StringPairAdapter schoolYearAdapter = setSpinnerAdapter(schoolYear);
-        StringPairAdapter semesterAdapter = setSpinnerAdapter(semester);
-        StringPairAdapter schoolAdapter = setSpinnerAdapter(school);
-        StringPairAdapter deptAdapter = setSpinnerAdapter(department);
+        StringPairAdapter schoolYearAdapter = StringPairAdapter.setSpinnerAdapter(getContext(), schoolYear);
+        StringPairAdapter semesterAdapter = StringPairAdapter.setSpinnerAdapter(getContext(), semester);
+        StringPairAdapter schoolAdapter = StringPairAdapter.setSpinnerAdapter(getContext(), school);
+        StringPairAdapter deptAdapter = StringPairAdapter.setSpinnerAdapter(getContext(), department);
 
         semesterAdapter.add(new StringPair("1학기", "10"));
         semesterAdapter.add(new StringPair("2학기", "20"));
@@ -192,13 +192,6 @@ public class MajorsFilterFragment extends Fragment {
             }
         });
     }
-
-    private StringPairAdapter setSpinnerAdapter(Spinner spinner){
-        StringPairAdapter adapter = new StringPairAdapter(getContext());
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        return adapter;
-    }
 }
 
 class StringPair {
@@ -214,6 +207,13 @@ class StringPair {
 class StringPairAdapter extends ArrayAdapter<StringPair> {
     public StringPairAdapter(@NonNull Context context) {
         super(context, 0);
+    }
+
+    public static StringPairAdapter setSpinnerAdapter(Context context, Spinner spinner){
+        StringPairAdapter adapter = new StringPairAdapter(context);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        return adapter;
     }
 
     @NonNull

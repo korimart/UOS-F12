@@ -19,7 +19,6 @@ import androidx.lifecycle.ViewModelProvider;
 import java.util.Locale;
 
 public class F12Fragment extends Fragment {
-    private MainViewModel mainViewModel;
     private WiseViewModel wiseViewModel;
     private F12ViewModel f12ViewModel;
     private TextView loginInfo;
@@ -56,7 +55,6 @@ public class F12Fragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         ViewModelProvider vmp = new ViewModelProvider(mainActivity, new ViewModelProvider.NewInstanceFactory());
-        mainViewModel = vmp.get(MainViewModel.class);
         wiseViewModel = vmp.get(WiseViewModel.class);
         f12ViewModel = vmp.get(F12ViewModel.class);
 
