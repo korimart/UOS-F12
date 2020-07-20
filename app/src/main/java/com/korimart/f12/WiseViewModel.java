@@ -53,6 +53,11 @@ public class WiseViewModel extends ViewModel {
         return personalInfoFetchParser.fetchAndParse(refetch);
     }
 
+    /**
+     * may be called from background thread
+     * @param throwable
+     * @param onError
+     */
     public void errorHandler(Throwable throwable, Consumer<ErrorInfo> onError){
         if (throwable == null) return;
 

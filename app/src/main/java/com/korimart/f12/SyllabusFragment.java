@@ -20,7 +20,7 @@ import java.util.StringJoiner;
 
 public class SyllabusFragment extends Fragment {
     private SyllabusViewModel syllabusViewModel;
-    private CoursesViewModel coursesViewModel;
+    private MajorsViewModel majorsViewModel;
     private CourseListParser.CourseInfo courseParsed;
     private String timePlace;
     private int position;
@@ -51,7 +51,7 @@ public class SyllabusFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         ViewModelProvider vmp = new ViewModelProvider(getActivity(), new ViewModelProvider.NewInstanceFactory());
-        coursesViewModel = vmp.get(CoursesViewModel.class);
+        majorsViewModel = vmp.get(MajorsViewModel.class);
         syllabusViewModel = vmp.get(SyllabusViewModel.class);
 
         position = getArguments().getInt("position");
@@ -74,7 +74,7 @@ public class SyllabusFragment extends Fragment {
 
         clearDummy();
 
-        courseParsed = coursesViewModel.getFilteredCourses().getValue().get(position);
+        courseParsed = majorsViewModel.getFilteredCourses().getValue().get(position);
 
         syllabusViewModel.getOwReady().observe(this, this::onOwReady);
         fetch();

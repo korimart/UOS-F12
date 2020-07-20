@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity
     public void goToCoursesFrag(){
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frag, new CoursesFragment())
+                .replace(R.id.frag, new CourseListFragment())
                 .commit();
     }
 
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity
         fragStack.add(howToGoBack);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frag, new CoursesFilterFragment())
+                .replace(R.id.frag, new MajorsFilterFragment())
                 .commit();
     }
 

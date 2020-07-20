@@ -23,10 +23,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.StringJoiner;
 
-public class CoursesFragment extends Fragment {
+public class CourseListFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
-    private CoursesViewModel coursesViewModel;
+    private CourseListViewModel courseListViewModel;
     private WiseViewModel wiseViewModel;
     private TextView title;
     private TextView systemMessage;
@@ -52,156 +52,55 @@ public class CoursesFragment extends Fragment {
 
         initMembers(view);
 
-        if (coursesViewModel.isFirstOpen()){
-            coursesViewModel.setFirstOpen(false);
-            firstFetch(false);
-        }
-        else if (coursesViewModel.shouldFetchCourses()){
-            fetchFromFilter();
-        }
-        else {
-            coursesViewModel.applyFilter(((CourseListParser.Result) wiseViewModel.getCourseList().getValue()).courseInfos);
-            coursesViewModel.setTitleFromFilter();
-        }
-    }
-
-    private void firstFetch(boolean refetch){
-        wiseViewModel.fetchAndParseMyCourses(refetch)
-                .thenCompose(ignored -> wiseViewModel.fetchAndParsePersonalInfo(refetch))
-                .thenRun(this::setUpInitialFilter)
-                .exceptionally(throwable -> {
-                    wiseViewModel.errorHandler(throwable, this::onError);
-                    return null;
-                });
+        if (courseListViewModel.isFirstOpen())
+            courseListViewModel.onFirstOpen(wiseViewModel, mainActivity);
     }
 
     private void initMembers(View view){
-        ViewModelProvider vmp = new ViewModelProvider(getActivity(), new ViewModelProvider.NewInstanceFactory());
-        coursesViewModel = vmp.get(CoursesViewModel.class);
+        ViewModelProvider vmp = new ViewModelProvider(mainActivity, new ViewModelProvider.NewInstanceFactory());
+        courseListViewModel = vmp.get(MajorsViewModel.class);
         wiseViewModel = vmp.get(WiseViewModel.class);
 
         recyclerView = view.findViewById(R.id.courses_recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(mainActivity));
         adapter = new RecyclerViewAdapter();
         recyclerView.setAdapter(adapter);
 
-        DividerItemDecoration did = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        DividerItemDecoration did = new DividerItemDecoration(mainActivity, DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(did);
 
-        MainActivity ma = (MainActivity) getActivity();
         view.findViewById(R.id.courses_filterButton).setOnClickListener(v ->
-                ma.goToCoursesFilterFrag(ma::goToCoursesFrag));
+                mainActivity.goToCoursesFilterFrag(mainActivity::goToCoursesFrag));
 
         title = view.findViewById(R.id.course_desc_title);
         systemMessage = view.findViewById(R.id.courses_system_message);
         refreshButton = view.findViewById(R.id.courses_refresh);
 
         refreshButton.setOnClickListener(v -> {
-            firstFetch(true);
+            courseListViewModel.onFirstOpen(wiseViewModel, mainActivity);
             refreshButton.setVisibility(View.INVISIBLE);
         });
 
-        coursesViewModel.getTitle().observe(this, s -> title.setText(s));
-        coursesViewModel.getFilteredCourses().observe(this, courses -> {
-            if (courses.size() == 0)
-                systemMessage.setText("검색 결과가 없습니다.");
-            else
-                systemMessage.setText("");
-
+        courseListViewModel.getTitle().observe(this, s -> title.setText(s));
+        courseListViewModel.getFilteredCourses().observe(this, courses -> {
             adapter.notifyDataSetChanged();
         });
-    }
 
-    private void fetchFromFilter(){
-        List<String> schoolYears = coursesViewModel.getSchoolYears().getValue();
-        List<StringPair> schools = coursesViewModel.getSchools().getValue();
-        List<StringPair> depts = coursesViewModel.getDepartments().getValue();
-        
-        if (schoolYears == null || schools == null || depts == null){
-            onError(new ErrorInfo(new Exception("filter was not set but fetchFromFilter was called")));
-            return;
-        }
-        
-        coursesViewModel.setShouldFetchCourses(false);
-        coursesViewModel.setTitleFromFilter();
-
-        int schoolYear = Integer.parseInt(schoolYears.get(coursesViewModel.getSelection(0)));
-        String semester = coursesViewModel.getSemesterString(coursesViewModel.getSelection(1));
-        String schoolCode = schools.get(coursesViewModel.getSelection(2)).s2;
-        String deptCode = depts.get(coursesViewModel.getSelection(3)).s2;
-
-
-        wiseViewModel
-                .fetchAndParseCourses(true, schoolYear, semester, schoolCode, deptCode)
-                .thenRun(() -> {
-                    mainActivity.runOnUiThread(() -> {
-                        CourseListParser.Result courseList =
-                                (CourseListParser.Result) wiseViewModel.getCourseList().getValue();
-                        coursesViewModel.applyFilter(courseList.courseInfos);
-                    });
-                })
-                .exceptionally(t -> {
-                    wiseViewModel.errorHandler(t, this::onError);
-                    return null;
-                });
-    }
-
-    private void setUpInitialFilter(){
-        mainActivity.runOnUiThread(() -> {
-            F12InfoParser.Result f12Info =
-                    (F12InfoParser.Result) wiseViewModel.getF12Info().getValue();
-
-            SchoolListParser.Result schoolList =
-                    (SchoolListParser.Result) wiseViewModel.getSchoolList().getValue();
-
-            PersonalInfoParser.Result personalInfo =
-                    (PersonalInfoParser.Result) wiseViewModel.getPersonalInfo().getValue();
-
-            CourseListParser.Result courseList =
-                    (CourseListParser.Result) wiseViewModel.getCourseList().getValue();
-
-            boolean departmentNotFound = coursesViewModel.setUpInitialFilter(
-                    f12Info.schoolCode, f12Info.deptCode, schoolList);
-
-            coursesViewModel.setUpInitialYearLevel(personalInfo);
-
-            if (departmentNotFound)
-                onError(new ErrorInfo(ErrorInfo.ErrorType.departmentNotFound));
-            else
-                coursesViewModel.setTitleFromFilter();
-
-            coursesViewModel.applyFilter(courseList.courseInfos);
-        });
-    }
-
-    private void onError(ErrorInfo errorInfo) {
-        switch (errorInfo.type){
-            case sessionExpired:
-                mainActivity.goToLoginFrag(1);
-                break;
-
-            case timeout:
-            case responseFailed:
-                systemMessage.setText("불러오기 실패");
+        courseListViewModel.getSystemMessage().observe(this, message -> {
+            if (message.equals("불러오기 실패"))
                 refreshButton.setVisibility(View.VISIBLE);
-                adapter.notifyDataSetChanged();
-                break;
+            else
+                refreshButton.setVisibility(View.INVISIBLE);
 
-            case departmentNotFound:
-                coursesViewModel.getTitle().setValue("기본 필터를 가져오는데 실패했습니다.\n학부생이 아니신가요?");
-                break;
-
-            default:
-                mainActivity.goToErrorFrag();
-                break;
-        }
+            systemMessage.setText(message);
+        });
     }
 
     public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(CoursesFragment.this.getContext())
+            View view = LayoutInflater.from(CourseListFragment.this.getContext())
                     .inflate(R.layout.item_course, parent, false);
             view.setOnClickListener(v -> {
                 RecyclerView.ViewHolder viewHolder = recyclerView.getChildViewHolder(v);
@@ -225,7 +124,7 @@ public class CoursesFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            CourseListParser.CourseInfo course = coursesViewModel.getFilteredCourses().getValue().get(position);
+            CourseListParser.CourseInfo course = CourseListFragment.this.courseListViewModel.getFilteredCourses().getValue().get(position);
 
             holder.name.setText(course.name);
             holder.classNumber.setText(course.classNumber + "분반");
@@ -252,7 +151,7 @@ public class CoursesFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            List<CourseListParser.CourseInfo> infos = coursesViewModel.getFilteredCourses().getValue();
+            List<CourseListParser.CourseInfo> infos = courseListViewModel.getFilteredCourses().getValue();
             return infos == null ? 0 : infos.size();
         }
 
@@ -342,8 +241,8 @@ public class CoursesFragment extends Fragment {
 
         private String parseTime(String time){
             class TimeGroup {
-                int start;
-                int end;
+                private int start;
+                private int end;
             }
 
             String[] timeDivs = time.split(",");

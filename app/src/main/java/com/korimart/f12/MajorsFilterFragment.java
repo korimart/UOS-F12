@@ -16,14 +16,23 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-public class CoursesFilterFragment extends Fragment {
+public class MajorsFilterFragment extends Fragment {
     private Spinner schoolYear;
     private Spinner semester;
     private Spinner school;
     private Spinner department;
     private CheckBox[] yearLevels = new CheckBox[4];
-    private CoursesViewModel coursesViewModel;
+    private MajorsViewModel majorsViewModel;
     private WiseViewModel wiseViewModel;
+    private MainActivity mainActivity;
+
+    private boolean shouldFetchCourses;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mainActivity = (MainActivity) context;
+    }
 
     @Nullable
     @Override
@@ -37,7 +46,7 @@ public class CoursesFilterFragment extends Fragment {
 
         ViewModelProvider vmp = new ViewModelProvider(getActivity(),
                 new ViewModelProvider.NewInstanceFactory());
-        coursesViewModel = vmp.get(CoursesViewModel.class);
+        majorsViewModel = vmp.get(MajorsViewModel.class);
         wiseViewModel = vmp.get(WiseViewModel.class);
 
         schoolYear = view.findViewById(R.id.courses_filter_school_year);
@@ -52,6 +61,18 @@ public class CoursesFilterFragment extends Fragment {
         setViewListeners();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        majorsViewModel.setTitleFromFilter();
+        if (shouldFetchCourses){
+            majorsViewModel.fetchFromFilter(wiseViewModel, mainActivity);
+        }
+        else {
+            majorsViewModel.applyFilter(wiseViewModel);
+        }
+    }
+
     private void setViewListeners() {
         StringPairAdapter schoolYearAdapter = setSpinnerAdapter(schoolYear);
         StringPairAdapter semesterAdapter = setSpinnerAdapter(semester);
@@ -62,12 +83,12 @@ public class CoursesFilterFragment extends Fragment {
         semesterAdapter.add(new StringPair("2학기", "20"));
         semesterAdapter.add(new StringPair("계절학기", "11"));
 
-        schoolYear.setSelection(coursesViewModel.getSelection(0));
-        semester.setSelection(coursesViewModel.getSelection(1));
-        school.setSelection(coursesViewModel.getSelection(2));
-        department.setSelection(coursesViewModel.getSelection(3));
+        schoolYear.setSelection(majorsViewModel.getSelection(0));
+        semester.setSelection(majorsViewModel.getSelection(1));
+        school.setSelection(majorsViewModel.getSelection(2));
+        department.setSelection(majorsViewModel.getSelection(3));
 
-        coursesViewModel.getFilterOptions().observe(this, options -> {
+        majorsViewModel.getFilterOptions().observe(this, options -> {
             for (int i = 0; i < options.yearLevels.length; i++)
                 yearLevels[i].setChecked(options.yearLevels[i]);
         });
@@ -75,24 +96,24 @@ public class CoursesFilterFragment extends Fragment {
         for (int i = 0; i < yearLevels.length; i++){
             int finalI = i;
             yearLevels[i].setOnCheckedChangeListener(((buttonView, isChecked) -> {
-                CoursesViewModel.FilterOptions fo = coursesViewModel.getFilterOptions().getValue();
+                MajorsViewModel.FilterOptions fo = majorsViewModel.getFilterOptions().getValue();
                 fo.yearLevels[finalI] = isChecked;
-                coursesViewModel.getFilterOptions().postValue(fo);
+                majorsViewModel.getFilterOptions().postValue(fo);
             }));
         }
 
-        coursesViewModel.getSchoolYears().observe(this, list -> {
+        majorsViewModel.getSchoolYears().observe(this, list -> {
             schoolYearAdapter.clear();
             for (String year : list)
                 schoolYearAdapter.add(new StringPair(year, null));
         });
 
-        coursesViewModel.getSchools().observe(this, schools -> {
+        majorsViewModel.getSchools().observe(this, schools -> {
             schoolAdapter.clear();
             schoolAdapter.addAll(schools);
         });
 
-        coursesViewModel.getDepartments().observe(this, departments -> {
+        majorsViewModel.getDepartments().observe(this, departments -> {
             deptAdapter.clear();
             deptAdapter.addAll(departments);
         });
@@ -102,8 +123,10 @@ public class CoursesFilterFragment extends Fragment {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (count > 0)
-                    coursesViewModel.setSelection(0, position);
+                if (count > 0){
+                    majorsViewModel.setSelection(0, position);
+                    shouldFetchCourses = true;
+                }
                 count++;
             }
 
@@ -117,8 +140,10 @@ public class CoursesFilterFragment extends Fragment {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (count > 0)
-                    coursesViewModel.setSelection(1, position);
+                if (count > 0){
+                    majorsViewModel.setSelection(1, position);
+                    shouldFetchCourses = true;
+                }
                 count++;
             }
 
@@ -132,13 +157,15 @@ public class CoursesFilterFragment extends Fragment {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (count > 0)
-                    coursesViewModel.setSelection(2, position);
+                if (count > 0){
+                    majorsViewModel.setSelection(2, position);
+                    shouldFetchCourses = true;
+                }
 
                 SchoolListParser.Result result = (SchoolListParser.Result) wiseViewModel.getSchoolList().getValue();
                 for (SchoolListParser.DeptInfo dept : result.schoolToDepts.keySet())
                     if (dept.name.equals(((TextView) view).getText())){
-                        coursesViewModel.setDepartments(result.schoolToDepts.get(dept));
+                        majorsViewModel.setDepartments(result.schoolToDepts.get(dept));
                     }
 
                 count++;
@@ -154,8 +181,10 @@ public class CoursesFilterFragment extends Fragment {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (count > 0)
-                    coursesViewModel.setSelection(3, position);
+                if (count > 0){
+                    majorsViewModel.setSelection(3, position);
+                    shouldFetchCourses = true;
+                }
                 count++;
             }
 
