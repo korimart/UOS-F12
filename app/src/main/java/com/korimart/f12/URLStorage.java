@@ -19,6 +19,11 @@ public class URLStorage {
             "strSustCd=%s&strCmpDivCd=&strCuriNo=&strClassNo=&strCuriNm=&strGradDivCd=20000&" +
             "strEtcYn=&&_COMMAND_=list&&_XML_=XML&_strMenuId=stud00180&";
 
+    private static final String syllabusUabUrl = "https://wise.uos.ac.kr/uosdoc/uab.UabCoursePlanView.serv";
+    private static final String syllabusNonUabUrl = "https://wise.uos.ac.kr/uosdoc/ucs.UcsCoursePlanViewPopup.serv";
+    private static final String syllabusParams = "strSchYear=%s&strSmtCd=%s&strCuriNo=%s&strClassNo=%s&" +
+            "strCuriNm=%s&strSmtNm=%s&strPgmCd=%s&strViewDiv=%s&&_COMMAND_=list&&_XML_=XML&_strMenuId=stud00180&";
+
     public static String getF12URL() {
         return f12URL;
     }
@@ -60,5 +65,29 @@ public class URLStorage {
                 semester,
                 schoolCode,
                 deptCode);
+    }
+
+    public static String getSyllabusUabUrl() {
+        return syllabusUabUrl;
+    }
+
+    public static String getSyllabusNonUabUrl() {
+        return syllabusNonUabUrl;
+    }
+
+    public static String getSyllabusParams(String schoolYear, String semester, String curriNumber,
+                                           String classNumber, String division) {
+        return String.format(
+                Locale.getDefault(),
+                syllabusParams,
+                schoolYear,
+                semester,
+                curriNumber,
+                classNumber,
+                "", // 무시해도 잘됨
+                "",
+                "",
+                division
+        );
     }
 }

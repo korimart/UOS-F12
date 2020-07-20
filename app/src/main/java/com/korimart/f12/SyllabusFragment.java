@@ -1,5 +1,6 @@
 package com.korimart.f12;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,11 +20,14 @@ import java.util.Locale;
 import java.util.StringJoiner;
 
 public class SyllabusFragment extends Fragment {
-    private SyllabusViewModel syllabusViewModel;
-    private MajorsViewModel majorsViewModel;
-    private CourseListParser.CourseInfo courseParsed;
-    private String timePlace;
     private int position;
+    private String timePlace;
+
+    private WiseViewModel wiseViewModel;
+    private SyllabusViewModel syllabusViewModel;
+    private CourseListViewModel majorsViewModel;
+    private CourseListParser.CourseInfo courseParsed;
+    private MainActivity mainActivity;
 
     private TextView title;
     private TextView titleClassNumber;
@@ -40,6 +44,12 @@ public class SyllabusFragment extends Fragment {
     private LinearLayout rubricsValues;
     private LinearLayout weeklyPlans;
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mainActivity = (MainActivity) context;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,7 +60,8 @@ public class SyllabusFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ViewModelProvider vmp = new ViewModelProvider(getActivity(), new ViewModelProvider.NewInstanceFactory());
+        ViewModelProvider vmp = new ViewModelProvider(mainActivity, new ViewModelProvider.NewInstanceFactory());
+        wiseViewModel = vmp.get(WiseViewModel.class);
         majorsViewModel = vmp.get(MajorsViewModel.class);
         syllabusViewModel = vmp.get(SyllabusViewModel.class);
 
@@ -72,81 +83,36 @@ public class SyllabusFragment extends Fragment {
         rubricsValues = view.findViewById(R.id.syllabus_rubrics_values);
         weeklyPlans = view.findViewById(R.id.syllabus_plans);
 
+        wiseViewModel.getSyllabus().observe(this, syllabus -> {
+            if (syllabus == null) return;
+            onSuccess((SyllabusFetchParser.Result) syllabus);
+        });
+
+        syllabusViewModel.getSystemMessage().observe(this,
+                message -> title.setText(message));
+
         clearDummy();
-
         courseParsed = majorsViewModel.getFilteredCourses().getValue().get(position);
-
-        syllabusViewModel.getOwReady().observe(this, this::onOwReady);
-        fetch();
-    }
-
-    private void fetch(){
-        syllabusViewModel.fetchAndParseSyllabus(
+        syllabusViewModel.onViewCreated(wiseViewModel, mainActivity,
                 courseParsed.schoolYear,
                 courseParsed.semester,
                 courseParsed.curriNumber,
                 courseParsed.classNumber,
                 courseParsed.uab,
-                courseParsed.certDivCode)
-                .thenRun(() -> syllabusViewModel.getOwReady().postValue(true));
+                courseParsed.certDivCode);
     }
 
-    private void onOwReady(Boolean ready){
-        if (ready == null || !ready) return;
-
-        syllabusViewModel.getOwReady().setValue(false);
-
-        if (!checkError(syllabusViewModel.getoFetched().errorInfo))
-            return;
-
-        if (!checkError(syllabusViewModel.getoParsed().getErrorInfo()))
-            return;
-
-        if (!checkError(syllabusViewModel.getwFetched().errorInfo))
-            return;
-
-        if (!checkError(syllabusViewModel.getwParsed().getErrorInfo()))
-            return;
-
-        onSuccess();
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        wiseViewModel.getSyllabus().setValue(null);
     }
 
-    private void onSuccess() {
+    private void onSuccess(SyllabusFetchParser.Result syllabus) {
         title.setText(courseParsed.name);
         titleClassNumber.setText(courseParsed.classNumber + "분반");
 
-        SyllabusUabOParser.Result oParsed = (SyllabusUabOParser.Result) syllabusViewModel.getoParsed();
-        WiseParser.Result wParsed = syllabusViewModel.getwParsed();
-
-        String lecPrac = oParsed.lecPrac;
-        String yearLevel = oParsed.yearLevel;
-        String classification = oParsed.classification;
-        String pointsTime = oParsed.pointsTime;
-        String professor = oParsed.professor;
-        String professorDept = oParsed.professorDept;
-        String professorPhone = oParsed.professorPhone;
-        String professorEmail = oParsed.professorEmail;
-        String professorWeb = oParsed.professorWeb;
-        String counseling = oParsed.counseling;
-        String rubricsType = oParsed.rubricsType;
-        List<Pair<String, Integer>> rubrics = oParsed.rubrics;
-
-        String summary;
-        String textbook;
-        List<String> weeklyPlans;
-
-        if (oParsed instanceof SyllabusOParser.Result){
-            summary = ((SyllabusOParser.Result) oParsed).summary;
-            textbook = ((SyllabusOParser.Result) oParsed).textbook;
-            weeklyPlans = ((SyllabusWParser.Result) wParsed).weeklyPlans;
-        }
-        else {
-            summary = ((SyllabusUabWParser.Result) wParsed).summary;
-            textbook = ((SyllabusUabWParser.Result) wParsed).textbook;
-            weeklyPlans = ((SyllabusUabWParser.Result) wParsed).weeklyPlans;
-        }
-
-        textbook = textbook.replace("\n", "\n\n");
+        syllabus.textbook = syllabus.textbook.replace("\n", "\n\n");
 
         this.TOYear.setText(String.format(
                 Locale.getDefault(), "%s/%s", courseParsed.TOYear, courseParsed.TOYearMax));
@@ -156,59 +122,59 @@ public class SyllabusFragment extends Fragment {
         LayoutInflater li = LayoutInflater.from(getContext());
 
         StringJoiner sj = new StringJoiner(", ");
-        if (!yearLevel.isEmpty())
-            sj.add(yearLevel);
-        if (!lecPrac.isEmpty())
-            sj.add(lecPrac);
-        if (!classification.isEmpty())
-            sj.add(classification);
-        if (!pointsTime.isEmpty())
-            sj.add(pointsTime);
+        if (!syllabus.yearLevel.isEmpty())
+            sj.add(syllabus.yearLevel);
+        if (!syllabus.lecPrac.isEmpty())
+            sj.add(syllabus.lecPrac);
+        if (!syllabus.classification.isEmpty())
+            sj.add(syllabus.classification);
+        if (!syllabus.pointsTime.isEmpty())
+            sj.add(syllabus.pointsTime);
 
         addTextToLinLay(li, courseInfo, sj.toString());
         addPermissions(li);
         addTextToLinLay(li, courseInfo, timePlace);
 
-        if (summary.isEmpty()){
+        if (syllabus.summary.isEmpty()){
             this.summary.setText("미입력");
             this.summary.setTextColor(0xFF757575);
         } else {
-            this.summary.setText(summary);
+            this.summary.setText(syllabus.summary);
         }
 
-        if (textbook.isEmpty()){
+        if (syllabus.textbook.isEmpty()){
             this.textbook.setText("미입력");
             this.textbook.setTextColor(0xFF757575);
         } else {
-            this.textbook.setText(textbook);
+            this.textbook.setText(syllabus.textbook);
         }
 
-        if (professor.isEmpty()){
+        if (syllabus.professor.isEmpty()){
             this.professor.setText("TBA");
         } else {
-            this.professor.setText(professor);
-            this.professorDept.setText(professorDept);
+            this.professor.setText(syllabus.professor);
+            this.professorDept.setText(syllabus.professorDept);
         }
 
-        addTextToLinLay(li, professorInfo, professorPhone);
-        addTextToLinLay(li, professorInfo, professorEmail);
-        addTextToLinLay(li, professorInfo, professorWeb);
-        addTextToLinLay(li, professorInfo, counseling);
+        addTextToLinLay(li, professorInfo, syllabus.professorPhone);
+        addTextToLinLay(li, professorInfo, syllabus.professorEmail);
+        addTextToLinLay(li, professorInfo, syllabus.professorWeb);
+        addTextToLinLay(li, professorInfo, syllabus.counseling);
 
-        this.rubricsType.setText(rubricsType);
-        Collections.sort(oParsed.rubrics,
+        this.rubricsType.setText(syllabus.rubricsType);
+        Collections.sort(syllabus.rubrics,
                 Collections.reverseOrder((o1, o2) -> o1.second.compareTo(o2.second)));
 
-        for (Pair<String, Integer> pair : rubrics){
+        for (Pair<String, Integer> pair : syllabus.rubrics){
             addTextToLinLay(li, rubricsKeys, pair.first);
             addTextToLinLay(li, rubricsValues, pair.second + "%");
         }
 
-        if (rubrics.isEmpty())
+        if (syllabus.rubrics.isEmpty())
             addTextToLinLay(li, rubricsKeys, "미입력", 0xFF757575);
 
-        for (int i = 0; i < weeklyPlans.size(); i++)
-            addWeeklyPlan(li, i + 1, weeklyPlans.get(i));
+        for (int i = 0; i < syllabus.weeklyPlans.size(); i++)
+            addWeeklyPlan(li, i + 1, syllabus.weeklyPlans.get(i));
     }
 
     private void addPermissions(LayoutInflater li) {
@@ -239,39 +205,6 @@ public class SyllabusFragment extends Fragment {
         minorChild.setTextColor(helper.permColor(courseParsed.minor));
 
         courseInfo.addView(permissions);
-    }
-
-    private void onError(@NonNull ErrorInfo errorInfo) {
-        if (errorInfo.throwable != null)
-            ErrorReporter.INSTANCE.reportError(errorInfo.throwable);
-
-        switch (errorInfo.type){
-            case sessionExpired:
-                ((MainActivity) getActivity()).goToLoginFrag(1);
-                break;
-
-            case timeout:
-            case responseFailed:
-                title.setText("연결 실패 - 인터넷 연결을 확인 후 앱을 재실행 해보세요");
-                break;
-
-            case parseFailed:
-                title.setText("정보추출 실패 - 개발자에게 문의하세요");
-                break;
-
-            default:
-                ((MainActivity) getActivity()).goToErrorFrag();
-                break;
-        }
-    }
-
-    private boolean checkError(ErrorInfo errorInfo){
-        if (errorInfo != null){
-            onError(errorInfo);
-            return false;
-        }
-
-        return true;
     }
 
     private void addTextToLinLay(LayoutInflater li, LinearLayout parent, String childString){

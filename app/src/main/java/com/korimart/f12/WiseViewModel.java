@@ -19,13 +19,19 @@ public class WiseViewModel extends ViewModel {
 
     private AsyncFetchParser f12InfoFetchParser
             = new AsyncFetchParser(URLStorage.getF12URL(), URLStorage.getF12InfoParams(), F12InfoParser.INSTANCE);
+
     private AsyncFetchParser schoolListFetchParser
             = new AsyncFetchParser(URLStorage.getSchoolListUrl(), URLStorage.getSchoolListParams(), SchoolListParser.INSTANCE);
+
     private AsyncFetchParser personalInfoFetchParser
             = new AsyncFetchParser(URLStorage.getPersInfoUrl(), URLStorage.getPersInfoParams(), PersonalInfoParser.INSTANCE);
+
     private F12FetchParser f12FetchParser = new F12FetchParser(f12InfoFetchParser);
+
     private CourseListFetchParser courseListFetchParser
             = new CourseListFetchParser(f12InfoFetchParser, schoolListFetchParser);
+
+    private SyllabusFetchParser syllabusFetchParser = new SyllabusFetchParser();
 
     public CompletableFuture<Void> fetchAndParseF12(boolean refetch, boolean noPnp){
         f12FetchParser.setNoPnp(noPnp);
@@ -51,6 +57,65 @@ public class WiseViewModel extends ViewModel {
 
     public CompletableFuture<Void> fetchAndParsePersonalInfo(boolean refetch){
         return personalInfoFetchParser.fetchAndParse(refetch);
+    }
+
+    public CompletableFuture<Void> fetchAndParseSyllabus(boolean refetch,
+                                                         String schoolYear, String semester,
+                                                         String curriNumber, String classNumber,
+                                                         boolean uab, String certDivCode){
+        /**
+         *          below is from Wise javascript
+         *
+         *
+         *         //공학인증 수업계획서
+         *         //정규학기 & 공학인증프로그램등록 or 인증구분이 공학인증
+         *         if ((varSmtCd == "10" || varSmtCd == "20") && (varUabYn == "Y" || varCertDivCd == "01")) {
+         *             //개요
+         *             if (varA == "1") {
+         *                 varOpenFile = "../uab/UabCoursePlanView.ztm";
+         *                 //주별계획
+         *             } else if (varA == "2") {
+         *                 varOpenFile = "../uab/UabCoursePlanWeekView.ztm";
+         *                 //설계계획서
+         *             } else if (varA == "d") {
+         *                 if (model.get(varPath + "[" + varNowIndex + "]/d_pnt") != "") {
+         *                     varOpenFile = "./UcrUabWriteDrawPlanPopUp.ztm";
+         *                 } else {
+         *                     model.msgbox("이 교과목은 설계교과목이 아닙니다.", "");
+         *                     return;
+         *                 }
+         *             }
+         *         } else {
+         *             if (Number(varSchYear + varSmtCd) >= 201520 && varGradDivCd == "20000") {
+         *                 //개요
+         *                 if (varA == "1") {
+         *                     varOpenFile = "../ucs/UcsCoursePlanViewPopup.ztm";
+         *                     //주별계획
+         *                 } else {
+         *                     varOpenFile = "../ucs/UcsCoursePlanWeekViewPopup.ztm";
+         *                 }
+         *             }//자체인증 수업계획서
+         *             else if (varCertDivCd == "03" && Number(varSchYear + varSmtCd) >= 201320) {
+         *                 //개요
+         *                 if (varA == "1") {
+         *                     varOpenFile = "../uas/UasCoursePlanView.ztm";
+         *
+         *                     //주별계획
+         *                 } else {
+         *                     varOpenFile = "../uas/UasCoursePlanWeekView.ztm";
+         *                 }
+         *                 //일반 수업계획서
+         *             } else {
+         *                 varOpenFile = "./UcrCoursePlanView.ztm";
+         *             }
+         *
+         */
+
+        String oParams = URLStorage.getSyllabusParams(schoolYear, semester, curriNumber, classNumber, "O");
+        String wParams = URLStorage.getSyllabusParams(schoolYear, semester, curriNumber, classNumber, "W");
+        syllabusFetchParser.setParams(oParams, wParams);
+        syllabusFetchParser.setMode((semester.equals("10") || semester.equals("20")) && (uab || certDivCode.equals("01")));
+        return syllabusFetchParser.fetchAndParse(refetch);
     }
 
     /**
@@ -105,5 +170,9 @@ public class WiseViewModel extends ViewModel {
 
     public LiveData<WiseParser.Result> getCourseList() {
         return courseListFetchParser.getpCache().resultLiveData;
+    }
+
+    public MutableLiveData<WiseParser.Result> getSyllabus(){
+        return syllabusFetchParser.getpCache().resultLiveData;
     }
 }
