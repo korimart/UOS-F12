@@ -25,21 +25,6 @@
             android:orientation="horizontal"
             android:paddingBottom="30dp">
 
-            <TextView
-                android:id="@+id/textView25"
-                android:layout_width="150sp"
-                android:layout_height="wrap_content"
-                android:text="학년도"
-                android:textAlignment="textEnd"
-                android:textColor="#000000"
-                android:textSize="36sp" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:minWidth="40dp" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -50,7 +35,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_weight="0"
+                    android:layout_weight="1"
                     android:dropDownWidth="match_parent"
                     android:spinnerMode="dialog"
                     tools:listitem="@layout/item_courses_filter" />
@@ -63,21 +48,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingBottom="30dp">
-
-            <TextView
-                android:id="@+id/textView26"
-                android:layout_width="150sp"
-                android:layout_height="wrap_content"
-                android:text="학기"
-                android:textAlignment="textEnd"
-                android:textColor="#000000"
-                android:textSize="36sp" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:minWidth="40dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -103,21 +73,6 @@
             android:orientation="horizontal"
             android:paddingBottom="30dp">
 
-            <TextView
-                android:id="@+id/textView27"
-                android:layout_width="150sp"
-                android:layout_height="wrap_content"
-                android:text="대학"
-                android:textAlignment="textEnd"
-                android:textColor="#000000"
-                android:textSize="36sp" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:minWidth="40dp" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -142,21 +97,6 @@
             android:orientation="horizontal"
             android:paddingBottom="30dp">
 
-            <TextView
-                android:id="@+id/textView28"
-                android:layout_width="150sp"
-                android:layout_height="wrap_content"
-                android:text="학부(과)"
-                android:textAlignment="textEnd"
-                android:textColor="#000000"
-                android:textSize="36sp" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:minWidth="40dp" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -179,21 +119,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textView31"
-                android:layout_width="150sp"
-                android:layout_height="wrap_content"
-                android:text="학년"
-                android:textAlignment="textEnd"
-                android:textColor="#000000"
-                android:textSize="36sp" />
-
-            <Space
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:minWidth="40dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"

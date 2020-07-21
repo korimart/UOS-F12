@@ -42,7 +42,13 @@ public class CourseListCommon {
             return true;
         });
 
-        Collections.sort(filteredCourses, (o1, o2) -> o1.name.compareTo(o2.name));
+        Collections.sort(filteredCourses, (o1, o2) -> {
+            if (o1.name.equals(o2.name))
+                return o1.classNumber.compareTo(o2.classNumber);
+
+            return o1.name.compareTo(o2.name);
+        });
+
         return filteredCourses;
     }
 }

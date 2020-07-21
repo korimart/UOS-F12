@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -81,6 +82,13 @@ public class CoresViewModel extends ViewModel implements CourseListViewModel {
             String deptCode = departments.getValue().get(selections[2]).s2;
             filtered.removeIf(courseInfo -> !courseInfo.deptCode.equals(deptCode));
         }
+
+        Collections.sort(filtered, (o1, o2) -> {
+            if (o1.name.equals(o2.name))
+                return o1.classNumber.compareTo(o2.classNumber);
+
+            return o1.name.compareTo(o2.name);
+        });
 
         if (filtered.isEmpty())
             commons.systemMessage.setValue("검색 결과가 없습니다.");

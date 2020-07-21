@@ -5,6 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="전기전자컴퓨터공학부"
-    android:textAlignment="textEnd"
+    android:textAlignment="center"
     android:textColor="#000000"
-    android:textSize="18sp" />
+    android:textSize="30sp" />
