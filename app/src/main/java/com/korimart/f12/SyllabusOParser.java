@@ -17,12 +17,18 @@ public enum SyllabusOParser implements WiseParser {
     private Pattern ratePattern = Pattern.compile("\\((\\d+)\\)%|\\((\\d+)%\\)");
 
     public static class Result extends SyllabusUabOParser.Result {
-        public String summary;
-        public String textbook;
-        public String fileName;
-        public String filePath;
+        String summary;
+        String textbook;
+        String fileName;
+        String filePath;
+        String offlineRate;
+        String onlineRate;
+        String midtermOnlineCode;
+        String finalOnlineCode;
+        String quizOnlineCode;
+        String quizOnlineCode2;
 
-        public ErrorInfo errorInfo;
+        private ErrorInfo errorInfo;
 
         @Override
         public ErrorInfo getErrorInfo() {
@@ -49,6 +55,22 @@ public enum SyllabusOParser implements WiseParser {
         result.textbook = xmlHelper.getContentByName(doc, "shbk_descr");
         result.fileName = xmlHelper.getContentByName(doc, "file_nm");
         result.filePath = xmlHelper.getContentByName(doc, "file_path");
+
+        // COVID-19
+        // set default (never null)
+        result.offlineRate = "";
+        result.onlineRate = "";
+        result.midtermOnlineCode = "";
+        result.finalOnlineCode = "";
+        result.quizOnlineCode = "";
+        result.quizOnlineCode2 = "";
+
+        result.offlineRate = xmlHelper.getContentByName(doc, "lsn_offline_rate");
+        result.onlineRate = xmlHelper.getContentByName(doc, "lsn_online_rate");
+        result.midtermOnlineCode = xmlHelper.getContentByName(doc, "mid_onoffline_cd");
+        result.finalOnlineCode = xmlHelper.getContentByName(doc, "end_onoffline_cd");
+        result.quizOnlineCode = xmlHelper.getContentByName(doc, "etc_online_cd");
+        result.quizOnlineCode2 = xmlHelper.getContentByName(doc, "etc_offline_cd");
 
         if (result.filePath != null){
             result.filePath = "https://wise.uos.ac.kr/uosdoc/pf_upload/" + result.filePath;

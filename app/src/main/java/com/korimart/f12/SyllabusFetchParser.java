@@ -43,6 +43,14 @@ public class SyllabusFetchParser {
         String textbook;
         List<String> weeklyPlans;
 
+        // COVID-19
+        String offlineRate;
+        String onlineRate;
+        String midtermOnlineCode;
+        String finalOnlineCode;
+        String quizOnlineCode;
+        String quizOnlineCode2;
+
         private ErrorInfo errorInfo;
 
         @Override
@@ -122,11 +130,22 @@ public class SyllabusFetchParser {
             result.summary = ((SyllabusUabWParser.Result) wParsed).summary;
             result.textbook = ((SyllabusUabWParser.Result) wParsed).textbook;
             result.weeklyPlans = ((SyllabusUabWParser.Result) wParsed).weeklyPlans;
+            result.offlineRate = "";
+            result.onlineRate = "";
+            result.midtermOnlineCode = "";
+            result.finalOnlineCode = "";
+            result.quizOnlineCode = "";
         }
         else {
             result.summary = ((SyllabusOParser.Result) oParsed).summary;
             result.textbook = ((SyllabusOParser.Result) oParsed).textbook;
             result.weeklyPlans = ((SyllabusWParser.Result) wParsed).weeklyPlans;
+            result.offlineRate = ((SyllabusOParser.Result) oParsed).offlineRate;
+            result.onlineRate = ((SyllabusOParser.Result) oParsed).onlineRate;
+            result.midtermOnlineCode = ((SyllabusOParser.Result) oParsed).midtermOnlineCode;
+            result.finalOnlineCode = ((SyllabusOParser.Result) oParsed).finalOnlineCode;
+            result.quizOnlineCode = ((SyllabusOParser.Result) oParsed).quizOnlineCode;
+            result.quizOnlineCode2 = ((SyllabusOParser.Result) oParsed).quizOnlineCode2;
         }
 
         if (wParsed.getErrorInfo() != null)

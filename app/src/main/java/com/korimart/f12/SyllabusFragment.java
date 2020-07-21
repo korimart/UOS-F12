@@ -29,6 +29,7 @@ public class SyllabusFragment extends Fragment {
     private CourseListParser.CourseInfo courseParsed;
     private MainActivity mainActivity;
 
+    private LinearLayout parent;
     private TextView title;
     private TextView titleClassNumber;
     private LinearLayout courseInfo;
@@ -43,6 +44,12 @@ public class SyllabusFragment extends Fragment {
     private LinearLayout rubricsKeys;
     private LinearLayout rubricsValues;
     private LinearLayout weeklyPlans;
+
+    private LinearLayout online;
+    private TextView onlineRatio;
+    private TextView midtermOnline;
+    private TextView finalOnline;
+    private TextView quizOnline;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -73,6 +80,7 @@ public class SyllabusFragment extends Fragment {
         else
             courseListViewModel = vmp.get(CoresViewModel.class);
 
+        parent = view.findViewById(R.id.syllabus_parent);
         TOYear = view.findViewById(R.id.syllabus_TO_year);
         TOAll = view.findViewById(R.id.syllabus_TO_all);
         title = view.findViewById(R.id.syllabus_title);
@@ -87,6 +95,12 @@ public class SyllabusFragment extends Fragment {
         rubricsKeys = view.findViewById(R.id.syllabus_rubrics_keys);
         rubricsValues = view.findViewById(R.id.syllabus_rubrics_values);
         weeklyPlans = view.findViewById(R.id.syllabus_plans);
+
+        online = view.findViewById(R.id.syllabus_online);
+        onlineRatio = view.findViewById(R.id.syllabus_online_ratio);
+        midtermOnline = view.findViewById(R.id.syllabus_online_midterm);
+        finalOnline = view.findViewById(R.id.syllabus_online_final);
+        quizOnline = view.findViewById(R.id.syllabus_online_quiz);
 
         syllabusViewModel.getSystemMessage().observe(this,
                 message -> title.setText(message));
@@ -141,6 +155,26 @@ public class SyllabusFragment extends Fragment {
         addTextToLinLay(li, courseInfo, timePlace);
         addPermissions(li);
 
+        if (!syllabus.onlineRate.isEmpty()){
+            online.setVisibility(View.VISIBLE);
+            onlineRatio.setText(
+                    String.format("대면 %s / 비대면 %s", syllabus.offlineRate, syllabus.onlineRate));
+            midtermOnline.setText(String.format("중간고사 : %s", getOnlineString(syllabus.midtermOnlineCode)));
+            finalOnline.setText(String.format("기말고사 : %s", getOnlineString(syllabus.finalOnlineCode)));
+
+            StringJoiner sj2 = new StringJoiner(" 및 ");
+            if (syllabus.quizOnlineCode.isEmpty() && syllabus.quizOnlineCode2.isEmpty())
+                sj2.add("미입력");
+            else {
+                if (!syllabus.quizOnlineCode.isEmpty())
+                    sj2.add("비대면");
+                if (!syllabus.quizOnlineCode2.isEmpty())
+                    sj2.add("대면");
+            }
+
+            quizOnline.setText(String.format("퀴즈 : %s", sj2.toString()));
+        }
+
         if (syllabus.summary.isEmpty()){
             this.summary.setText("미입력");
             this.summary.setTextColor(0xFF757575);
@@ -181,6 +215,19 @@ public class SyllabusFragment extends Fragment {
 
         for (int i = 0; i < syllabus.weeklyPlans.size(); i++)
             addWeeklyPlan(li, i + 1, syllabus.weeklyPlans.get(i));
+    }
+
+    private String getOnlineString(String code){
+        switch (code){
+            case "01":
+                return "대면";
+            case "02":
+                return "비대면";
+            case "03":
+                return "없음";
+            default:
+                return "미입력";
+        }
     }
 
     private void addPermissions(LayoutInflater li) {
@@ -251,6 +298,7 @@ public class SyllabusFragment extends Fragment {
 
     private void clearDummy(){
         title.setText("가져오는 중...");
+        online.setVisibility(View.GONE);
         titleClassNumber.setText("");
         courseInfo.removeAllViews();
         summary.setText("");
