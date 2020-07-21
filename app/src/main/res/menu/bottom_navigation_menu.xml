@@ -12,7 +12,7 @@
 
     <item android:title="교양시간표"
         android:id="@+id/bottomNav_cores"
-        android:icon="@android:drawable/ic_menu_add"
+        android:icon="@android:drawable/ic_menu_compass"
         />
 
     <item android:title="업데이트"
