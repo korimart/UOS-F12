@@ -176,7 +176,7 @@ public class CourseListFragment extends Fragment {
                 ret[i] = dayKor.get(dayEng.indexOf(dayAndTimePlace[0]));
 
                 String[] timeAndPlace = dayAndTimePlace[1].split("/", 2);
-                ret[i] += "    " + parseTime(timeAndPlace[0]);
+                ret[i] += " " + parseTime(timeAndPlace[0]);
                 ret[i] += "    " + parsePlace(timeAndPlace[1]);
             }
 
@@ -231,7 +231,7 @@ public class CourseListFragment extends Fragment {
             else
                 ret += buildings.get(index);
 
-            ret += "    ";
+            ret += " ";
 
             // 강의실 없이 건물만 있는 경우가 있음
             // 예시) 수02,03/실외 테니스장
@@ -291,7 +291,7 @@ public class CourseListFragment extends Fragment {
                         .append("시50분");
 
                 if (i < timeGroups.size() - 1)
-                    ret.append("    ");
+                    ret.append(" ");
             }
 
             return ret.toString();

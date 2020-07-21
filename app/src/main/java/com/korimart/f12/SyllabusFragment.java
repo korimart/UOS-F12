@@ -124,19 +124,22 @@ public class SyllabusFragment extends Fragment {
 
         LayoutInflater li = LayoutInflater.from(getContext());
 
-        StringJoiner sj = new StringJoiner(", ");
+        StringJoiner sj = new StringJoiner(" / ");
         if (!syllabus.yearLevel.isEmpty())
             sj.add(syllabus.yearLevel);
         if (!syllabus.lecPrac.isEmpty())
             sj.add(syllabus.lecPrac);
+        addTextToLinLay(li, courseInfo, sj.toString());
+
+        sj = new StringJoiner(" / ");
         if (!syllabus.classification.isEmpty())
             sj.add(syllabus.classification);
         if (!syllabus.pointsTime.isEmpty())
             sj.add(syllabus.pointsTime);
-
         addTextToLinLay(li, courseInfo, sj.toString());
-        addPermissions(li);
+
         addTextToLinLay(li, courseInfo, timePlace);
+        addPermissions(li);
 
         if (syllabus.summary.isEmpty()){
             this.summary.setText("미입력");
