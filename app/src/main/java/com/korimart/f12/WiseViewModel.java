@@ -1,7 +1,11 @@
 package com.korimart.f12;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class WiseViewModel extends ViewModel {
@@ -24,6 +28,8 @@ public class WiseViewModel extends ViewModel {
 
     private AsyncFetchParser coreListFetchParser
             = new AsyncFetchParser(URLStorage.getCoreListUrl(), null, CourseListParser.INSTANCE);
+
+    private MutableLiveData<WiseParser.Result> coreListLiveData = new MutableLiveData<>();
 
     private SyllabusFetchParser syllabusFetchParser = new SyllabusFetchParser();
 
@@ -63,7 +69,8 @@ public class WiseViewModel extends ViewModel {
                             coreListFetchParserRequired.fetchAndParse(refetch),
                             coreListFetchParser.fetchAndParse(refetch)
                     );
-                });
+                })
+                .thenRun(this::updateCoreList);
     }
 
     public CompletableFuture<Void> fetchAndParseCores(boolean refetch, int schoolYear, String semester){
@@ -74,7 +81,8 @@ public class WiseViewModel extends ViewModel {
 
         return CompletableFuture.allOf(
                 coreListFetchParserRequired.fetchAndParse(refetch),
-                coreListFetchParser.fetchAndParse(refetch));
+                coreListFetchParser.fetchAndParse(refetch))
+                .thenRun(this::updateCoreList);
     }
 
     public CompletableFuture<Void> fetchAndParsePersonalInfo(boolean refetch){
@@ -153,6 +161,21 @@ public class WiseViewModel extends ViewModel {
         f12FetchParser.getpCache().resultLiveData.setValue(parsed);
     }
 
+    /**
+     * call from background thread
+     */
+    private void updateCoreList(){
+        CourseListParser.Result notRequired =
+                (CourseListParser.Result) coreListFetchParser.getpCache().data;
+        CourseListParser.Result required =
+                (CourseListParser.Result) coreListFetchParserRequired.getpCache().data;
+        CourseListParser.Result joined = new CourseListParser.Result();
+        joined.courseInfos = new ArrayList<>();
+        joined.courseInfos.addAll(notRequired.courseInfos);
+        joined.courseInfos.addAll(required.courseInfos);
+        coreListLiveData.postValue(joined);
+    }
+
     public LiveData<WiseParser.Result> getF12(){
         return f12FetchParser.getpCache().resultLiveData;
     }
@@ -174,7 +197,7 @@ public class WiseViewModel extends ViewModel {
     }
 
     public LiveData<WiseParser.Result> getCoreList() {
-        return coreListFetchParser.getpCache().resultLiveData;
+        return coreListLiveData;
     }
 
     public LiveData<WiseParser.Result> getSyllabus(){
