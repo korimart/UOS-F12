@@ -74,7 +74,7 @@ public class CourseListFragment extends Fragment {
         recyclerView.addItemDecoration(did);
 
         view.findViewById(R.id.courses_filterButton).setOnClickListener(v ->
-                mainActivity.goToCoursesFilterFrag(() -> mainActivity.goToCoursesFrag(major)));
+                mainActivity.goToCoursesFilterFrag(() -> mainActivity.goToCoursesFrag(major), major));
 
         title = view.findViewById(R.id.course_desc_title);
         systemMessage = view.findViewById(R.id.courses_system_message);

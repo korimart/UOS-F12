@@ -36,6 +36,7 @@ public enum CourseListParser implements WiseParser {
         String TOYearMax;
         String TOAll;
         String TOAllMax;
+        String deptCode;
     }
 
     public static class Result implements WiseParser.Result {
@@ -97,6 +98,7 @@ public enum CourseListParser implements WiseParser {
         courseInfo.TOYearMax = xmlHelper.getContentByName(listEl, "tlsn_limit_count");
         courseInfo.TOAll = xmlHelper.getContentByName(listEl, "tlsn_psn_cnt");
         courseInfo.TOAllMax = xmlHelper.getContentByName(listEl, "tlsn_aply_limit_psn_cnt");
+        courseInfo.deptCode = xmlHelper.getContentByName(listEl, "asgn_sust_cd");
 
         for (Field field : courseInfo.getClass().getDeclaredFields()){
             if (field.get(courseInfo) == null)

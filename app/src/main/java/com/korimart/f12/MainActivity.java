@@ -2,6 +2,7 @@ package com.korimart.f12;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -130,11 +131,14 @@ public class MainActivity extends AppCompatActivity
                 .commit();
     }
 
-    public void goToCoursesFilterFrag(Runnable howToGoBack){
+    public void goToCoursesFilterFrag(Runnable howToGoBack, boolean major){
         fragStack.add(howToGoBack);
+
+        Fragment filterFragment = major ? new MajorsFilterFragment() : new CoresFilterFragment();
+
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frag, new MajorsFilterFragment())
+                .replace(R.id.frag, filterFragment)
                 .commit();
     }
 
