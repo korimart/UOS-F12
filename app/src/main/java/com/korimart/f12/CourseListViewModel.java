@@ -15,4 +15,7 @@ public interface CourseListViewModel {
     LiveData<List<CourseListParser.CourseInfo>> getFilteredCourses();
     LiveData<String> getTitle();
     LiveData<String> getSystemMessage();
+
+    void applyFilterOnName(WiseViewModel wiseViewModel, String text);
+    String getFilterText();
 }

@@ -44,6 +44,17 @@ public class CoresViewModel extends ViewModel implements CourseListViewModel {
         return commons.systemMessage;
     }
 
+    @Override
+    public void applyFilterOnName(WiseViewModel wiseViewModel, String text) {
+        commons.filterText = text;
+        applyFilter(wiseViewModel);
+    }
+
+    @Override
+    public String getFilterText() {
+        return commons.filterText;
+    }
+
     public void fetchFromFilter(WiseViewModel wiseViewModel, MainActivity mainActivity) {
         commons.filteredCourses.setValue(null);
         commons.systemMessage.setValue("가져오는 중...");
@@ -81,6 +92,8 @@ public class CoresViewModel extends ViewModel implements CourseListViewModel {
             String deptCode = departments.getValue().get(selections[2]).s2;
             filtered.removeIf(courseInfo -> !courseInfo.deptCode.equals(deptCode));
         }
+
+        filtered.removeIf(courseInfo -> !courseInfo.name.contains(commons.filterText));
 
         Collections.sort(filtered, (o1, o2) -> {
             if (o1.name.equals(o2.name))

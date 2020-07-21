@@ -49,6 +49,17 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
         return commons.systemMessage;
     }
 
+    @Override
+    public void applyFilterOnName(WiseViewModel wiseViewModel, String text) {
+        commons.filterText = text;
+        applyFilter(wiseViewModel);
+    }
+
+    @Override
+    public String getFilterText() {
+        return commons.filterText;
+    }
+
     public void fetchFilterAndFromFilter(WiseViewModel wiseViewModel, MainActivity mainActivity){
         commons.filteredCourses.setValue(null);
         commons.systemMessage.setValue("가져오는 중...");
@@ -100,6 +111,8 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
         CourseListParser.Result
                 r = (CourseListParser.Result) wiseViewModel.getMajorList().getValue();
         List<CourseListParser.CourseInfo> filtered = commons.applyFilterOnYearLevels(r.courseInfos);
+
+        filtered.removeIf(courseInfo -> !courseInfo.name.contains(commons.filterText));
 
         if (filtered.isEmpty())
             commons.systemMessage.setValue("검색 결과가 없습니다.");

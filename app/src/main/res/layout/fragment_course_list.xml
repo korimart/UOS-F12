@@ -64,11 +64,11 @@
         android:id="@+id/courses_recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/courses_search">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -101,5 +101,17 @@
         app:layout_constraintTop_toBottomOf="@+id/courses_system_message"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintVertical_chainStyle="packed" />
+
+    <SearchView
+        android:id="@+id/courses_search"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="8dp"
+        android:iconifiedByDefault="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

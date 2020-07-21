@@ -16,6 +16,7 @@ public class CourseListCommon {
     MutableLiveData<String> title = new MutableLiveData<>();
     MutableLiveData<String> systemMessage = new MutableLiveData<>();
 
+    String filterText = "";
     boolean firstOpen = true;
     Handler handler = new Handler(Looper.getMainLooper());
 

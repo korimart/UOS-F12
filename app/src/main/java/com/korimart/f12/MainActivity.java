@@ -5,8 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -44,6 +50,25 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         mainViewModel.fetchGithub(this);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)ev.getRawX(), (int)ev.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+
+                return true;
+            }
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
     private void setViewListeners() {

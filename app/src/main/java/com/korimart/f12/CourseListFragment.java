@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,6 +33,7 @@ public class CourseListFragment extends Fragment {
     private TextView title;
     private TextView systemMessage;
     private Button refreshButton;
+    private SearchView searchView;
 
     private MainActivity mainActivity;
     private boolean major;
@@ -79,6 +82,26 @@ public class CourseListFragment extends Fragment {
         title = view.findViewById(R.id.course_desc_title);
         systemMessage = view.findViewById(R.id.courses_system_message);
         refreshButton = view.findViewById(R.id.courses_refresh);
+        searchView = view.findViewById(R.id.courses_search);
+
+        int search_close_btn = getResources().getIdentifier("android:id/search_close_btn", null, null);
+        searchView.setQuery(courseListViewModel.getFilterText(), false);
+        ImageView closeButton = searchView.findViewById(search_close_btn);
+        closeButton.setOnClickListener(v -> searchView.setQuery("", false));
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                courseListViewModel.applyFilterOnName(wiseViewModel, newText);
+                return true;
+            }
+        });
 
         refreshButton.setOnClickListener(v -> {
             courseListViewModel.refresh(wiseViewModel, mainActivity);
