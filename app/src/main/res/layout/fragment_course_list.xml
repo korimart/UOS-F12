@@ -50,6 +50,7 @@
         android:text="가져오는 중..."
         android:textColor="#000000"
         android:textSize="18sp"
+        android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/courses_refresh"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

@@ -121,7 +121,8 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
                 break;
 
             case departmentNotFound:
-                commons.systemMessage.setValue("기본 필터를 가져오는데 실패했습니다.\n학부생이 아니신가요?");
+                commons.title.setValue("기본 필터 가져오기 실패");
+                commons.systemMessage.setValue("기본 필터를 가져오는데 실패했습니다.\n학부생이 아니신가요?\n\n(어찌됐건 직접 필터를 설정하여\n검색할 수 있습니다)");
                 break;
 
             default:
@@ -148,10 +149,10 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
 
             if (departmentNotFound)
                 onError(new ErrorInfo(ErrorInfo.ErrorType.departmentNotFound), mainActivity);
-            else
+            else {
                 setTitleFromFilter();
-
-            applyFilter(wiseViewModel);
+                applyFilter(wiseViewModel);
+            }
         });
     }
 
