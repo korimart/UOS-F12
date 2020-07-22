@@ -37,10 +37,10 @@ public class WiseViewModel extends ViewModel {
         return f12FetchParser.fetchAndParse(refetch);
     }
 
-    public CompletableFuture<Void> fetchAndParseMyCourses(boolean refetch){
+    public CompletableFuture<Void> fetchAndParseMajors(boolean refetch){
         majorListFetchParser.setFetchMine(true);
-        majorListFetchParser.setRefetchF12Info(refetch);
-        majorListFetchParser.setRefetchSchoolList(refetch);
+        majorListFetchParser.setRefetchF12Info(false);
+        majorListFetchParser.setRefetchSchoolList(false);
         return majorListFetchParser.fetchAndParse(refetch);
     }
 

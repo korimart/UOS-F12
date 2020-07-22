@@ -19,11 +19,11 @@ public class CourseListFetchParser extends AsyncFetchParser {
 
     @Override
     public CompletableFuture<Void> fetch(boolean refetch) {
-        if (fetchMine){
-            return CompletableFuture.allOf(
-                    f12InfoFetchParser.fetchAndParse(refetchF12Info),
-                    schoolListFetchParser.fetchAndParse(refetchSchoolList)
-            ).thenCompose(ignored -> {
+        return CompletableFuture.allOf(
+                f12InfoFetchParser.fetchAndParse(refetchF12Info),
+                schoolListFetchParser.fetchAndParse(refetchSchoolList)
+        ).thenCompose(ignored -> {
+            if (fetchMine){
                 SchoolListParser.Result schoolList =
                         (SchoolListParser.Result) schoolListFetchParser.getpCache().data;
                 F12InfoParser.Result f12Info =
@@ -35,12 +35,10 @@ public class CourseListFetchParser extends AsyncFetchParser {
                         f12Info.schoolCode,
                         f12Info.deptCode
                 ));
+            }
 
-                return super.fetch(refetch);
-            });
-        }
-
-        return super.fetch(refetch);
+            return super.fetch(refetch);
+        });
     }
 
     public void setRefetchF12Info(boolean refetchF12Info) {

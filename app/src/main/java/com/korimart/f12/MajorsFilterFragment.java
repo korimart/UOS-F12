@@ -1,12 +1,15 @@
 package com.korimart.f12;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -15,6 +18,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import org.w3c.dom.Text;
+
+import java.util.Locale;
 
 public class MajorsFilterFragment extends Fragment {
     private Spinner schoolYear;
@@ -25,6 +32,8 @@ public class MajorsFilterFragment extends Fragment {
     private MajorsViewModel majorsViewModel;
     private WiseViewModel wiseViewModel;
     private MainActivity mainActivity;
+    private Button myMajor;
+    private TextView systemMessage;
 
     private boolean shouldFetchCourses;
 
@@ -57,6 +66,8 @@ public class MajorsFilterFragment extends Fragment {
         yearLevels[1] = view.findViewById(R.id.courses_filter_sophomore);
         yearLevels[2] = view.findViewById(R.id.courses_filter_junior);
         yearLevels[3] = view.findViewById(R.id.courses_filter_senior);
+        myMajor = view.findViewById(R.id.courses_filter_my_major);
+        systemMessage = view.findViewById(R.id.courses_filter_system_message);
 
         setViewListeners();
     }
@@ -64,6 +75,18 @@ public class MajorsFilterFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
+        SharedPreferences prefs = mainActivity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("savedSchoolYear", Integer.parseInt(((StringPair) schoolYear.getSelectedItem()).s1));
+        editor.putString("savedSemester", ((StringPair) semester.getSelectedItem()).s2);
+        editor.putString("savedSchoolCode", ((StringPair) school.getSelectedItem()).s2);
+        editor.putString("savedDeptCode", ((StringPair) department.getSelectedItem()).s2);
+
+        for (int i = 0; i < yearLevels.length; i++)
+            editor.putBoolean("savedYear" + (i + 1), yearLevels[i].isChecked());
+        editor.apply();
+
         majorsViewModel.setTitleFromFilter();
         if (shouldFetchCourses){
             majorsViewModel.fetchFromFilter(wiseViewModel, mainActivity);
@@ -73,6 +96,11 @@ public class MajorsFilterFragment extends Fragment {
     }
 
     private void setViewListeners() {
+        myMajor.setOnClickListener(v -> {
+            if (!majorsViewModel.setMyFilter(wiseViewModel))
+                systemMessage.setVisibility(View.VISIBLE);
+        });
+
         StringPairAdapter schoolYearAdapter = StringPairAdapter.setSpinnerAdapter(getContext(), schoolYear);
         StringPairAdapter semesterAdapter = StringPairAdapter.setSpinnerAdapter(getContext(), semester);
         StringPairAdapter schoolAdapter = StringPairAdapter.setSpinnerAdapter(getContext(), school);
@@ -82,10 +110,12 @@ public class MajorsFilterFragment extends Fragment {
         semesterAdapter.add(new StringPair("2학기", "20"));
         semesterAdapter.add(new StringPair("계절학기", "11"));
 
-        schoolYear.setSelection(majorsViewModel.getSelection(0));
-        semester.setSelection(majorsViewModel.getSelection(1));
-        school.setSelection(majorsViewModel.getSelection(2));
-        department.setSelection(majorsViewModel.getSelection(3));
+        majorsViewModel.getSelections().observe(this, selections -> {
+            schoolYear.setSelection(selections[0]);
+            semester.setSelection(selections[1]);
+            school.setSelection(selections[2]);
+            department.setSelection(selections[3]);
+        });
 
         majorsViewModel.getFilterOptions().observe(this, options -> {
             for (int i = 0; i < options.yearLevels.length; i++)
@@ -117,80 +147,32 @@ public class MajorsFilterFragment extends Fragment {
             deptAdapter.addAll(departments);
         });
 
-        schoolYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            private int count = 0;
+        schoolYear.setOnItemSelectedListener(new ItemSelectedListener(0));
+        semester.setOnItemSelectedListener(new ItemSelectedListener(1));
+        school.setOnItemSelectedListener(new ItemSelectedListener(2));
+        department.setOnItemSelectedListener(new ItemSelectedListener(3));
+    }
 
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (count > 0){
-                    majorsViewModel.setSelection(0, position);
-                    shouldFetchCourses = true;
-                }
-                count++;
+    class ItemSelectedListener implements AdapterView.OnItemSelectedListener {
+        private int count = 0;
+        private int selectionIndex;
+
+        public ItemSelectedListener(int selectionIndex){
+            this.selectionIndex = selectionIndex;
+        }
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (count > 0){
+                majorsViewModel.setSelection(wiseViewModel, selectionIndex, position);
+                shouldFetchCourses = true;
             }
+            count++;
+        }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        semester.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            private int count = 0;
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (count > 0){
-                    majorsViewModel.setSelection(1, position);
-                    shouldFetchCourses = true;
-                }
-                count++;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        school.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            private int count = 0;
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (count > 0){
-                    majorsViewModel.setSelection(2, position);
-                    shouldFetchCourses = true;
-                }
-
-                SchoolListParser.Result result = (SchoolListParser.Result) wiseViewModel.getSchoolList().getValue();
-                for (SchoolListParser.DeptInfo dept : result.schoolToDepts.keySet())
-                    if (dept.name.equals(((TextView) view).getText())){
-                        majorsViewModel.setDepartments(result.schoolToDepts.get(dept));
-                    }
-
-                count++;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        department.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            private int count = 0;
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (count > 0){
-                    majorsViewModel.setSelection(3, position);
-                    shouldFetchCourses = true;
-                }
-                count++;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+        }
     }
 }
 

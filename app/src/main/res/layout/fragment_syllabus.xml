@@ -200,7 +200,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="코로나 유형"
+                    android:text="코로나 정보"
                     android:textSize="30dp"
                     android:textColor="#FF000000"
                     android:paddingBottom="20dp"

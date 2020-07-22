@@ -147,6 +147,15 @@
                     android:text="2학년"
                     android:textSize="24sp" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
                 <CheckBox
                     android:id="@+id/courses_filter_junior"
                     android:layout_width="wrap_content"
@@ -169,6 +178,31 @@
             </LinearLayout>
 
         </LinearLayout>
+
+        <Space
+            android:layout_height="30dp"
+            android:layout_width="match_parent"/>
+
+        <Button
+            android:id="@+id/courses_filter_my_major"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="내 전공"
+            />
+
+        <Space
+            android:layout_height="30dp"
+            android:layout_width="match_parent"/>
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/courses_filter_system_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="내 전공을 가져올 수 없습니다."
+            android:textColor="#FF0000" />
 
     </LinearLayout>
 

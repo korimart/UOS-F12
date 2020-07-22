@@ -1,5 +1,8 @@
 package com.korimart.f12;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -11,15 +14,26 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
+import java.util.concurrent.CompletableFuture;
 
 public class MajorsViewModel extends ViewModel implements CourseListViewModel {
     private CourseListCommon commons = new CourseListCommon();
     private MutableLiveData<List<StringPair>> schools = new MutableLiveData<>();
     private MutableLiveData<List<StringPair>> departments = new MutableLiveData<>();
+    private MutableLiveData<int[]> selections = new MutableLiveData<>();
 
-    private int[] selections = new int[4];
+    private int mySchoolYear;
+    private String mySemester;
+    private String mySchoolCode;
+    private String myDeptCode;
+    private int myYearLevel;
+    private boolean departmentNotFound;
 
     private ErrorReporter errorReporter = ErrorReporter.INSTANCE;
+
+    public MajorsViewModel(){
+        selections.setValue(new int[4]);
+    }
 
     @Override
     public void onViewCreated(WiseViewModel wiseViewModel, MainActivity mainActivity) {
@@ -64,9 +78,31 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
         commons.filteredCourses.setValue(null);
         commons.systemMessage.setValue("가져오는 중...");
 
-        wiseViewModel.fetchAndParseMyCourses(true)
-                .thenCompose(ignored -> wiseViewModel.fetchAndParsePersonalInfo(false))
-                .thenRun(() -> onFetchAndParseReady(wiseViewModel, mainActivity))
+        CompletableFuture<Void> future;
+
+        SharedPreferences prefs = mainActivity.getPreferences(Context.MODE_PRIVATE);
+        int schoolYear = prefs.getInt("savedSchoolYear", 0);
+        String semester = prefs.getString("savedSemester", null);
+        String schoolCode = prefs.getString("savedSchoolCode", null);
+        String deptCode = prefs.getString("savedDeptCode", null);
+        boolean[] yearLevels = new boolean[4];
+
+        if (schoolYear != 0 && semester != null && schoolCode != null && deptCode != null){
+            yearLevels[0] = prefs.getBoolean("savedYear1", false);
+            yearLevels[1] = prefs.getBoolean("savedYear2", false);
+            yearLevels[2] = prefs.getBoolean("savedYear3", false);
+            yearLevels[3] = prefs.getBoolean("savedYear4", false);
+
+            future = wiseViewModel.fetchAndParseMajors(true, schoolYear, semester, schoolCode, deptCode);
+        }
+        else {
+            schoolCode = null;
+            future = wiseViewModel.fetchAndParseMajors(true);
+        }
+
+        String finalSchoolCode = schoolCode;
+        future.thenCompose(ignored -> wiseViewModel.fetchAndParsePersonalInfo(false))
+                .thenRun(() -> onFetchAndParseReady(wiseViewModel, mainActivity, finalSchoolCode, deptCode, yearLevels))
                 .exceptionally(throwable -> {
                     errorReporter.backgroundErrorHandler(throwable, errorInfo -> this.onError(errorInfo, mainActivity));
                     return null;
@@ -87,6 +123,8 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
             this.onError(errorInfo, mainActivity);
             return;
         }
+
+        int[] selections = this.selections.getValue();
 
         int schoolYear = Integer.parseInt(schoolYears.get(selections[0]));
         String semester = getSemesterString(selections[1]);
@@ -144,7 +182,8 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
         }
     }
 
-    private void onFetchAndParseReady(WiseViewModel wiseViewModel, MainActivity mainActivity){
+    private void onFetchAndParseReady(WiseViewModel wiseViewModel, MainActivity mainActivity,
+                                      String schoolCode, String deptCode, boolean[] yearLevels){
         commons.handler.post(() -> {
             F12InfoParser.Result f12Info =
                     (F12InfoParser.Result) wiseViewModel.getF12Info().getValue();
@@ -155,13 +194,35 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
             PersonalInfoParser.Result personalInfo =
                     (PersonalInfoParser.Result) wiseViewModel.getPersonalInfo().getValue();
 
-            boolean departmentNotFound = setUpInitialFilter(
-                    f12Info.schoolCode, f12Info.deptCode, schoolList);
+            mySchoolYear = schoolList.latestSchoolYear;
+            mySemester = schoolList.latestSemester;
+            mySchoolCode = f12Info.schoolCode;
+            myDeptCode = f12Info.deptCode;
+            myYearLevel = personalInfo.yearLevel;
 
-            setUpInitialYearLevel(personalInfo);
+            String filterSchoolCode;
+            String filterDeptCode;
 
-            if (departmentNotFound)
+            if (schoolCode != null){
+                filterSchoolCode = schoolCode;
+                filterDeptCode = deptCode;
+            }
+            else {
+                filterSchoolCode = mySchoolCode;
+                filterDeptCode = myDeptCode;
+                yearLevels[myYearLevel - 1] = true;
+            }
+
+            departmentNotFound =
+                    setUpInitialFilter(filterSchoolCode, filterDeptCode, schoolList);
+
+            FilterOptions options = commons.filterOptions.getValue();
+            options.yearLevels = yearLevels;
+            commons.filterOptions.setValue(options);
+
+            if (departmentNotFound){
                 onError(new ErrorInfo(ErrorInfo.ErrorType.departmentNotFound), mainActivity);
+            }
             else {
                 setTitleFromFilter();
                 applyFilter(wiseViewModel);
@@ -189,10 +250,11 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
         Collections.sort(al, (o1, o2) -> o1.s1.compareTo(o2.s1));
         schools.setValue(al);
 
-        List<StringPair> schools = this.schools.getValue();
         List<SchoolListParser.DeptInfo> defaultDepartments = null;
 
-        for (Map.Entry<SchoolListParser.DeptInfo, List<SchoolListParser.DeptInfo>> e : schoolResult.schoolToDepts.entrySet()){
+        for (Map.Entry<SchoolListParser.DeptInfo, List<SchoolListParser.DeptInfo>>
+                e : schoolResult.schoolToDepts.entrySet()){
+
             if (e.getKey().code.equals(al.get(0).s2))
                 defaultDepartments = e.getValue();
 
@@ -202,44 +264,22 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
                 if (!dept.code.equals(deptCode)) continue;
 
                 setDepartments(e.getValue());
-                List<StringPair> depts = departments.getValue();
 
-                int schoolPos = LinearTimeHelper.INSTANCE.indexOf(
-                        schools,
-                        e.getKey().name,
-                        (stringPair, s) -> stringPair.s1.compareTo(s)
-                );
-
-                int deptPos = LinearTimeHelper.INSTANCE.indexOf(
-                        depts,
-                        dept.name,
-                        (stringPair, s) -> stringPair.s1.compareTo(s)
-                );
-
-                int semesterPos = 0;
-                switch (schoolResult.latestSemester){
-                    case "10":
-                        semesterPos = 0;
-                        break;
-                    case "20":
-                        semesterPos = 1;
-                        break;
-                    case "11":
-                        semesterPos = 2;
-                        break;
-                }
-
-                selections[0] = 0;           // school year (0 for latest)
-                selections[1] = semesterPos; // semester
-                selections[2] = schoolPos;   // school
-                selections[3] = deptPos;     // department
+                setSelections(
+                        schoolResult,
+                        schoolResult.latestSchoolYear,
+                        schoolResult.latestSemester,
+                        e.getKey().code,
+                        dept.code);
             }
         }
 
         // department not found; probably graduate student
         if (departments.getValue() == null){
             setDepartments(defaultDepartments);
+            int[] selections = this.selections.getValue();
             Arrays.fill(selections, 0);
+            this.selections.setValue(selections);
             return true;
         }
 
@@ -248,21 +288,10 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
 
     /**
      * should be called from UI thread
-     * @param parsed
-     */
-    private void setUpInitialYearLevel(@NonNull PersonalInfoParser.Result parsed) {
-        FilterOptions options = commons.filterOptions.getValue();
-
-        if (parsed.yearLevel - 1 < options.yearLevels.length)
-            options.yearLevels[parsed.yearLevel - 1] = true;
-
-        commons.filterOptions.setValue(options);
-    }
-
-    /**
-     * should be called from UI thread
      */
     public void setTitleFromFilter() {
+        int[] selections = this.selections.getValue();
+
         String title = "";
         title += commons.schoolYears.getValue().get(selections[0]);
 
@@ -298,6 +327,41 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
         commons.title.setValue(title);
     }
 
+    public boolean setMyFilter(WiseViewModel wiseViewModel){
+        if (departmentNotFound)
+            return false;
+
+        setSelections((SchoolListParser.Result) wiseViewModel.getSchoolList().getValue(),
+                mySchoolYear, mySemester, mySchoolCode, myDeptCode);
+        return true;
+    }
+
+    private void setSelections(SchoolListParser.Result schoolList,
+                               int schoolYear, String semester, String schoolCode, String deptCode){
+        int[] selections = this.selections.getValue();
+
+        selections[0] = LinearTimeHelper.INSTANCE.indexOf(
+                commons.schoolYears.getValue(),
+                schoolYear,
+                (s, integer) -> s.compareTo(String.valueOf(integer)));
+
+        selections[1] = getSemesterSelection(semester);
+
+        selections[2] = LinearTimeHelper.INSTANCE.indexOf(
+                schools.getValue(),
+                schoolCode,
+                (stringPair, s) -> stringPair.s2.compareTo(s));
+
+        updateDepartmentList(schoolList, schoolCode);
+
+        selections[3] = LinearTimeHelper.INSTANCE.indexOf(
+                departments.getValue(),
+                deptCode,
+                (stringPair, s) -> stringPair.s2.compareTo(s));
+
+        this.selections.setValue(selections);
+    }
+
     private String getSemesterString(int selection){
         switch (selection){
             case 0:
@@ -309,6 +373,25 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
         }
 
         return null;
+    }
+
+    private int getSemesterSelection(String semester){
+        switch (semester){
+            case "10":
+                return 0;
+            case "20":
+                return 1;
+            case "11":
+                return 2;
+        }
+
+        return -1;
+    }
+
+    private void updateDepartmentList(SchoolListParser.Result schoolList, String schoolCode){
+        for (SchoolListParser.DeptInfo dept : schoolList.schoolToDepts.keySet())
+            if (dept.code.equals(schoolCode))
+                setDepartments(schoolList.schoolToDepts.get(dept));
     }
 
     /**
@@ -334,12 +417,22 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
         return departments;
     }
 
-    public void setSelection(int index, int value){
+    public void setSelection(WiseViewModel wiseViewModel, int index, int value){
+        // if a new school was selected
+        if (index == 2){
+            String schoolCode = schools.getValue().get(value).s2;
+            updateDepartmentList(
+                    (SchoolListParser.Result) wiseViewModel.getSchoolList().getValue(),
+                    schoolCode);
+        }
+
+        int[] selections = this.selections.getValue();
         selections[index] = value;
+        this.selections.setValue(selections);
     }
 
-    public int getSelection(int index){
-        return selections[index];
+    public LiveData<int[]> getSelections(){
+        return selections;
     }
 
     public MutableLiveData<FilterOptions> getFilterOptions(){
