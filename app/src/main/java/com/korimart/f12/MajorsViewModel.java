@@ -102,7 +102,8 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
 
         String finalSchoolCode = schoolCode;
         future.thenCompose(ignored -> wiseViewModel.fetchAndParsePersonalInfo(false))
-                .thenRun(() -> onFetchAndParseReady(wiseViewModel, mainActivity, finalSchoolCode, deptCode, yearLevels))
+                .thenRun(() -> onFetchAndParseReady(wiseViewModel, mainActivity,
+                        schoolYear, semester, finalSchoolCode, deptCode, yearLevels))
                 .exceptionally(throwable -> {
                     errorReporter.backgroundErrorHandler(throwable, errorInfo -> this.onError(errorInfo, mainActivity));
                     return null;
@@ -183,6 +184,7 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
     }
 
     private void onFetchAndParseReady(WiseViewModel wiseViewModel, MainActivity mainActivity,
+                                      int schoolYear, String semester,
                                       String schoolCode, String deptCode, boolean[] yearLevels){
         commons.handler.post(() -> {
             F12InfoParser.Result f12Info =
@@ -200,21 +202,28 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
             myDeptCode = f12Info.deptCode;
             myYearLevel = personalInfo.yearLevel;
 
+            int filterSchoolYear;
+            String filterSemester;
             String filterSchoolCode;
             String filterDeptCode;
 
             if (schoolCode != null){
+                filterSchoolYear = schoolYear;
+                filterSemester = semester;
                 filterSchoolCode = schoolCode;
                 filterDeptCode = deptCode;
             }
             else {
+                filterSchoolYear = schoolList.latestSchoolYear;
+                filterSemester = schoolList.latestSemester;
                 filterSchoolCode = mySchoolCode;
                 filterDeptCode = myDeptCode;
                 yearLevels[myYearLevel - 1] = true;
             }
 
             departmentNotFound =
-                    setUpInitialFilter(filterSchoolCode, filterDeptCode, schoolList);
+                    setUpInitialFilter(filterSchoolYear, filterSemester,
+                            filterSchoolCode, filterDeptCode, schoolList);
 
             FilterOptions options = commons.filterOptions.getValue();
             options.yearLevels = yearLevels;
@@ -238,7 +247,8 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
      * @param schoolResult school list parsed
      * @return departmentNotFound
      */
-    private boolean setUpInitialFilter(String schoolCode, String deptCode,
+    private boolean setUpInitialFilter(int schoolYear, String semester,
+                                       String schoolCode, String deptCode,
                                        @NonNull SchoolListParser.Result schoolResult) {
         ArrayList<String> schoolYears = new ArrayList<>();
         for (int i = schoolResult.latestSchoolYear; i > schoolResult.latestSchoolYear - 10; i--)
@@ -267,8 +277,8 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
 
                 setSelections(
                         schoolResult,
-                        schoolResult.latestSchoolYear,
-                        schoolResult.latestSemester,
+                        schoolYear,
+                        semester,
                         e.getKey().code,
                         dept.code);
             }

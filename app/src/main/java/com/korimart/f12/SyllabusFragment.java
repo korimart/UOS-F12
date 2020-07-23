@@ -1,15 +1,24 @@
 package com.korimart.f12;
 
+import android.Manifest;
+import android.app.DownloadManager;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -44,6 +53,7 @@ public class SyllabusFragment extends Fragment {
     private LinearLayout rubricsKeys;
     private LinearLayout rubricsValues;
     private LinearLayout weeklyPlans;
+    private Button download;
 
     private LinearLayout online;
     private TextView onlineRatio;
@@ -95,6 +105,7 @@ public class SyllabusFragment extends Fragment {
         rubricsKeys = view.findViewById(R.id.syllabus_rubrics_keys);
         rubricsValues = view.findViewById(R.id.syllabus_rubrics_values);
         weeklyPlans = view.findViewById(R.id.syllabus_plans);
+        download = view.findViewById(R.id.syllabus_download);
 
         online = view.findViewById(R.id.syllabus_online);
         onlineRatio = view.findViewById(R.id.syllabus_online_ratio);
@@ -154,6 +165,34 @@ public class SyllabusFragment extends Fragment {
 
         addTextToLinLay(li, courseInfo, timePlace);
         addPermissions(li);
+
+        if (!syllabus.filePath.isEmpty() && !syllabus.fileName.isEmpty()){
+            download.setVisibility(View.VISIBLE);
+            download.setOnClickListener(v -> {
+                download.setEnabled(false);
+                new Handler().postDelayed(() -> download.setEnabled(true), 1000);
+
+                if (ActivityCompat.checkSelfPermission(
+                        getContext(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+                    Toast.makeText(getContext(), "권한 승인 후 다시시도 하세요", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                DownloadManager downManager =
+                        (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+                Uri uri = Uri.parse(syllabus.filePath);
+
+                DownloadManager.Request request = new DownloadManager.Request(uri);
+                request.setTitle(syllabus.fileName);
+                request.setDescription("다운로드 중");
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, syllabus.fileName);
+
+                downManager.enqueue(request);
+            });
+        }
 
         if (!syllabus.onlineRate.isEmpty()){
             online.setVisibility(View.VISIBLE);
@@ -297,6 +336,7 @@ public class SyllabusFragment extends Fragment {
     }
 
     private void clearDummy(){
+        download.setVisibility(View.GONE);
         title.setText("가져오는 중...");
         online.setVisibility(View.GONE);
         titleClassNumber.setText("");

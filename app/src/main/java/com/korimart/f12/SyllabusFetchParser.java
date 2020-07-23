@@ -43,6 +43,9 @@ public class SyllabusFetchParser {
         String textbook;
         List<String> weeklyPlans;
 
+        String fileName;
+        String filePath;
+
         // COVID-19
         String offlineRate;
         String onlineRate;
@@ -130,6 +133,8 @@ public class SyllabusFetchParser {
             result.summary = ((SyllabusUabWParser.Result) wParsed).summary;
             result.textbook = ((SyllabusUabWParser.Result) wParsed).textbook;
             result.weeklyPlans = ((SyllabusUabWParser.Result) wParsed).weeklyPlans;
+            result.fileName = "";
+            result.filePath = "";
             result.offlineRate = "";
             result.onlineRate = "";
             result.midtermOnlineCode = "";
@@ -140,6 +145,8 @@ public class SyllabusFetchParser {
             result.summary = ((SyllabusOParser.Result) oParsed).summary;
             result.textbook = ((SyllabusOParser.Result) oParsed).textbook;
             result.weeklyPlans = ((SyllabusWParser.Result) wParsed).weeklyPlans;
+            result.fileName = ((SyllabusOParser.Result) oParsed).fileName;
+            result.filePath = ((SyllabusOParser.Result) oParsed).filePath;
             result.offlineRate = ((SyllabusOParser.Result) oParsed).offlineRate;
             result.onlineRate = ((SyllabusOParser.Result) oParsed).onlineRate;
             result.midtermOnlineCode = ((SyllabusOParser.Result) oParsed).midtermOnlineCode;

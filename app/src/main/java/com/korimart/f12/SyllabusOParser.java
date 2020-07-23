@@ -72,7 +72,7 @@ public enum SyllabusOParser implements WiseParser {
         result.quizOnlineCode = xmlHelper.getContentByName(doc, "etc_online_cd");
         result.quizOnlineCode2 = xmlHelper.getContentByName(doc, "etc_offline_cd");
 
-        if (result.filePath != null){
+        if (!result.filePath.isEmpty()){
             result.filePath = "https://wise.uos.ac.kr/uosdoc/pf_upload/" + result.filePath;
         }
 
