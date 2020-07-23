@@ -187,9 +187,6 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
                                       int schoolYear, String semester,
                                       String schoolCode, String deptCode, boolean[] yearLevels){
         commons.handler.post(() -> {
-            F12InfoParser.Result f12Info =
-                    (F12InfoParser.Result) wiseViewModel.getF12Info().getValue();
-
             SchoolListParser.Result schoolList =
                     (SchoolListParser.Result) wiseViewModel.getSchoolList().getValue();
 
@@ -198,8 +195,8 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
 
             mySchoolYear = schoolList.latestSchoolYear;
             mySemester = schoolList.latestSemester;
-            mySchoolCode = f12Info.schoolCode;
-            myDeptCode = f12Info.deptCode;
+            mySchoolCode = personalInfo.schoolCode;
+            myDeptCode = personalInfo.deptCode;
             myYearLevel = personalInfo.yearLevel;
 
             int filterSchoolYear;

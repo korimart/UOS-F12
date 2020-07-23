@@ -9,6 +9,8 @@ public enum PersonalInfoParser implements WiseParser {
 
     public static class Result implements WiseParser.Result {
         int yearLevel;
+        String schoolCode;
+        String deptCode;
         ErrorInfo errorInfo;
 
         @Override
@@ -26,6 +28,12 @@ public enum PersonalInfoParser implements WiseParser {
         } catch (NumberFormatException e){
             result.errorInfo = new ErrorInfo(ErrorInfo.ErrorType.parseFailed, new Exception("no year level"));
         }
+
+        result.schoolCode = xmlHelper.getContentByName(doc, "colg_cd");
+        result.deptCode = xmlHelper.getContentByName(doc, "sust_cd");
+
+        if (result.schoolCode == null || result.deptCode == null)
+            result.errorInfo = new ErrorInfo(ErrorInfo.ErrorType.parseFailed, new Exception("school code not found"));
 
         return result;
     }

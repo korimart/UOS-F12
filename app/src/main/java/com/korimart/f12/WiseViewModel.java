@@ -20,7 +20,7 @@ public class WiseViewModel extends ViewModel {
     private F12FetchParser f12FetchParser = new F12FetchParser(f12InfoFetchParser);
 
     private CourseListFetchParser majorListFetchParser
-            = new CourseListFetchParser(f12InfoFetchParser, schoolListFetchParser);
+            = new CourseListFetchParser(personalInfoFetchParser, schoolListFetchParser);
 
     private AsyncFetchParser coreListFetchParserRequired
             = new AsyncFetchParser(URLStorage.getCoreListUrl(), null, CourseListParser.INSTANCE);
@@ -39,7 +39,7 @@ public class WiseViewModel extends ViewModel {
 
     public CompletableFuture<Void> fetchAndParseMajors(boolean refetch){
         majorListFetchParser.setFetchMine(true);
-        majorListFetchParser.setRefetchF12Info(false);
+        majorListFetchParser.setRefetchPersonalInfo(false);
         majorListFetchParser.setRefetchSchoolList(false);
         return majorListFetchParser.fetchAndParse(refetch);
     }
@@ -48,7 +48,7 @@ public class WiseViewModel extends ViewModel {
                                                        String semester, String schoolCode,
                                                        String deptCode){
         majorListFetchParser.setFetchMine(false);
-        majorListFetchParser.setRefetchF12Info(false);
+        majorListFetchParser.setRefetchPersonalInfo(false);
         majorListFetchParser.setRefetchSchoolList(false);
         majorListFetchParser
                 .setParams(URLStorage.getCourseListParam(schoolYear, semester, schoolCode, deptCode));

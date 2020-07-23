@@ -88,7 +88,7 @@ public class F12ViewModel extends ViewModel {
                 break;
 
             case parseFailed:
-                message.setValue("와이즈 시스템 방식이 변경된 듯 (F12가 막혔을 수 있음)");
+                message.setValue("성적조회기간이 아니거나 F12가 막힌 것 같습니다");
                 messageColor.setValue(0xFFFF0000);
                 canMakeRequest.setValue(true);
                 break;
