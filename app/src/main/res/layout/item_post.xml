@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="7dp"
+    android:paddingBottom="7dp"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    >
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="어제 페이커 무빙 봤냐"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:paddingBottom="3dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:scrollHorizontally="true"
+        android:text="왜 안 왜 안 왜 안 왜 안 왜 안 왜 안 왜 안 왜 안 왜 안 왜 안 왜 안 왜 안 왜 안 왜 안 왜 안 "
+        android:textColor="#4E4E4E"
+        android:paddingBottom="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView15"
+        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5분전"
+        android:textColor="#757575"
+        app:layout_constraintStart_toStartOf="@+id/textView16"
+        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="댓글 5"
+        android:textColor="@color/colorPrimary"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView17"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:text="따봉 1"
+        android:textColor="#FF2E2E"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView17"
+        app:layout_constraintEnd_toStartOf="@+id/textView18" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,7 +29,7 @@ public class AsyncFetchParser {
         if (refetch)
             cancelAndClear(fCache);
 
-        if (fCache.future == null){
+        if (fCache.data == null){
             createFetchFuture(url, params, fCache);
             return fCache.future.thenAccept(result -> {
                 fCache.data = result;
@@ -44,7 +44,7 @@ public class AsyncFetchParser {
         if (reparse)
             cancelAndClear(pCache);
 
-        if (pCache.future == null){
+        if (pCache.data == null){
             createParseFuture();
             return pCache.future.thenAccept(result -> {
                 pCache.data = result;

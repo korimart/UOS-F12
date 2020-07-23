@@ -182,6 +182,20 @@ public class MainActivity extends AppCompatActivity
                 .commit();
     }
 
+    public void goToPostsFrag(){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frag, new PostsFragment())
+                .commit();
+    }
+
+    public void goToPostBodyFrag(){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frag, new PostBodyFragment())
+                .commit();
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         fragStack.clear();
@@ -201,6 +215,10 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.bottomNav_cores:
                 goToCoursesFrag(false);
+                break;
+
+            case R.id.bottomNav_posts:
+                goToPostsFrag();
                 break;
         }
         return true;

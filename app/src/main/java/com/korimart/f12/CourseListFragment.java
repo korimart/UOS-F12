@@ -142,10 +142,7 @@ public class CourseListFragment extends Fragment {
                     sj.add(child.getText());
                 }
 
-                MainActivity ma = (MainActivity) getActivity();
-                if (ma == null) return;
-
-                ma.goToCourseDescFrag(() -> mainActivity.goToCoursesFrag(major), position, sj.toString(), major);
+                mainActivity.goToCourseDescFrag(() -> mainActivity.goToCoursesFrag(major), position, sj.toString(), major);
             });
 
             return new ViewHolder(view);

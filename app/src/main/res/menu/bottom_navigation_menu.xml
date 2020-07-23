@@ -15,6 +15,11 @@
         android:icon="@android:drawable/ic_menu_compass"
         />
 
+    <item android:title="게시판"
+        android:id="@+id/bottomNav_posts"
+        android:icon="@android:drawable/ic_menu_upload"
+        />
+
     <item android:title="업데이트"
         android:id="@+id/bottomNav_help"
         android:icon="@android:drawable/ic_menu_help"
