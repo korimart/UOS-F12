@@ -217,9 +217,9 @@ public class MainActivity extends AppCompatActivity
                 goToCoursesFrag(false);
                 break;
 
-//            case R.id.bottomNav_posts:
-//                goToPostsFrag();
-//                break;
+            case R.id.bottomNav_posts:
+                goToPostsFrag();
+                break;
         }
         return true;
     }
