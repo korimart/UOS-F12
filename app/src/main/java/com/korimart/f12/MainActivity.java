@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
 import com.google.android.material.badge.BadgeDrawable;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
-            if (v instanceof EditText) {
+            if (v instanceof AutoCompleteTextView) {
                 Rect outRect = new Rect();
                 v.getGlobalVisibleRect(outRect);
                 if (!outRect.contains((int)ev.getRawX(), (int)ev.getRawY())) {
@@ -193,6 +194,13 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frag, new PostBodyFragment())
+                .commit();
+    }
+
+    public void goToWritePostFrag(){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frag, new WritePostFragment())
                 .commit();
     }
 

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,9 +22,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -34,6 +33,8 @@ public class PostsFragment extends Fragment {
 
     private RecyclerView posts;
     private PostsAdapter postsAdapter;
+    private Button write;
+
     private String guid;
 
     @Override
@@ -55,9 +56,11 @@ public class PostsFragment extends Fragment {
         ViewModelProvider vmp = new ViewModelProvider(mainActivity, new ViewModelProvider.NewInstanceFactory());
         postsViewModel = vmp.get(PostsViewModel.class);
 
+        posts = view.findViewById(R.id.posts);
+        write = view.findViewById(R.id.write);
+
         guid = getOrCreateGuid();
 
-        posts = view.findViewById(R.id.posts);
         posts.setLayoutManager(new LinearLayoutManager(getContext()));
         postsAdapter = new PostsAdapter();
         posts.setAdapter(postsAdapter);
@@ -88,6 +91,8 @@ public class PostsFragment extends Fragment {
                 Log.i("hehe", "dx " + dx + " dy " + dy);
             }
         });
+
+        write.setOnClickListener(v -> mainActivity.goToWritePostFrag());
 
         postsViewModel.getPosts().observe(this, list -> postsAdapter.notifyDataSetChanged());
 
