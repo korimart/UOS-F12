@@ -149,6 +149,10 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
     public void applyFilter(WiseViewModel wiseViewModel) {
         CourseListParser.Result
                 r = (CourseListParser.Result) wiseViewModel.getMajorList().getValue();
+
+        // can be null when course list not yet loaded and applyFilter is called by search bar
+        if (r == null) return;
+
         List<CourseListParser.CourseInfo> filtered = commons.applyFilterOnYearLevels(r.courseInfos);
 
         filtered.removeIf(courseInfo -> !courseInfo.name.contains(commons.filterText));

@@ -40,6 +40,11 @@ public class CoresFilterFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
+        // if spinners are not initialized don't do anything
+        if (coresViewModel.getSchoolYears().getValue() == null)
+            return;
+
         coresViewModel.setTitleFromFilter();
         if (shouldFetchCourses){
             coresViewModel.fetchFromFilter(wiseViewModel, mainActivity);

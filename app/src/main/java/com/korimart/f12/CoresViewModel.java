@@ -86,6 +86,10 @@ public class CoresViewModel extends ViewModel implements CourseListViewModel {
     public void applyFilter(WiseViewModel wiseViewModel){
         CourseListParser.Result
                 r = (CourseListParser.Result) wiseViewModel.getCoreList().getValue();
+
+        // can be null when course list not yet loaded and applyFilter is called by search bar
+        if (r == null) return;
+
         List<CourseListParser.CourseInfo> filtered = new ArrayList<>(r.courseInfos);
 
         if (selections[2] > 0){

@@ -76,6 +76,10 @@ public class MajorsFilterFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
 
+        // if spinners are not initialized don't do anything
+        if (majorsViewModel.getSchoolYears().getValue() == null)
+            return;
+
         SharedPreferences prefs = mainActivity.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt("savedSchoolYear", Integer.parseInt(((StringPair) schoolYear.getSelectedItem()).s1));
