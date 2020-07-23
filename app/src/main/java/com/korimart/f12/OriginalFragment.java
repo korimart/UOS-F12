@@ -36,7 +36,8 @@ public class OriginalFragment extends Fragment {
         ViewModelProvider vmp = new ViewModelProvider(getActivity(), new ViewModelProvider.NewInstanceFactory());
         WiseViewModel wiseViewModel = vmp.get(WiseViewModel.class);
         text = view.findViewById(R.id.original_text);
-//        text.setText(prettyFormat(f12ViewModel.getF12Fetched().response));
+
+        wiseViewModel.getF12Fetched().observe(this, fetched -> text.setText(prettyFormat(fetched.response)));
     }
 
     // from

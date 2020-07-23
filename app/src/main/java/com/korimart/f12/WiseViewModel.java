@@ -175,6 +175,10 @@ public class WiseViewModel extends ViewModel {
         coreListLiveData.postValue(joined);
     }
 
+    public LiveData<WiseFetcher.Result> getF12Fetched(){
+        return f12FetchParser.getfCache().resultLiveData;
+    }
+
     public LiveData<WiseParser.Result> getF12(){
         return f12FetchParser.getpCache().resultLiveData;
     }
