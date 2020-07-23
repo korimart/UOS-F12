@@ -183,10 +183,6 @@ public class WiseViewModel extends ViewModel {
         return f12FetchParser.getpCache().resultLiveData;
     }
 
-    public LiveData<WiseParser.Result> getF12Info() {
-        return f12InfoFetchParser.getpCache().resultLiveData;
-    }
-
     public LiveData<WiseParser.Result> getSchoolList() {
         return schoolListFetchParser.getpCache().resultLiveData;
     }
