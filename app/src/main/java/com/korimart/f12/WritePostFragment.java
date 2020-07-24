@@ -38,7 +38,7 @@ public class WritePostFragment extends Fragment {
         public String user;
         public String body;
         public Map<String, Boolean> likers = new HashMap<>();
-        public Map<String, Integer> mappings = new HashMap<>();
+        public Map<String, Long> mappings = new HashMap<>();
         public Map<String, Object> comments = new HashMap<>();
     }
 

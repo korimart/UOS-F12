@@ -7,12 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -27,6 +27,7 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.Transaction;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class PostBodyFragment extends Fragment {
 
     private String guid;
     private String postKey;
-    private Integer myNumber;
+    private Long myNumber;
 
     private PostBodyViewModel postBodyViewModel;
 
@@ -109,32 +110,72 @@ public class PostBodyFragment extends Fragment {
         postBodyViewModel.clear();
     }
 
-    private void sendComment(String comment) {
-        dbRef.child("suggestionsContent").child(postKey).runTransaction(new Transaction.Handler() {
+
+    private void sendThumbsUp() {
+        dbRef.child("suggestionsContent").child(postKey).child("likers").runTransaction(new Transaction.Handler() {
             @NonNull
             @Override
             public Transaction.Result doTransaction(@NonNull MutableData currentData) {
-                WritePostFragment.PostContent post = currentData.getValue(WritePostFragment.PostContent.class);
-                if (post == null)
-                    return Transaction.success(currentData);
+                HashMap<String, Object> likers = (HashMap<String, Object>) currentData.getValue();
+                if (likers == null)
+                    likers = new HashMap<>();
+
+                if (likers.containsKey(guid))
+                    return Transaction.abort();
+
+                likers.put(guid, true);
+                currentData.setValue(likers);
+                return Transaction.success(currentData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+                if (committed){
+                    dbRef.child("suggestionsSummary").child(postKey).child("thumbsUp")
+                            .setValue(ServerValue.increment(1), (error1, ref) -> {
+                        if (error1 == null)
+                            postBodyViewModel.fetch(postKey);
+                    });
+                }
+                else
+                    Toast.makeText(mainActivity, "이미 따봉한 글입니다", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void sendComment(String comment) {
+        dbRef.child("suggestionsContent").child(postKey).child("mappings").runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                HashMap<String, Object> mappings = (HashMap<String, Object>) currentData.getValue();
+                if (mappings == null)
+                    mappings = new HashMap<>();
 
                 if (myNumber == null){
                     int number;
-                    if (post.mappings.isEmpty())
+                    if (mappings.isEmpty())
                         number = 1;
-                    else
-                        number = Collections.max(post.mappings.values()) + 1;
-                    post.mappings.put(guid, number);
+                    else {
+                        number = 0;
+                        for (Object o : mappings.values())
+                            number = Math.max(number, (Integer) o);
+                        number++;
+                    }
+                    mappings.put(guid, number);
                 }
+                else
+                    return Transaction.success(currentData);
 
-                currentData.setValue(post);
+
+                currentData.setValue(mappings);
                 return Transaction.success(currentData);
             }
 
             @Override
             public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
                 if (error == null){
-                    myNumber = currentData.getValue(WritePostFragment.PostContent.class).mappings.get(guid);
+                    myNumber = ((HashMap<String, Long>) currentData.getValue()).get(guid);
                     String commentKey = dbRef.child("suggestionsContent").child(postKey).child("comments").push().getKey();
 
                     Map<String, Object> update = new HashMap<>();
@@ -161,7 +202,7 @@ public class PostBodyFragment extends Fragment {
             switch (viewType){
                 case 0:
                     view = li.inflate(R.layout.item_post_body, parent, false);
-                    viewHolder = new PostsFragment.PostsViewHolder(view);
+                    viewHolder = new PostViewHolder(view);
                     break;
 
                 default:
@@ -178,7 +219,7 @@ public class PostBodyFragment extends Fragment {
             WritePostFragment.PostContent content = postBodyViewModel.getPostContent().getValue();
             switch (holder.getItemViewType()){
                 case 0:
-                    PostsFragment.PostsViewHolder post = (PostsFragment.PostsViewHolder) holder;
+                    PostViewHolder post = (PostViewHolder) holder;
                     PostsFragment.PostSummary postSummary = postBodyViewModel.getPostSummary().getValue();
                     post.setMembers(
                             postSummary.title,
@@ -211,6 +252,16 @@ public class PostBodyFragment extends Fragment {
         @Override
         public int getItemViewType(int position) {
             return position;
+        }
+    }
+
+    class PostViewHolder extends PostsFragment.PostsViewHolder {
+        ImageView thumb;
+
+        PostViewHolder(@NonNull View itemView) {
+            super(itemView);
+            thumb = itemView.findViewById(R.id.thumbsUpButton);
+            thumb.setOnClickListener(v -> sendThumbsUp());
         }
     }
 
