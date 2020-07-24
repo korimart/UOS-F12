@@ -110,6 +110,6 @@ public class WritePostFragment extends Fragment {
         childUpdates.put("/suggestionsContent/" + key, postContent);
         childUpdates.put("/suggestionsSummary/" + key, postSummary);
 
-        dbRef.updateChildren(childUpdates, (error, ref) -> postsViewModel.fetchPosts());
+        dbRef.updateChildren(childUpdates, (error, ref) -> postsViewModel.fetchPosts(true));
     }
 }

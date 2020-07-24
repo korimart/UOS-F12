@@ -46,6 +46,10 @@ public class PostBodyViewModel extends ViewModel {
         });
     }
 
+    public void clear(){
+        postContent.setValue(null);
+    }
+
     public LiveData<WritePostFragment.PostContent> getPostContent() {
         return postContent;
     }

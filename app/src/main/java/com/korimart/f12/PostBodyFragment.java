@@ -94,11 +94,19 @@ public class PostBodyFragment extends Fragment {
         });
 
         postBodyViewModel.getPostContent().observe(this, content -> {
+            if (content == null) return;
+
             myNumber = content.mappings.get(guid);
             adapter.notifyDataSetChanged();
         });
 
         postBodyViewModel.onViewCreated(postKey);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        postBodyViewModel.clear();
     }
 
     private void sendComment(String comment) {
@@ -193,6 +201,9 @@ public class PostBodyFragment extends Fragment {
 
         @Override
         public int getItemCount() {
+            PostsFragment.PostSummary postSummary = postBodyViewModel.getPostSummary().getValue();
+            if (postSummary == null) return 0;
+
             WritePostFragment.PostContent post = postBodyViewModel.getPostContent().getValue();
             return post == null ? 0 : post.comments.size() + 1;
         }

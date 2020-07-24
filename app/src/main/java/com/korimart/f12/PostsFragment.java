@@ -34,7 +34,6 @@ public class PostsFragment extends Fragment {
     private RecyclerView posts;
     private PostsAdapter postsAdapter;
     private Button write;
-    private Button refresh;
 
     private String guid;
 
@@ -59,7 +58,6 @@ public class PostsFragment extends Fragment {
 
         posts = view.findViewById(R.id.postSummaries);
         write = view.findViewById(R.id.write);
-        refresh = view.findViewById(R.id.refresh);
 
         guid = getOrCreateGuid();
 
@@ -72,29 +70,15 @@ public class PostsFragment extends Fragment {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                switch (newState){
-                    case RecyclerView.SCROLL_STATE_IDLE:
-                        Log.i("hehe", "idle");
-                        break;
 
-                    case RecyclerView.SCROLL_STATE_DRAGGING:
-                        Log.i("hehe", "dragging");
-                        break;
-
-                    case RecyclerView.SCROLL_STATE_SETTLING:
-                        Log.i("hehe", "settling");
-                        break;
-                }
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE)
+                    postsViewModel.fetchPosts(false);
+                else if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE)
+                    postsViewModel.fetchPosts(true);
             }
         });
 
         write.setOnClickListener(v -> mainActivity.goToWritePostFrag());
-        refresh.setOnClickListener(v -> postsViewModel.fetchPosts());
 
         postsViewModel.getPosts().observe(this, list -> postsAdapter.notifyDataSetChanged());
 
@@ -137,7 +121,12 @@ public class PostsFragment extends Fragment {
             view.setOnClickListener(v -> {
                 RecyclerView.ViewHolder viewHolder = posts.getChildViewHolder(v);
                 int position = viewHolder.getAdapterPosition();
-                String postKey = postsViewModel.getPosts().getValue().get(position).key;
+
+                List<PostSummary> postSummaries = postsViewModel.getPosts().getValue();
+                if (position >= postSummaries.size())
+                    return;
+
+                String postKey = postSummaries.get(position).key;
                 mainActivity.goToPostBodyFrag(postKey);
             });
 
@@ -147,19 +136,37 @@ public class PostsFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull PostsViewHolder holder, int position) {
             List<PostSummary> postSummaries = postsViewModel.getPosts().getValue();
-            PostSummary postSummary = postSummaries.get(position);
-            holder.setMembers(
-                    postSummary.title,
-                    postSummary.body,
-                    postSummary.timeStamp,
-                    postSummary.thumbsUp,
-                    postSummary.comments);
+            if (position < postSummaries.size()){
+                PostSummary postSummary = postSummaries.get(position);
+                holder.setMembers(
+                        postSummary.title,
+                        postSummary.body,
+                        postSummary.timeStamp,
+                        postSummary.thumbsUp,
+                        postSummary.comments);
+            }
+            else if (!postsViewModel.isNoMorePosts()) {
+                holder.setMembers(
+                        "가져오는 중",
+                        "가져오는 중이에염",
+                        0,
+                        9999,
+                        9999);
+            }
+            else {
+                holder.setMembers(
+                        "더 이상 가져올 글이 없습니다.",
+                        "없어요",
+                        0,
+                        9999,
+                        9999);
+            }
         }
 
         @Override
         public int getItemCount() {
             List<PostSummary> postSummaries = postsViewModel.getPosts().getValue();
-            return postSummaries == null ? 0 : postSummaries.size();
+            return postSummaries == null ? 0 : postSummaries.size() + 1;
         }
     }
 
