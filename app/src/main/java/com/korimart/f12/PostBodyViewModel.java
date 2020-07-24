@@ -14,12 +14,25 @@ import com.google.firebase.database.ValueEventListener;
 public class PostBodyViewModel extends ViewModel {
     private DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
     private MutableLiveData<WritePostFragment.PostContent> postContent = new MutableLiveData<>();
+    private MutableLiveData<PostsFragment.PostSummary> postSummary = new MutableLiveData<>();
 
     public void onViewCreated(String postKey){
         fetch(postKey);
     }
 
     public void fetch(String postKey){
+        ref.child("suggestionsSummary").child(postKey).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                PostsFragment.PostSummary sum = snapshot.getValue(PostsFragment.PostSummary.class);
+                postSummary.setValue(sum);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
         ref.child("suggestionsContent").child(postKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -29,12 +42,15 @@ public class PostBodyViewModel extends ViewModel {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
 
     public LiveData<WritePostFragment.PostContent> getPostContent() {
         return postContent;
+    }
+
+    public LiveData<PostsFragment.PostSummary> getPostSummary() {
+        return postSummary;
     }
 }

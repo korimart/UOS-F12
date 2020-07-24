@@ -34,6 +34,7 @@ public class PostsFragment extends Fragment {
     private RecyclerView posts;
     private PostsAdapter postsAdapter;
     private Button write;
+    private Button refresh;
 
     private String guid;
 
@@ -58,6 +59,7 @@ public class PostsFragment extends Fragment {
 
         posts = view.findViewById(R.id.postSummaries);
         write = view.findViewById(R.id.write);
+        refresh = view.findViewById(R.id.refresh);
 
         guid = getOrCreateGuid();
 
@@ -92,6 +94,7 @@ public class PostsFragment extends Fragment {
         });
 
         write.setOnClickListener(v -> mainActivity.goToWritePostFrag());
+        refresh.setOnClickListener(v -> postsViewModel.fetchPosts());
 
         postsViewModel.getPosts().observe(this, list -> postsAdapter.notifyDataSetChanged());
 
@@ -134,7 +137,8 @@ public class PostsFragment extends Fragment {
             view.setOnClickListener(v -> {
                 RecyclerView.ViewHolder viewHolder = posts.getChildViewHolder(v);
                 int position = viewHolder.getAdapterPosition();
-                mainActivity.goToPostBodyFrag(position);
+                String postKey = postsViewModel.getPosts().getValue().get(position).key;
+                mainActivity.goToPostBodyFrag(postKey);
             });
 
             return new PostsViewHolder(view);

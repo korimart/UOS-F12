@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
 import com.google.android.material.badge.BadgeDrawable;
@@ -191,10 +190,10 @@ public class MainActivity extends AppCompatActivity
                 .commit();
     }
 
-    public void goToPostBodyFrag(int position){
+    public void goToPostBodyFrag(String postKey){
         PostBodyFragment pbf = new PostBodyFragment();
         Bundle args = new Bundle();
-        args.putInt("position", position);
+        args.putString("postKey", postKey);
         pbf.setArguments(args);
 
         getSupportFragmentManager()

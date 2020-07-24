@@ -41,11 +41,9 @@ public class PostBodyFragment extends Fragment {
     private Button submit;
 
     private String guid;
-    private int position;
-    private PostsFragment.PostSummary postSummary;
+    private String postKey;
     private Integer myNumber;
 
-    private PostsViewModel postsViewModel;
     private PostBodyViewModel postBodyViewModel;
 
     @Override
@@ -71,11 +69,9 @@ public class PostBodyFragment extends Fragment {
         }
 
         ViewModelProvider vmp = new ViewModelProvider(getActivity(), new ViewModelProvider.NewInstanceFactory());
-        postsViewModel = vmp.get(PostsViewModel.class);
         postBodyViewModel = vmp.get(PostBodyViewModel.class);
 
-        position = getArguments().getInt("position");
-        postSummary = postsViewModel.getPosts().getValue().get(position);
+        postKey = getArguments().getString("postKey");
 
         recycler = view.findViewById(R.id.recycler);
         writeComment = view.findViewById(R.id.writeComment);
@@ -102,11 +98,11 @@ public class PostBodyFragment extends Fragment {
             adapter.notifyDataSetChanged();
         });
 
-        postBodyViewModel.onViewCreated(postSummary.key);
+        postBodyViewModel.onViewCreated(postKey);
     }
 
     private void sendComment(String comment) {
-        dbRef.child("suggestionsContent").child(postSummary.key).runTransaction(new Transaction.Handler() {
+        dbRef.child("suggestionsContent").child(postKey).runTransaction(new Transaction.Handler() {
             @NonNull
             @Override
             public Transaction.Result doTransaction(@NonNull MutableData currentData) {
@@ -131,15 +127,15 @@ public class PostBodyFragment extends Fragment {
             public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
                 if (error == null){
                     myNumber = currentData.getValue(WritePostFragment.PostContent.class).mappings.get(guid);
-                    String commentKey = dbRef.child("suggestionsContent").child(postSummary.key).child("comments").push().getKey();
+                    String commentKey = dbRef.child("suggestionsContent").child(postKey).child("comments").push().getKey();
 
                     Map<String, Object> update = new HashMap<>();
-                    update.put("suggestionsContent/" + postSummary.key + "/comments/" + commentKey + "/comment", comment);
-                    update.put("suggestionsContent/" + postSummary.key + "/comments/" + commentKey + "/number", myNumber);
-                    update.put("suggestionsSummary/" + postSummary.key + "/comments", ServerValue.increment(1));
+                    update.put("suggestionsContent/" + postKey + "/comments/" + commentKey + "/comment", comment);
+                    update.put("suggestionsContent/" + postKey + "/comments/" + commentKey + "/number", myNumber);
+                    update.put("suggestionsSummary/" + postKey + "/comments", ServerValue.increment(1));
                     dbRef.updateChildren(update, (error1, ref) -> {
                         if (error1 == null)
-                            postBodyViewModel.fetch(postSummary.key);
+                            postBodyViewModel.fetch(postKey);
                     });
                 }
             }
@@ -175,6 +171,7 @@ public class PostBodyFragment extends Fragment {
             switch (holder.getItemViewType()){
                 case 0:
                     PostsFragment.PostsViewHolder post = (PostsFragment.PostsViewHolder) holder;
+                    PostsFragment.PostSummary postSummary = postBodyViewModel.getPostSummary().getValue();
                     post.setMembers(
                             postSummary.title,
                             content.body,
