@@ -140,6 +140,7 @@ public class PostBodyFragment extends Fragment {
             @Override
             public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
                 if (committed){
+                    Toast.makeText(mainActivity, "따봉을 눌렀습니다", Toast.LENGTH_LONG).show();
                     dbRef.child("suggestionsSummary").child(postKey).child("thumbsUp")
                             .setValue(ServerValue.increment(1), (error1, ref) -> {
                         if (error1 == null)
