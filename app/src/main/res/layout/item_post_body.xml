@@ -10,29 +10,29 @@
     android:paddingBottom="20dp">
 
     <TextView
-        android:id="@+id/textView23"
+        android:id="@+id/thumbsUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:text="따봉 1"
         android:textColor="#D81616"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView25"
-        app:layout_constraintStart_toEndOf="@+id/textView25" />
+        app:layout_constraintBottom_toBottomOf="@+id/time"
+        app:layout_constraintStart_toEndOf="@+id/time" />
 
     <TextView
-        android:id="@+id/textView24"
+        android:id="@+id/comments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:text="댓글 5"
         android:textColor="@color/colorPrimary"
         android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/textView23"
-        app:layout_constraintTop_toTopOf="@+id/textView23" />
+        app:layout_constraintStart_toEndOf="@+id/thumbsUp"
+        app:layout_constraintTop_toTopOf="@+id/thumbsUp" />
 
     <TextView
-        android:id="@+id/textView20"
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="어제 페이커 무빙 봤냐"
@@ -45,7 +45,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView21"
+        android:id="@+id/body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -54,25 +54,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView20" />
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <TextView
-        android:id="@+id/textView25"
+        android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="5분전"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView21" />
+        app:layout_constraintTop_toBottomOf="@+id/body" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/thumbsUpButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:tint="#D81616"
-        app:layout_constraintBottom_toBottomOf="@+id/textView24"
+        app:layout_constraintBottom_toBottomOf="@+id/comments"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView24"
+        app:layout_constraintTop_toTopOf="@+id/comments"
         app:srcCompat="@drawable/ic_thumb_up_black_24dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

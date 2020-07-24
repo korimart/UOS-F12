@@ -56,7 +56,7 @@ public class PostsFragment extends Fragment {
         ViewModelProvider vmp = new ViewModelProvider(mainActivity, new ViewModelProvider.NewInstanceFactory());
         postsViewModel = vmp.get(PostsViewModel.class);
 
-        posts = view.findViewById(R.id.posts);
+        posts = view.findViewById(R.id.postSummaries);
         write = view.findViewById(R.id.write);
 
         guid = getOrCreateGuid();
@@ -88,7 +88,6 @@ public class PostsFragment extends Fragment {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                Log.i("hehe", "dx " + dx + " dy " + dy);
             }
         });
 
@@ -113,14 +112,16 @@ public class PostsFragment extends Fragment {
     }
 
     @IgnoreExtraProperties
-    public static class Post {
+    public static class PostSummary {
+        public String key;
+        public String user;
         public String title;
         public String body;
         public long timeStamp;
         public int thumbsUp;
         public int comments;
 
-        public Post(){}
+        public PostSummary(){}
     }
 
     class PostsAdapter extends RecyclerView.Adapter<PostsViewHolder> {
@@ -131,7 +132,9 @@ public class PostsFragment extends Fragment {
                     .inflate(R.layout.item_post, parent, false);
 
             view.setOnClickListener(v -> {
-                mainActivity.goToPostBodyFrag();
+                RecyclerView.ViewHolder viewHolder = posts.getChildViewHolder(v);
+                int position = viewHolder.getAdapterPosition();
+                mainActivity.goToPostBodyFrag(position);
             });
 
             return new PostsViewHolder(view);
@@ -139,49 +142,24 @@ public class PostsFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull PostsViewHolder holder, int position) {
-            List<Post> posts = postsViewModel.getPosts().getValue();
-            Post post = posts.get(position);
-            holder.title.setText(post.title);
-            holder.body.setText(post.body);
-            holder.thumbsUp.setText("따봉 " + post.thumbsUp);
-            holder.comments.setText("댓글 " + post.comments);
-
-            long currTime = System.currentTimeMillis();
-            long diff = (currTime - post.timeStamp) / 1000;
-
-            String formattedTime;
-            if (diff < 60)
-                formattedTime = diff + "초전";
-            else if (diff < 3600)
-                formattedTime = diff / 60 + "분전";
-            else if (diff < 86400)
-                formattedTime = diff / 3600 + "시간전";
-            else {
-                Date dateThen = new Date(post.timeStamp);
-                LocalDate then = dateThen.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                LocalDate now = LocalDate.now();
-
-                DateFormat df;
-                if (then.getYear() == now.getYear()){
-                    df = new SimpleDateFormat("MM월 dd일");
-                }
-                else
-                    df = new SimpleDateFormat("yyyy년 MM월 dd일");
-
-                formattedTime = df.format(dateThen);
-            }
-
-            holder.time.setText(formattedTime);
+            List<PostSummary> postSummaries = postsViewModel.getPosts().getValue();
+            PostSummary postSummary = postSummaries.get(position);
+            holder.setMembers(
+                    postSummary.title,
+                    postSummary.body,
+                    postSummary.timeStamp,
+                    postSummary.thumbsUp,
+                    postSummary.comments);
         }
 
         @Override
         public int getItemCount() {
-            List<Post> posts = postsViewModel.getPosts().getValue();
-            return posts == null ? 0 : posts.size();
+            List<PostSummary> postSummaries = postsViewModel.getPosts().getValue();
+            return postSummaries == null ? 0 : postSummaries.size();
         }
     }
 
-    class PostsViewHolder extends RecyclerView.ViewHolder {
+    static class PostsViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         TextView body;
         TextView time;
@@ -195,6 +173,40 @@ public class PostsFragment extends Fragment {
             time = itemView.findViewById(R.id.time);
             thumbsUp = itemView.findViewById(R.id.thumbsUp);
             comments = itemView.findViewById(R.id.comments);
+        }
+
+        void setMembers(String title, String body, long timeStamp, int thumbsUp, int comments){
+            this.title.setText(title);
+            this.body.setText(body);
+            this.thumbsUp.setText("따봉 " + thumbsUp);
+            this.comments.setText("댓글 " + comments);
+
+            long currTime = System.currentTimeMillis();
+            long diff = (currTime - timeStamp) / 1000;
+
+            String formattedTime;
+            if (diff < 60)
+                formattedTime = diff + "초전";
+            else if (diff < 3600)
+                formattedTime = diff / 60 + "분전";
+            else if (diff < 86400)
+                formattedTime = diff / 3600 + "시간전";
+            else {
+                Date dateThen = new Date(timeStamp);
+                LocalDate then = dateThen.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalDate now = LocalDate.now();
+
+                DateFormat df;
+                if (then.getYear() == now.getYear()){
+                    df = new SimpleDateFormat("MM월 dd일");
+                }
+                else
+                    df = new SimpleDateFormat("yyyy년 MM월 dd일");
+
+                formattedTime = df.format(dateThen);
+            }
+
+            this.time.setText(formattedTime);
         }
     }
 }

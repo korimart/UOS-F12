@@ -190,10 +190,15 @@ public class MainActivity extends AppCompatActivity
                 .commit();
     }
 
-    public void goToPostBodyFrag(){
+    public void goToPostBodyFrag(int position){
+        PostBodyFragment pbf = new PostBodyFragment();
+        Bundle args = new Bundle();
+        args.putInt("position", position);
+        pbf.setArguments(args);
+
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frag, new PostBodyFragment())
+                .replace(R.id.frag, pbf)
                 .commit();
     }
 
