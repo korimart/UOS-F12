@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
-            if (v instanceof AutoCompleteTextView) {
+            if (v instanceof EditText) {
                 Rect outRect = new Rect();
                 v.getGlobalVisibleRect(outRect);
                 if (!outRect.contains((int)ev.getRawX(), (int)ev.getRawY())) {
@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
+                else return super.dispatchTouchEvent(ev);
 
                 return true;
             }

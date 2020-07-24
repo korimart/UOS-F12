@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
@@ -35,11 +34,12 @@ public class WritePostFragment extends Fragment {
     private String guid;
 
     @IgnoreExtraProperties
-    public static class PostContentUpload {
+    public static class PostContent {
         public String user;
         public String body;
         public Map<String, Boolean> likers = new HashMap<>();
         public Map<String, Integer> mappings = new HashMap<>();
+        public Map<String, Object> comments = new HashMap<>();
     }
 
     @Override
@@ -79,6 +79,16 @@ public class WritePostFragment extends Fragment {
                 return;
             }
 
+            if (title.isEmpty()){
+                Toast.makeText(getContext(), "제목을 입력하세요", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            if (this.body.getText().toString().isEmpty()){
+                Toast.makeText(getContext(), "내용을 입력하세요", Toast.LENGTH_LONG).show();
+                return;
+            }
+
             writePost(title, this.body.getText().toString());
             mainActivity.goToPostsFrag();
         });
@@ -86,7 +96,7 @@ public class WritePostFragment extends Fragment {
 
     private void writePost(String title, String body){
         String key = dbRef.child("suggestionsSummary").push().getKey();
-        PostContentUpload postContent = new PostContentUpload();
+        PostContent postContent = new PostContent();
         postContent.user = guid;
         postContent.body = body;
 
