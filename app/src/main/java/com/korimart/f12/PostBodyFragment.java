@@ -163,13 +163,13 @@ public class PostBodyFragment extends Fragment {
                     mappings = new HashMap<>();
 
                 if (myNumber == null){
-                    int number;
+                    long number;
                     if (mappings.isEmpty())
                         number = 1;
                     else {
                         number = 0;
                         for (Object o : mappings.values())
-                            number = Math.max(number, (Integer) o);
+                            number = Math.max(number, (Long) o);
                         number++;
                     }
                     mappings.put(guid, number);
