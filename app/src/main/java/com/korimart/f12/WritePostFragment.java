@@ -102,7 +102,7 @@ public class WritePostFragment extends Fragment {
 
         PostsFragment.PostSummary postSummary = new PostsFragment.PostSummary();
         postSummary.title = title;
-        postSummary.body = body.substring(0, Math.min(20, body.length()));
+        postSummary.body = body.substring(0, Math.min(70, body.length()));
         postSummary.user = guid;
         postSummary.timeStamp = System.currentTimeMillis();
 
