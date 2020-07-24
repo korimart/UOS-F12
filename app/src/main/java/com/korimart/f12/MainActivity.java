@@ -190,7 +190,8 @@ public class MainActivity extends AppCompatActivity
                 .commit();
     }
 
-    public void goToPostBodyFrag(String postKey){
+    public void goToPostBodyFrag(Runnable howToGoBack, String postKey){
+        fragStack.add(howToGoBack);
         PostBodyFragment pbf = new PostBodyFragment();
         Bundle args = new Bundle();
         args.putString("postKey", postKey);
@@ -202,7 +203,8 @@ public class MainActivity extends AppCompatActivity
                 .commit();
     }
 
-    public void goToWritePostFrag(){
+    public void goToWritePostFrag(Runnable howToGoBack){
+        fragStack.add(howToGoBack);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frag, new WritePostFragment())

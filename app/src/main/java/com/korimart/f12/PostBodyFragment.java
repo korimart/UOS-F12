@@ -1,7 +1,9 @@
 package com.korimart.f12;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -27,9 +30,8 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.Transaction;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PostBodyFragment extends Fragment {
@@ -94,11 +96,13 @@ public class PostBodyFragment extends Fragment {
             writeComment.setText("");
         });
 
-        postBodyViewModel.getPostContent().observe(this, content -> {
-            if (content == null) return;
+        postBodyViewModel.getBody().observe(this, body -> adapter.notifyDataSetChanged());
+        postBodyViewModel.getComments().observe(this, body -> adapter.notifyDataSetChanged());
+        postBodyViewModel.getPostSummary().observe(this, sum -> {
+            if (sum == null) return;
 
-            myNumber = content.mappings.get(guid);
-            adapter.notifyDataSetChanged();
+            if (sum.user.equals(guid))
+                myNumber = 0L;
         });
 
         postBodyViewModel.onViewCreated(postKey);
@@ -112,6 +116,11 @@ public class PostBodyFragment extends Fragment {
 
 
     private void sendThumbsUp() {
+        if (postBodyViewModel.getPostSummary().getValue().user.equals(guid)){
+            Toast.makeText(mainActivity, "자신의 글은 따봉할 수 없습니다.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         dbRef.child("suggestionsContent").child(postKey).child("likers").runTransaction(new Transaction.Handler() {
             @NonNull
             @Override
@@ -175,10 +184,12 @@ public class PostBodyFragment extends Fragment {
             @Override
             public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
                 if (error == null){
-                    myNumber = ((HashMap<String, Long>) currentData.getValue()).get(guid);
+                    if (myNumber == null)
+                        myNumber = ((HashMap<String, Long>) currentData.getValue()).get(guid);
                     String commentKey = dbRef.child("suggestionsContent").child(postKey).child("comments").push().getKey();
 
                     Map<String, Object> update = new HashMap<>();
+                    update.put("suggestionsContent/" + postKey + "/comments/" + commentKey + "/timeStamp", System.currentTimeMillis());
                     update.put("suggestionsContent/" + postKey + "/comments/" + commentKey + "/comment", comment);
                     update.put("suggestionsContent/" + postKey + "/comments/" + commentKey + "/number", myNumber);
                     update.put("suggestionsSummary/" + postKey + "/comments", ServerValue.increment(1));
@@ -216,26 +227,25 @@ public class PostBodyFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            WritePostFragment.PostContent content = postBodyViewModel.getPostContent().getValue();
             switch (holder.getItemViewType()){
                 case 0:
                     PostViewHolder post = (PostViewHolder) holder;
                     PostsFragment.PostSummary postSummary = postBodyViewModel.getPostSummary().getValue();
                     post.setMembers(
                             postSummary.title,
-                            content.body,
+                            postBodyViewModel.getBody().getValue(),
                             postSummary.timeStamp,
                             postSummary.thumbsUp,
                             postSummary.comments);
                     break;
 
                 default:
+                    List<PostBodyViewModel.CommentInfo> comments = postBodyViewModel.getComments().getValue();
                     CommentViewHolder commentViewHolder = (CommentViewHolder) holder;
-                    Object temp = content.comments.values().toArray()[position - 1];
-                    HashMap<String, Object> comment = (HashMap<String, Object>) temp;
                     commentViewHolder.setMembers(
-                            Long.toString((Long) comment.get("number")),
-                            (String) comment.get("comment"));
+                            comments.get(position - 1).number,
+                            comments.get(position - 1).comment
+                    );
                     break;
             }
         }
@@ -245,8 +255,8 @@ public class PostBodyFragment extends Fragment {
             PostsFragment.PostSummary postSummary = postBodyViewModel.getPostSummary().getValue();
             if (postSummary == null) return 0;
 
-            WritePostFragment.PostContent post = postBodyViewModel.getPostContent().getValue();
-            return post == null ? 0 : post.comments.size() + 1;
+            List<PostBodyViewModel.CommentInfo> comments = postBodyViewModel.getComments().getValue();
+            return comments == null ? 0 : comments.size() + 1;
         }
 
         @Override
@@ -275,8 +285,13 @@ public class PostBodyFragment extends Fragment {
             comment = itemView.findViewById(R.id.comment);
         }
 
-        void setMembers(String nameNumber, String comment){
-            name.setText("어둠의 와이저 " + nameNumber);
+        void setMembers(Long nameNumber, String comment){
+            if (nameNumber == 0L){
+                name.setText("어둠의 작성자");
+                name.setTextColor(getResources().getColor(R.color.colorPrimary, getContext().getTheme()));
+            }
+            else
+                name.setText("어둠의 와이저 " + nameNumber);
             this.comment.setText(comment);
         }
     }

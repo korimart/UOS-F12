@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class PostsViewModel extends ViewModel {
-    private static final int defaultFetchNum = 1;
+    private static final int defaultFetchNum = 20;
 
     private DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
     private MutableLiveData<List<PostsFragment.PostSummary>> posts = new MutableLiveData<>();
@@ -35,27 +35,30 @@ public class PostsViewModel extends ViewModel {
     public void onViewCreated(){
         if (!firstOpen) return;
 
-        fetchPosts(true);
+        fetchPosts(false);
         firstOpen = false;
     }
 
     public void fetchPosts(boolean fetchLatest){
         Query query = ref.child("suggestionsSummary").orderByChild("timeStamp");
 
-        if (fetchLatest)
+        if (fetchLatest){
+            query = query.startAt(oldestTimeStamp);
+        }
+        else {
+            if (noMorePosts) return;
+
             if (firstOpen)
                 query = query.limitToLast(defaultFetchNum);
             else
-                query = query.startAt(latestTimeStamp + 1);
-        else {
-            if (noMorePosts) return;
-            query = query.endAt(oldestTimeStamp - 1).limitToLast(defaultFetchNum);
+                query = query.endAt(oldestTimeStamp - 1).limitToLast(defaultFetchNum);
         }
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<PostsFragment.PostSummary> postSummaries = posts.getValue();
+                List<PostsFragment.PostSummary> postSummaries =
+                        fetchLatest ? new ArrayList<>() : posts.getValue();
 
                 if (!fetchLatest && snapshot.getChildrenCount() < defaultFetchNum)
                     noMorePosts = true;
@@ -66,11 +69,14 @@ public class PostsViewModel extends ViewModel {
                     postSummaries.add(sum);
                 }
 
-                Collections.sort(postSummaries,
-                        Collections.reverseOrder((o1, o2) -> Long.compare(o1.timeStamp, o2.timeStamp)));
+                if (postSummaries.size() > 0){
+                    Collections.sort(postSummaries,
+                            Collections.reverseOrder((o1, o2) -> Long.compare(o1.timeStamp, o2.timeStamp)));
 
-                latestTimeStamp = postSummaries.get(0).timeStamp;
-                oldestTimeStamp = postSummaries.get(postSummaries.size() - 1).timeStamp;
+                    latestTimeStamp = postSummaries.get(0).timeStamp;
+                    oldestTimeStamp = postSummaries.get(postSummaries.size() - 1).timeStamp;
+                }
+
                 PostsViewModel.this.posts.setValue(postSummaries);
             }
 

@@ -73,12 +73,12 @@ public class PostsFragment extends Fragment {
 
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE)
                     postsViewModel.fetchPosts(false);
-                else if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE)
+                if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE)
                     postsViewModel.fetchPosts(true);
             }
         });
 
-        write.setOnClickListener(v -> mainActivity.goToWritePostFrag());
+        write.setOnClickListener(v -> mainActivity.goToWritePostFrag(() -> mainActivity.goToPostsFrag()));
 
         postsViewModel.getPosts().observe(this, list -> postsAdapter.notifyDataSetChanged());
 
@@ -127,7 +127,7 @@ public class PostsFragment extends Fragment {
                     return;
 
                 String postKey = postSummaries.get(position).key;
-                mainActivity.goToPostBodyFrag(postKey);
+                mainActivity.goToPostBodyFrag(() -> mainActivity.goToPostsFrag(), postKey);
             });
 
             return new PostsViewHolder(view);
