@@ -2,6 +2,7 @@ package com.korimart.f12;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,9 @@ import java.util.Locale;
 import java.util.StringJoiner;
 
 public class CourseListFragment extends Fragment {
+    private static int scrollPosition;
+    private static int top;
+
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
     private CourseListViewModel courseListViewModel;
@@ -57,6 +61,22 @@ public class CourseListFragment extends Fragment {
         courseListViewModel.onViewCreated(wiseViewModel, mainActivity);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        scrollPosition = linearLayoutManager.findFirstVisibleItemPosition();
+        View v = recyclerView.getChildAt(0);
+        top = v == null ? 0 : v.getTop() - recyclerView.getPaddingTop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        linearLayoutManager.scrollToPositionWithOffset(scrollPosition, top);
+    }
+
     private void initMembers(View view){
         major = getArguments().getBoolean("major");
 
@@ -72,6 +92,14 @@ public class CourseListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(mainActivity));
         adapter = new RecyclerViewAdapter();
         recyclerView.setAdapter(adapter);
+
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                Log.i("hehe", dx + " " + dy);
+            }
+        });
 
         DividerItemDecoration did = new DividerItemDecoration(mainActivity, DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(did);
