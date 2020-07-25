@@ -111,20 +111,24 @@ public class PostsFragment extends Fragment {
         public PostSummary(){}
     }
 
-    class PostsAdapter extends RecyclerView.Adapter<PostsViewHolder> {
+    class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @NonNull
         @Override
-        public PostsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            if (viewType == 1){
+                View view = LayoutInflater.from(getContext())
+                        .inflate(R.layout.item_post_system_message, parent, false);
+                return new SystemMessageViewHolder(view);
+            }
+
             View view = LayoutInflater.from(getContext())
                     .inflate(R.layout.item_post, parent, false);
+
+            List<PostSummary> postSummaries = postsViewModel.getPosts().getValue();
 
             view.setOnClickListener(v -> {
                 RecyclerView.ViewHolder viewHolder = posts.getChildViewHolder(v);
                 int position = viewHolder.getAdapterPosition();
-
-                List<PostSummary> postSummaries = postsViewModel.getPosts().getValue();
-                if (position >= postSummaries.size())
-                    return;
 
                 String postKey = postSummaries.get(position).key;
                 mainActivity.goToPostBodyFrag(() -> mainActivity.goToPostsFrag(), postKey);
@@ -134,11 +138,12 @@ public class PostsFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull PostsViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             List<PostSummary> postSummaries = postsViewModel.getPosts().getValue();
+
             if (position < postSummaries.size()){
                 PostSummary postSummary = postSummaries.get(position);
-                holder.setMembers(
+                ((PostsViewHolder) holder).setMembers(
                         postSummary.title,
                         postSummary.body,
                         postSummary.timeStamp,
@@ -146,20 +151,10 @@ public class PostsFragment extends Fragment {
                         postSummary.comments);
             }
             else if (!postsViewModel.isNoMorePosts()) {
-                holder.setMembers(
-                        "가져오는 중",
-                        "가져오는 중이에염",
-                        0,
-                        9999,
-                        9999);
+                ((SystemMessageViewHolder) holder).systemMessage.setText("가져오는 중이에염");
             }
             else {
-                holder.setMembers(
-                        "더 이상 가져올 글이 없습니다.",
-                        "없어요",
-                        0,
-                        9999,
-                        9999);
+                ((SystemMessageViewHolder) holder).systemMessage.setText("더 이상 가져올 글이 없습니다");
             }
         }
 
@@ -167,6 +162,22 @@ public class PostsFragment extends Fragment {
         public int getItemCount() {
             List<PostSummary> postSummaries = postsViewModel.getPosts().getValue();
             return postSummaries == null ? 0 : postSummaries.size() + 1;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            if (position < getItemCount() - 1)
+                return 0;
+            return 1;
+        }
+    }
+
+    static class SystemMessageViewHolder extends RecyclerView.ViewHolder {
+        TextView systemMessage;
+
+        public SystemMessageViewHolder(@NonNull View itemView) {
+            super(itemView);
+            systemMessage = itemView.findViewById(R.id.systemMessage);
         }
     }
 
