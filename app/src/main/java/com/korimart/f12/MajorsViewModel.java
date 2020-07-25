@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
+import androidx.core.util.Pair;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -72,6 +73,16 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
     @Override
     public String getFilterText() {
         return commons.filterText;
+    }
+
+    @Override
+    public void setScrollPosition(int position, int offset) {
+        commons.scrollPosOffset = new Pair<>(position, offset);
+    }
+
+    @Override
+    public Pair<Integer, Integer> getScrollPosition() {
+        return commons.scrollPosOffset;
     }
 
     public void fetchFilterAndFromFilter(WiseViewModel wiseViewModel, MainActivity mainActivity){

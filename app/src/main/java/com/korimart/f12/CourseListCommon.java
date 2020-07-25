@@ -3,6 +3,7 @@ package com.korimart.f12;
 import android.os.Handler;
 import android.os.Looper;
 
+import androidx.core.util.Pair;
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class CourseListCommon {
     String filterText = "";
     boolean firstOpen = true;
     Handler handler = new Handler(Looper.getMainLooper());
+    Pair<Integer, Integer> scrollPosOffset = new Pair<>(0, 0);
 
     public CourseListCommon(){
         filterOptions.setValue(new MajorsViewModel.FilterOptions());

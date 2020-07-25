@@ -1,5 +1,6 @@
 package com.korimart.f12;
 
+import androidx.core.util.Pair;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface CourseListViewModel {
 
     void applyFilterOnName(WiseViewModel wiseViewModel, String text);
     String getFilterText();
+    void setScrollPosition(int position, int offset);
+    Pair<Integer, Integer> getScrollPosition();
 }

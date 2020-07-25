@@ -1,5 +1,6 @@
 package com.korimart.f12;
 
+import androidx.core.util.Pair;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -53,6 +54,16 @@ public class CoresViewModel extends ViewModel implements CourseListViewModel {
     @Override
     public String getFilterText() {
         return commons.filterText;
+    }
+
+    @Override
+    public void setScrollPosition(int position, int offset) {
+        commons.scrollPosOffset = new Pair<>(position, offset);
+    }
+
+    @Override
+    public Pair<Integer, Integer> getScrollPosition() {
+        return commons.scrollPosOffset;
     }
 
     public void fetchFromFilter(WiseViewModel wiseViewModel, MainActivity mainActivity) {

@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -27,9 +28,6 @@ import java.util.Locale;
 import java.util.StringJoiner;
 
 public class CourseListFragment extends Fragment {
-    private static int scrollPosition;
-    private static int top;
-
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
     private CourseListViewModel courseListViewModel;
@@ -65,16 +63,18 @@ public class CourseListFragment extends Fragment {
     public void onPause() {
         super.onPause();
         LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-        scrollPosition = linearLayoutManager.findFirstVisibleItemPosition();
+        int scrollPosition = linearLayoutManager.findFirstVisibleItemPosition();
         View v = recyclerView.getChildAt(0);
-        top = v == null ? 0 : v.getTop() - recyclerView.getPaddingTop();
+        int top = v == null ? 0 : v.getTop() - recyclerView.getPaddingTop();
+        courseListViewModel.setScrollPosition(scrollPosition, top);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-        linearLayoutManager.scrollToPositionWithOffset(scrollPosition, top);
+        Pair<Integer, Integer> posOffset = courseListViewModel.getScrollPosition();
+        linearLayoutManager.scrollToPositionWithOffset(posOffset.first, posOffset.second);
     }
 
     private void initMembers(View view){
