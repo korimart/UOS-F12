@@ -70,7 +70,7 @@ public enum XMLHelper {
         NodeList nl = doc.getElementsByTagName(name);
         Node n = nl.item(0);
 
-        if (n == null) return null;
+        if (n == null) return "";
 
         Node nc = n.getFirstChild();
         return nc == null ? "" : nc.getTextContent();
@@ -80,7 +80,7 @@ public enum XMLHelper {
         NodeList nl = e.getElementsByTagName(name);
         Node n = nl.item(0);
 
-        if (n == null) return null;
+        if (n == null) return "";
 
         Node nc = n.getFirstChild();
         return nc == null ? "" : nc.getTextContent();
@@ -90,7 +90,7 @@ public enum XMLHelper {
         NodeList nl = doc.getElementsByTagName(name);
         Node n = nl.item(nl.getLength() - 1);
 
-        if (n == null) return null;
+        if (n == null) return "";
 
         Node nc = n.getFirstChild();
         return nc.getTextContent();

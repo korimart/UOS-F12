@@ -38,7 +38,7 @@ public class SyllabusViewModel extends ViewModel {
                 break;
 
             case parseFailed:
-                systemMessage.setValue("정보추출 실패 - 개발자에게 문의하세요");
+                systemMessage.setValue("정보추출 실패 (계획서가 아직 안 올라왔을 수도?)");
                 break;
 
             default:
