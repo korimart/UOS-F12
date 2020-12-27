@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.Instrumentation;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -60,13 +61,13 @@ public class MainActivity extends AppCompatActivity
                 Rect outRect = new Rect();
                 v.getGlobalVisibleRect(outRect);
                 if (!outRect.contains((int)ev.getRawX(), (int)ev.getRawY())) {
-                    v.clearFocus();
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    v.clearFocus();
+                    return true;
                 }
-                else return super.dispatchTouchEvent(ev);
 
-                return true;
+                return super.dispatchTouchEvent(ev);
             }
         }
         return super.dispatchTouchEvent(ev);
