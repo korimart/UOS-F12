@@ -1,0 +1,7 @@
+서울시립대학교 포털 시스템 접속을 위한 아이디와 비밀번호는 사용자의 기기에만 저장되며 어디에도 공유되지 않습니다.
+
+게시판 사용은 완전 익명으로 이루어지며 중복 따봉 방지를 위한 앱 고유 아이디만 기록됩니다. 이 아이디는 랜덤으로 생성되며 앱 재설치 시 초기화됩니다.
+
+The login information for portal.uos.ac.kr is stored locally only.
+
+Any use case of the in-app forum is anonymous. Only an installation-specific GUID is stored in a server to prevent a single user from clicking multiple likes on a post. This GUID is reset with every new installation.
