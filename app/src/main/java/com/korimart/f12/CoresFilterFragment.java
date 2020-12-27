@@ -72,7 +72,8 @@ public class CoresFilterFragment extends Fragment {
 
         semesterAdapter.add(new StringPair("1학기", "10"));
         semesterAdapter.add(new StringPair("2학기", "20"));
-        semesterAdapter.add(new StringPair("계절학기", "11"));
+        semesterAdapter.add(new StringPair("여름학기", "11"));
+        semesterAdapter.add(new StringPair("겨울학기", "21"));
 
         coresViewModel.getSchoolYears().observe(this, list -> {
             schoolYearAdapter.clear();

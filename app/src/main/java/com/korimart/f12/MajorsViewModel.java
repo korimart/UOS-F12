@@ -263,7 +263,10 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
                                        String schoolCode, String deptCode,
                                        @NonNull SchoolListParser.Result schoolResult) {
         ArrayList<String> schoolYears = new ArrayList<>();
-        for (int i = schoolResult.latestSchoolYear; i > schoolResult.latestSchoolYear - 10; i--)
+
+        // At the end of the year, the latestSchoolYear is outdated because of the winter semester.
+        // So we manually add one so we can view courses planned for next year.
+        for (int i = schoolResult.latestSchoolYear + 1; i > schoolResult.latestSchoolYear - 10; i--)
             schoolYears.add(String.valueOf(i));
         commons.schoolYears.setValue(schoolYears);
 
@@ -328,7 +331,11 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
                 break;
 
             case 2:
-                title += "계절학기 ";
+                title += "여름학기 ";
+                break;
+
+            case 3:
+                title += "겨울학기 ";
                 break;
         }
 
@@ -392,6 +399,8 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
                 return "20";
             case 2:
                 return "11";
+            case 3:
+                return "21";
         }
 
         return null;
@@ -405,6 +414,8 @@ public class MajorsViewModel extends ViewModel implements CourseListViewModel {
                 return 1;
             case "11":
                 return 2;
+            case "21":
+                return 3;
         }
 
         return -1;

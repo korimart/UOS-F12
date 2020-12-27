@@ -112,7 +112,8 @@ public class MajorsFilterFragment extends Fragment {
 
         semesterAdapter.add(new StringPair("1학기", "10"));
         semesterAdapter.add(new StringPair("2학기", "20"));
-        semesterAdapter.add(new StringPair("계절학기", "11"));
+        semesterAdapter.add(new StringPair("여름학기", "11"));
+        semesterAdapter.add(new StringPair("겨울학기", "21"));
 
         majorsViewModel.getSelections().observe(this, selections -> {
             schoolYear.setSelection(selections[0]);

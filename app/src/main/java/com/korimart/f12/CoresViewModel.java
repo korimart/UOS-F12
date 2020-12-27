@@ -140,7 +140,11 @@ public class CoresViewModel extends ViewModel implements CourseListViewModel {
                 break;
 
             case 2:
-                title += "계절학기 ";
+                title += "여름학기 ";
+                break;
+
+            case 3:
+                title += "겨울학기 ";
                 break;
         }
 
@@ -158,6 +162,8 @@ public class CoresViewModel extends ViewModel implements CourseListViewModel {
                 return "20";
             case 2:
                 return "11";
+            case 3:
+                return "21";
         }
 
         return null;
@@ -187,7 +193,10 @@ public class CoresViewModel extends ViewModel implements CourseListViewModel {
 
     private void setUpInitialFilter(SchoolListParser.Result schoolResult){
         ArrayList<String> schoolYears = new ArrayList<>();
-        for (int i = schoolResult.latestSchoolYear; i > schoolResult.latestSchoolYear - 10; i--)
+
+        // At the end of the year, the latestSchoolYear is outdated because of the winter semester.
+        // So we manually add one so we can view courses planned for next year.
+        for (int i = schoolResult.latestSchoolYear + 1; i > schoolResult.latestSchoolYear - 10; i--)
             schoolYears.add(String.valueOf(i));
         commons.schoolYears.setValue(schoolYears);
 
@@ -211,11 +220,15 @@ public class CoresViewModel extends ViewModel implements CourseListViewModel {
             case "11":
                 semesterPos = 2;
                 break;
+
+            case "21":
+                semesterPos = 3;
+                break;
         }
 
         setDepartments(defaultDepartments);
 
-        selections[0] = 0;
+        selections[0] = LinearTimeHelper.INSTANCE.indexOf(schoolYears, schoolResult.latestSchoolYear, (s, integer) -> s.compareTo(String.valueOf(integer)));
         selections[1] = semesterPos;
         selections[2] = 0;
     }
